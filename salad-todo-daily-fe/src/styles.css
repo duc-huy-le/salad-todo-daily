@@ -1,1 +1,384 @@
+/* Selected form hunters fc*/
 /* You can add global styles to this file, and also import other style files */
+/* @import "~ng-zorro-antd/ng-zorro-antd.min.css"; */
+
+:root {
+  --successColor: #52C41A;
+  --warningColor: #FAAD14;
+}
+
+/* Reset CSS */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* font-family: Raleway Replace with your custom font, sans-serif !important; */
+}
+
+/* .ant-btn-primary:hover {
+  color: red;
+} */
+
+/* ::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #f90;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+} */
+
+/* ------ Button ------ */
+.success-button {
+  background-color: var(--successColor);
+  border-color: var(--successColor);
+}
+
+.warning-button {
+  background-color: var(--warningColor);
+  border-color: var(--warningColor);
+}
+
+/* ------ Align ------ */
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+/* ------ Flex box------ */
+.d-flex {
+  display: flex;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-end {
+  justify-content: end;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+.flex-10 {
+  flex: 10%
+}
+
+.flex-20 {
+  flex: 20%
+}
+
+.flex-30 {
+  flex: 30%
+}
+
+.flex-40 {
+  flex: 40%
+}
+
+.flex-50 {
+  flex: 50%
+}
+
+.flex-60 {
+  flex: 60%
+}
+
+.flex-70 {
+  flex: 70%
+}
+
+.flex-80 {
+  flex: 80%
+}
+
+.flex-90 {
+  flex: 90%
+}
+
+.flex-100 {
+  flex: 100%
+}
+
+
+/* ------ Align ------ */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* ------ Color ------ */
+.color-red {
+  color: red;
+}
+
+/* --------- Border ---------  */
+
+.small-border {
+  border-radius: 12px;
+  border-style: solid;
+  border-color: grey;
+}
+
+/* ------ Size ------ */
+.hidden {
+  visibility: hidden;
+}
+
+/* ------ Size ------ */
+.m-0 {
+  margin: 0px;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mr-0 {
+  margin-right: 0px;
+}
+.mb-0 {
+  margin-bottom: 0px;
+}
+.ml-0  {
+  margin-left: 0px;
+}
+.mx-0 {
+  margin: 0 0px;
+}
+.my-0 {
+  margin: 0px 0;
+}
+
+.m-6 {
+  margin: 6px;
+}
+.mt-6 {
+  margin-top: 6px;
+}
+.mr-6 {
+  margin-right: 6px;
+}
+.mb-6 {
+  margin-bottom: 6px;
+}
+.ml-6 {
+  margin-left: 6px;
+}
+.mx-6 {
+  margin: 0 6px;
+}
+.my-6 {
+  margin: 6px 0;
+}
+
+.m-12 {
+  margin: 12px;
+}
+.mt-12 {
+  margin-top: 12px !important;
+}
+.mr-12 {
+  margin-right: 12px;
+}
+.mb-12 {
+  margin-bottom: 12px;
+}
+.ml-12 {
+  margin-left: 12px;
+}
+.mx-12 {
+  margin: 0 12px;
+}
+.my-12 {
+  margin: 12px 0 !important;
+}
+
+.m-24 {
+  margin: 24px;
+}
+.mt-24 {
+  margin-top: 24px;
+}
+.mr-24 {
+  margin-right: 24px;
+}
+.mb-24 {
+  margin-bottom: 24px;
+}
+.ml-24  {
+  margin-left: 24px;
+}
+.mx-24 {
+  margin: 0 24px;
+}
+.my-24 {
+  margin: 24px 0;
+}
+
+.m-36 {
+  margin: 36px;
+}
+.mt-36 {
+  margin-top: 36px;
+}
+.mr-36 {
+  margin-right: 36px;
+}
+.mb-36 {
+  margin-bottom: 36px;
+}
+.ml-36  {
+  margin-left: 36px;
+}
+.mx-36 {
+  margin: 0 36px;
+}
+.my-36 {
+  margin: 36px 0;
+}
+
+.p-0 {
+  padding: 0px;
+}
+.pt-0 {
+  padding-top: 0px;
+}
+.pr-0 {
+  padding-right: 0px;
+}
+.pb-0 {
+  padding-bottom: 0px;
+}
+.pl-0  {
+  padding-left: 0px;
+}
+.px-0 {
+  padding: 0 0px;
+}
+.py-0 {
+  padding: 0px 0;
+}
+
+.p-6 {
+  padding: 6px;
+}
+.pt-6 {
+  padding-top: 6px;
+}
+.pr-6 {
+  padding-right: 6px;
+}
+.pb-6 {
+  padding-bottom: 6px;
+}
+.pl-6 {
+  padding-left: 6px;
+}
+.px-6 {
+  padding: 0 6px;
+}
+.py-6 {
+  padding: 6px 0;
+}
+
+.p-12 {
+  padding: 12px;
+}
+.pt-12 {
+  padding-top: 12px !important;
+}
+.pr-12 {
+  padding-right: 12px;
+}
+.pb-12 {
+  padding-bottom: 12px;
+}
+.pl-12 {
+  padding-left: 12px;
+}
+.px-12 {
+  padding: 0 12px;
+}
+.py-12 {
+  padding: 12px 0 !important;
+}
+
+.p-24 {
+  padding: 24px;
+}
+.pt-24 {
+  padding-top: 24px;
+}
+.pr-24 {
+  padding-right: 24px;
+}
+.pb-24 {
+  padding-bottom: 24px;
+}
+.pl-24  {
+  padding-left: 24px;
+}
+.px-24 {
+  padding: 0 24px;
+}
+.py-24 {
+  padding: 24px 0;
+}
+
+.p-36 {
+  padding: 36px;
+}
+.pt-36 {
+  padding-top: 36px;
+}
+.pr-36 {
+  padding-right: 36px;
+}
+.pb-36 {
+  padding-bottom: 36px;
+}
+.pl-36  {
+  padding-left: 36px;
+}
+.px-36 {
+  padding: 0 36px;
+}
+.py-36 {
+  padding: 36px 0;
+}

@@ -11,12 +11,20 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgZorroAntdModule } from './modules/ng-zorro-antd.module';
+import { DashboardScreenComponent } from './routes/home/dashboard-screen/dashboard-screen.component';
+import { RightSidebarComponent } from './routes/components/right-sidebar/right-sidebar.component';
+import { LeftSidebarComponent } from './routes/components/left-sidebar/left-sidebar.component';
+import { DailyTaskGroupComponent } from './routes/components/daily-task-group/daily-task-group.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardScreenComponent,
+    RightSidebarComponent,
+    LeftSidebarComponent,
+    DailyTaskGroupComponent
   ],
   imports: [
     BrowserModule,
