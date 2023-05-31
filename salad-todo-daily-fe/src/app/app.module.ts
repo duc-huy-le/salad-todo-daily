@@ -15,6 +15,7 @@ import { DashboardScreenComponent } from './routes/home/dashboard-screen/dashboa
 import { RightSidebarComponent } from './routes/components/right-sidebar/right-sidebar.component';
 import { LeftSidebarComponent } from './routes/components/left-sidebar/left-sidebar.component';
 import { DailyTaskGroupComponent } from './routes/components/daily-task-group/daily-task-group.component';
+import { DailyTaskItemComponent } from './routes/components/daily-task-item/daily-task-item.component';
 
 registerLocaleData(en);
 
@@ -24,7 +25,8 @@ registerLocaleData(en);
     DashboardScreenComponent,
     RightSidebarComponent,
     LeftSidebarComponent,
-    DailyTaskGroupComponent
+    DailyTaskGroupComponent,
+    DailyTaskItemComponent
   ],
   imports: [
     BrowserModule,

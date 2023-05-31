@@ -3,4 +3,11 @@
     <div class="group-icon"><i class="fas fa-check-square"></i></div>
     <div class="group-title mx-12">Theo dõi thói quen</div>
   </div>
+  <div class="group-body d-flex flex-direction-column">
+    <nz-divider></nz-divider>
+    <ng-container *ngFor="let task of listTaskDaily">
+      <app-daily-task-item [task]="task"></app-daily-task-item>
+    </ng-container>
+
+  </div>
 </div>

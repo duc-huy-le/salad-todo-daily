@@ -1,0 +1,11 @@
+<div class="container p-12 mb-6">
+  <div nz-row class="task__name mb-6">
+    <label nz-checkbox [(ngModel)]="checked">{{ task?.name }}</label>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="12" class="task__tag">
+      <nz-tag [nzColor]="'gold'">Thể dục</nz-tag>
+      <nz-tag [nzColor]="'cyan'">GYM</nz-tag>
+    </div>
+  </div>
+</div>
