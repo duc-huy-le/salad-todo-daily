@@ -6,31 +6,30 @@ import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 @Component({
   selector: 'app-daily-task-item',
   templateUrl: './daily-task-item.component.html',
-  styleUrls: ['./daily-task-item.component.css']
+  styleUrls: ['./daily-task-item.component.css'],
 })
 export class DailyTaskItemComponent implements OnInit {
   @Input() task?: TaskDaily;
   listTaskTag?: TaskTag[];
   checked: boolean = false;
-  constructor(
-    private taskTagService: TaskTagService
-  ) { }
+  constructor(private taskTagService: TaskTagService) {}
 
   ngOnInit(): void {
     this.getAllTaskTag();
   }
 
   getAllTaskTag() {
-    this.taskTagService.getAllTaskTag().toPromise().then((response) => {
-      this.listTaskTag = response;
-      debugger;
-    })
+    // this.taskTagService.getAllTaskTag().toPromise().then((response) => {
+    //   this.listTaskTag = response;
+    // })
+    this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
   }
 
-  addTaskNameToTag() {
-    if(this.task?.tagName !== undefined) {
-      // this.task.tagName =  this.listTaskTag?.find(item => item.id === this.task?.tagId)?.name;
-    }
+  getTaskTagName(tagId: any): string {
+    return this.listTaskTag?.find((item) => item.id === tagId)?.name!;
   }
 
+  getTaskTagColor(tagId: any): string {
+    return this.listTaskTag?.find((item) => item.id === tagId)?.color!;
+  }
 }

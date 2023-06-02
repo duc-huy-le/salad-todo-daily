@@ -3,9 +3,12 @@
     <label nz-checkbox [(ngModel)]="checked">{{ task?.name }}</label>
   </div>
   <div nz-row>
-    <div nz-col nzSpan="12" class="task__tag">
-      <nz-tag [nzColor]="'gold'">Thể dục</nz-tag>
-      <nz-tag [nzColor]="'cyan'">GYM</nz-tag>
+    <div nz-col nzSpan="24" class="task__tag">
+      <ng-container *ngFor="let tagId of task?.tagId">
+        <nz-tag [nzColor]="getTaskTagColor(tagId)">{{
+          getTaskTagName(tagId)
+        }}</nz-tag>
+      </ng-container>
     </div>
   </div>
 </div>

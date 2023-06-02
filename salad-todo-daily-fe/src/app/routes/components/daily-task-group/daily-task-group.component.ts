@@ -21,7 +21,6 @@ export class DailyTaskGroupComponent implements OnInit {
   getAllTaskDaily() {
     this.taskDailyService.getAllTaskDaily().toPromise().then((response) => {
       this.listTaskDaily = response;
-      debugger;
     })
   }
 
