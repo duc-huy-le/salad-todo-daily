@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="group-header d-flex">
+    <div class="group-icon"><i class="fas fa-sticky-note"></i></div>
+    <div class="group-title mx-12">Ghi chú</div>
+  </div>
+  <div class="group-body d-flex flex-direction-column">
+    <nz-divider></nz-divider>
+    <ng-container *ngFor="let note of listNote">
+      <app-note-item [note]="note"></app-note-item>
+    </ng-container>
+
+  </div>
+</div>

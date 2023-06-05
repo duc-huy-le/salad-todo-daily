@@ -1,0 +1,14 @@
+.nav-bar-list {
+  list-style-type: none;
+}
+
+.nav-bar-item {
+  padding: 12px 12px;
+  margin: 0;
+}
+
+.nav-bar-item:hover {
+  background-color: #5577FF;
+  color: #fff;
+  border-radius: 30px;
+}

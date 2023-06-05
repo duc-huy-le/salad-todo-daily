@@ -1,0 +1,18 @@
+<div class="container p-12 mb-6">
+  <div nz-row>
+    <div nz-col nzSpan="2"><i class="fas fa-file-alt"></i></div>
+    <div nz-col nzSpan="22">
+      <label>{{ note?.createdAt | date : "dd/MM/yyyy" }}</label>
+    </div>
+  </div>
+
+  <div nz-row class="task__name mb-6">
+    <strong>{{ note?.title }}</strong>
+  </div>
+  <div nz-row class="task__name mb-6">
+    <label>{{ note?.content }}</label>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="24" class="task__tag"></div>
+  </div>
+</div>

@@ -16,6 +16,10 @@ import { RightSidebarComponent } from './routes/components/right-sidebar/right-s
 import { LeftSidebarComponent } from './routes/components/left-sidebar/left-sidebar.component';
 import { DailyTaskGroupComponent } from './routes/components/daily-task-group/daily-task-group.component';
 import { DailyTaskItemComponent } from './routes/components/daily-task-item/daily-task-item.component';
+import { NoteGroupComponent } from './routes/components/note/note-group/note-group.component';
+import { NoteItemComponent } from './routes/components/note/note-item/note-item.component';
+import { NavbarComponent } from './routes/components/navbar/navbar.component';
+import { ProjectGroupComponent } from './routes/components/project/project-group/project-group.component';
 
 registerLocaleData(en);
 
@@ -26,7 +30,11 @@ registerLocaleData(en);
     RightSidebarComponent,
     LeftSidebarComponent,
     DailyTaskGroupComponent,
-    DailyTaskItemComponent
+    DailyTaskItemComponent,
+    NoteGroupComponent,
+    NoteItemComponent,
+    NavbarComponent,
+    ProjectGroupComponent
   ],
   imports: [
     BrowserModule,
