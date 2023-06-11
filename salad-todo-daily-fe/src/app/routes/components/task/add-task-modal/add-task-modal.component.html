@@ -1,0 +1,111 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Thêm công việc mới"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleAddTask()"
+  [nzOkText]="'Tạo công việc'"
+  [nzCancelText]="'Hủy'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="addTaskForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
+          >Tên công việc</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+          <input
+            nz-input
+            placeholder="Nhập tên công việc"
+            id="name"
+            formControlName="name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priority"
+          >Độ ưu tiên</nz-form-label
+        >
+        <nz-form-control>
+          <nz-select
+            nzPlaceHolder="Chọn độ ưu tiên"
+            id="priority"
+            formControlName="priority"
+          >
+            <nz-option [nzValue]="TaskPriority.High" nzLabel="Cao"></nz-option>
+            <nz-option
+              [nzValue]="TaskPriority.Medium"
+              nzLabel="Trung bình"
+            ></nz-option>
+            <nz-option [nzValue]="TaskPriority.Low" nzLabel="Thấp"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="status"
+          >Trạng thái</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Trạng thái không được để trống!">
+          <nz-select
+            nzPlaceholder="Chọn trạng thái"
+            id="status"
+            formControlName="status"
+          >
+            <nz-option [nzValue]="TaskStatus.Open" nzLabel="Chưa thực hiện"></nz-option>
+            <nz-option
+              [nzValue]="TaskStatus.InProgress"
+              nzLabel="Đang thực hiện"
+            ></nz-option>
+            <nz-option [nzValue]="TaskStatus.Done" nzLabel="Hoàn thành"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
+          >Ngày bắt đầu</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Ngày bắt đầu không được để trống!">
+          <nz-date-picker
+            class="w-100"
+            nzPlaceHolder="Chọn ngày bắt đầu"
+            [nzFormat]="'dd/MM/yyyy'"
+            id="startDate"
+            formControlName="startDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="endDate"
+          >Ngày kết thúc</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Ngày kết thúc không được để trống!">
+          <nz-date-picker
+            class="w-100"
+            nzPlaceHolder="Chọn ngày kết thúc"
+            [nzFormat]="'dd/MM/yyyy'"
+            id="endDate"
+            formControlName="endDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description"
+          >Mô tả</nz-form-label
+        >
+        <nz-form-control>
+          <textarea
+            nz-input
+            rows="4"
+            placeholder="Nhập mô tả..."
+            id="description"
+            formControlName="description"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,8 @@
+/* ::ng-deep button.ant-btn {
+  border-radius: 10px;
+} */
+
+.view-type__button {
+  border-radius: 10px;
+}
+

@@ -7,7 +7,7 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgZorroAntdModule } from './modules/ng-zorro-antd.module';
@@ -20,6 +20,12 @@ import { NoteGroupComponent } from './routes/components/note/note-group/note-gro
 import { NoteItemComponent } from './routes/components/note/note-item/note-item.component';
 import { NavbarComponent } from './routes/components/navbar/navbar.component';
 import { ProjectGroupComponent } from './routes/components/project/project-group/project-group.component';
+import { AddDailyTaskModalComponent } from './routes/components/daily-task-group/add-daily-task-modal/add-daily-task-modal.component';
+import { AddProjectModalComponent } from './routes/components/project/add-project-modal/add-project-modal.component';
+import { DashboardContentComponent } from './routes/components/dashboard/dashboard-content/dashboard-content.component';
+import { TaskGroupComponent } from './routes/components/task/task-group/task-group.component';
+import { TaskItemComponent } from './routes/components/task/task-item/task-item.component';
+import { AddTaskModalComponent } from './routes/components/task/add-task-modal/add-task-modal.component';
 
 registerLocaleData(en);
 
@@ -34,7 +40,13 @@ registerLocaleData(en);
     NoteGroupComponent,
     NoteItemComponent,
     NavbarComponent,
-    ProjectGroupComponent
+    ProjectGroupComponent,
+    AddDailyTaskModalComponent,
+    AddProjectModalComponent,
+    DashboardContentComponent,
+    TaskGroupComponent,
+    TaskItemComponent,
+    AddTaskModalComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +54,8 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

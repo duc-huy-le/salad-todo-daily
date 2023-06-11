@@ -1,0 +1,11 @@
+::ng-deep nz-tag.ant-tag {
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.container {
+  background-color: #fff;
+  border: 2px solid #E6E4F0;
+  border-radius: 10px;
+  cursor: pointer;
+}

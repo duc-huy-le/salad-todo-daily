@@ -1,1 +1,20 @@
-<p>project-group works!</p>
+<div class="container">
+  <div
+    class="group-header d-flex justify-content-space-between align-items-center mb-12"
+  >
+      <div class="group-title mx-12">DỰ ÁN</div>
+    <button nz-button nzShape="circle" (click)="openAddProjectModal()"><i class="fas fa-plus"></i></button>
+  </div>
+  <div class="group-body mx-12 d-flex flex-direction-column">
+    <ng-container *ngFor="let project of listProject">
+      <!-- <app-daily-task-item [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()"></app-daily-task-item> -->
+      <div class="project-item d-flex justify-content-space-between align-items-center">
+        <button nz-button nzType="text" class="project-item__name">{{project.name}}</button>
+        <div class="project-item__count">12</div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<app-add-project-modal #addProjectModal (onAddProject)="getAllProjects()"></app-add-project-modal>
+

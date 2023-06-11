@@ -1,6 +1,6 @@
 <div class="container">
   <ul class="nav-bar-list">
-    <li *ngFor="let nav of listNavItems" class="nav-bar-item">
+    <li *ngFor="let nav of listNavItems" class="nav-bar-item" [ngClass]="nav.selected ? 'nav-bar-item__selected' : ''">
       {{ nav.name }}
     </li>
   </ul>

@@ -1,0 +1,74 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Thêm thói quen mới"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleAddTaskDaily()"
+  [nzOkText]="'Tạo thói quen'"
+  [nzCancelText]="'Hủy'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="addDailyTaskForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
+          >Tên thói quen</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Tên thói quen không được để trống!">
+          <input
+            nz-input
+            placeholder="Nhập tên thói quen"
+            id="name"
+            formControlName="name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tagId">Chủ đề</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzMode="multiple"
+            nzPlaceHolder="Chọn chủ đề"
+            id="tagId"
+            formControlName="tagId"
+          >
+            <nz-option
+              *ngFor="let tag of listTaskTag"
+              [nzLabel]="tag.name"
+              [nzValue]="tag.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
+          >Ngày bắt đầu</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Ngày bắt đầu không được để trống!">
+          <nz-date-picker
+            class="w-100"
+            nzPlaceHolder="Chọn ngày bắt đầu"
+            [nzFormat]="'dd/MM/yyyy'"
+            id="startDate"
+            formControlName="startDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description"
+          >Mô tả</nz-form-label
+        >
+        <nz-form-control>
+          <textarea
+            nz-input
+            rows="4"
+            placeholder="Nhập mô tả..."
+            id="description"
+            formControlName="description"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

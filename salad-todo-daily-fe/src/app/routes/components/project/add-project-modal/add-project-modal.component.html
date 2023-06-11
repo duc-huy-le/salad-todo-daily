@@ -1,0 +1,56 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Thêm dự án mới"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleAddProject()"
+  [nzOkText]="'Tạo dự án'"
+  [nzCancelText]="'Hủy'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="addProjectForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
+          >Tên dự án</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Tên dự án không được để trống!">
+          <input
+            nz-input
+            placeholder="Nhập tên dự án"
+            id="name"
+            formControlName="name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
+          >Ngày bắt đầu</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Ngày bắt đầu không được để trống!">
+          <nz-date-picker
+            class="w-100"
+            nzPlaceHolder="Chọn ngày bắt đầu"
+            [nzFormat]="'dd/MM/yyyy'"
+            id="startDate"
+            formControlName="startDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description"
+          >Mô tả</nz-form-label
+        >
+        <nz-form-control>
+          <textarea
+            nz-input
+            rows="4"
+            placeholder="Nhập mô tả..."
+            id="description"
+            formControlName="description"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

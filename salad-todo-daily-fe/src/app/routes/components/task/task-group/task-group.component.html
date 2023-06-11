@@ -1,0 +1,69 @@
+<div class="container mt-12">
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="8" class="open-task-list">
+      <div
+        class="list-header d-flex align-items-center justify-content-space-between"
+      >
+        <div class="header__title">Chưa thực hiện</div>
+        <div class="header__action">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+            <i class="fas fa-plus"></i>
+          </button>
+
+          <button nz-button nzType="text">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+      <nz-divider></nz-divider>
+      <div *ngFor="let task of listOpenTask">
+        <app-task-item [task]="task"></app-task-item>
+      </div>
+    </div>
+    <div nz-col nzSpan="8" class="in-progress-task-list">
+      <div
+        class="list-header d-flex align-items-center justify-content-space-between"
+      >
+        <div class="header__title">Đang thực hiện</div>
+        <div class="header__action">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+            <i class="fas fa-plus"></i>
+          </button>
+
+          <button nz-button nzType="text">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+      <nz-divider></nz-divider>
+      <div *ngFor="let task of listTask">
+        <app-task-item [task]="task"></app-task-item>
+      </div>
+    </div>
+    <div nz-col nzSpan="8" class="done-task-list">
+      <div
+        class="list-header d-flex align-items-center justify-content-space-between"
+      >
+        <div class="header__title">Hoàn thành</div>
+        <div class="header__action">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+            <i class="fas fa-plus"></i>
+          </button>
+
+          <button nz-button nzType="text">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+      <nz-divider></nz-divider>
+      <div *ngFor="let task of listTask">
+        <app-task-item [task]="task"></app-task-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-add-task-modal
+  #addTaskModal
+  (onAddTask)="getAllTask()"
+></app-add-task-modal>

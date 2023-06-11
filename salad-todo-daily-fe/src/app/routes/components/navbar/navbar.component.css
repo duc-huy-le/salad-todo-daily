@@ -5,8 +5,10 @@
 .nav-bar-item {
   padding: 12px 12px;
   margin: 0;
+  cursor: pointer;
 }
 
+.nav-bar-item__selected,
 .nav-bar-item:hover {
   background-color: #5577FF;
   color: #fff;
