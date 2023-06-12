@@ -1,6 +1,13 @@
 <div class="container p-12 my-6">
-  <div class="task-name mb-6">
-    {{task.name}}
+  <div class="d-flex justify-content-space-between">
+    <div class="task-name mb-6">
+      {{ task.name }}
+    </div>
+    <div class="item-action">
+      <button nz-button (click)="quickChangeTaskStatus()">
+        <i class="far fa-hand-point-right"></i>
+      </button>
+    </div>
   </div>
   <div class="d-flex justify-content-space-between">
     <div class="check-list">
@@ -9,7 +16,9 @@
     </div>
     <div class="priority">
       <ng-container *ngIf="task.priority !== TaskPriority.Undefined">
-        <nz-tag [nzColor]="getPriorityColor(task.priority)">{{getPriorityLabel(task.priority)}}</nz-tag>
+        <nz-tag [nzColor]="getPriorityColor(task.priority)">{{
+          getPriorityLabel(task.priority)
+        }}</nz-tag>
       </ng-container>
     </div>
   </div>

@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Project } from 'src/app/models/Project';
 import { Task } from 'src/app/models/Task';
+import { ProjectService } from 'src/app/services/project/project.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 export enum TaskPriority {
   Undefined = 0,
@@ -21,10 +24,27 @@ export enum TaskStatus {
 })
 export class TaskItemComponent implements OnInit {
   @Input() task!: Task;
+  @Output() onTaskChange = new EventEmitter();
   TaskPriority = TaskPriority;
-  constructor() {}
+  listProject: Project[] = [];
+  constructor(
+    private taskService: TaskService,
+    private projectService: ProjectService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getListProjects();
+  }
+
+  getListProjects() {
+    this.projectService.getAllProject().toPromise().then(res => {
+      this.listProject = res;
+    })
+  }
+
+  getProjectInfo(projectId: any): string {
+    // return this.projectService
+  }
 
   getPriorityLabel(taskPriority: TaskPriority): string {
     switch (taskPriority) {
@@ -50,5 +70,12 @@ export class TaskItemComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  quickChangeTaskStatus() {
+    var newStatus = this.task.status === TaskStatus.Open ? TaskStatus.InProgress : TaskStatus.Done;
+    this.taskService.updatePropTask(this.task.id, {status: newStatus}).toPromise().then(res => {
+      this.onTaskChange.emit();
+    })
   }
 }

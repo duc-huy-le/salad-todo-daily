@@ -14,7 +14,7 @@ export class TaskGroupComponent implements OnInit {
   listTask?: Task[];
   listOpenTask?: Task[];
   listInProgressTask?: Task[];
-  listInDoneTask?: Task[];
+  listDoneTask?: Task[];
 
   constructor(
     private taskService: TaskService
@@ -31,6 +31,8 @@ export class TaskGroupComponent implements OnInit {
       .then((response) => {
         this.listTask = response;
         this.listOpenTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.Open);
+        this.listInProgressTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.InProgress);
+        this.listDoneTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.Done);
         this.listTask = this.listTask.filter(
           (item) => item.isDeleted === false
         );
