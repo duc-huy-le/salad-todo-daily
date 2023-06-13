@@ -9,3 +9,14 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
+.project-tag {
+  max-width: 100%;
+}
+
+.project-name {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

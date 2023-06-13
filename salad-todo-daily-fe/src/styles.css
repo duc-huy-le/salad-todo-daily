@@ -387,3 +387,14 @@
 .w-100 {
   width: 100%;
 }
+
+/* TEXT DECORATION */
+
+.text-decoration-line-through {
+  text-decoration: line-through
+}
+
+/* FONT SIZE */
+.fz-12 {
+  font-size: 12px;
+}

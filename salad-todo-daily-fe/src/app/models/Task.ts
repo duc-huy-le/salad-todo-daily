@@ -7,9 +7,10 @@ export class Task {
   endDate: Date;
   priority: number;
   status: number;
+  checkList: Array<TaskCheckList>;
   createdAt: Date;
   isDeleted: boolean;
-  constructor(id: any, name: string, projectId: any, description: string, startDate: Date, endDate: Date, priority: number, status: number, createdAt: Date, isDeleted: boolean) {
+  constructor(id: any, name: string, projectId: any, description: string, startDate: Date, endDate: Date, priority: number, status: number, checkList: Array<TaskCheckList>, createdAt: Date, isDeleted: boolean) {
     this.id = id;
     this.name = name;
     this.projectId = projectId;
@@ -18,7 +19,17 @@ export class Task {
     this.endDate = endDate;
     this.priority = priority;
     this.status = status;
+    this.checkList = checkList;
     this.createdAt = createdAt;
     this.isDeleted = isDeleted;
+  }
+}
+
+export class TaskCheckList {
+  checked: boolean;
+  content: string;
+  constructor(checked: boolean, content: string) {
+    this.checked = checked;
+    this.content = content;
   }
 }

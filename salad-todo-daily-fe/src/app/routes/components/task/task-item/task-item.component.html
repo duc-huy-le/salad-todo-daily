@@ -1,4 +1,9 @@
-<div class="container p-12 my-6">
+<div class="container p-12 my-6" (click)="openDetailTaskModal()">
+  <ng-container *ngIf="task.projectId">
+    <nz-tag [nzColor]="projectInfo?.color" class="project-tag mb-6">
+      <div class="project-name">{{ projectInfo?.name }}</div>
+    </nz-tag>
+  </ng-container>
   <div class="d-flex justify-content-space-between">
     <div class="task-name mb-6">
       {{ task.name }}
@@ -11,8 +16,10 @@
   </div>
   <div class="d-flex justify-content-space-between">
     <div class="check-list">
-      <i class="far fa-check-square mr-6"></i>
-      2/3
+      <div *ngIf="task.checkList && task.checkList.length > 0 ">
+        <i class="far fa-check-square mr-6"></i>
+        {{ checkListCompleteCount + "/" + checkListTotalCount }}
+      </div>
     </div>
     <div class="priority">
       <ng-container *ngIf="task.priority !== TaskPriority.Undefined">
@@ -23,3 +30,9 @@
     </div>
   </div>
 </div>
+
+<app-add-task-modal
+  #addTaskModal
+  [task]="task"
+  [viewMode]="TaskItemViewMode.View"
+></app-add-task-modal>

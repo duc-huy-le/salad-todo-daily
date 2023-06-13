@@ -1,111 +1,261 @@
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Thêm công việc mới"
+  [nzTitle]="
+    viewMode === TaskItemViewMode.Create ? 'Thêm công việc mới' : task.name
+  "
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleAddTask()"
   [nzOkText]="'Tạo công việc'"
   [nzCancelText]="'Hủy'"
 >
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="addTaskForm">
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
-          >Tên công việc</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Tên công việc không được để trống!">
-          <input
-            nz-input
-            placeholder="Nhập tên công việc"
-            id="name"
-            formControlName="name"
-          />
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priority"
-          >Độ ưu tiên</nz-form-label
-        >
-        <nz-form-control>
-          <nz-select
-            nzPlaceHolder="Chọn độ ưu tiên"
-            id="priority"
-            formControlName="priority"
+    <ng-container *ngIf="viewMode === TaskItemViewMode.Create">
+      <form nz-form [formGroup]="addTaskForm">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
+            >Tên công việc</nz-form-label
           >
-            <nz-option [nzValue]="TaskPriority.High" nzLabel="Cao"></nz-option>
-            <nz-option
-              [nzValue]="TaskPriority.Medium"
-              nzLabel="Trung bình"
-            ></nz-option>
-            <nz-option [nzValue]="TaskPriority.Low" nzLabel="Thấp"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <input
+              nz-input
+              placeholder="Nhập tên công việc"
+              id="name"
+              formControlName="name"
+            />
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="status"
-          >Trạng thái</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Trạng thái không được để trống!">
-          <nz-select
-            nzPlaceholder="Chọn trạng thái"
-            id="status"
-            formControlName="status"
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priority"
+            >Thuộc dự án</nz-form-label
           >
-            <nz-option [nzValue]="TaskStatus.Open" nzLabel="Chưa thực hiện"></nz-option>
-            <nz-option
-              [nzValue]="TaskStatus.InProgress"
-              nzLabel="Đang thực hiện"
-            ></nz-option>
-            <nz-option [nzValue]="TaskStatus.Done" nzLabel="Hoàn thành"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
+          <nz-form-control>
+            <nz-select
+              nzPlaceHolder="Chọn dự án"
+              id="projectId"
+              formControlName="projectId"
+            >
+              <nz-option
+                *ngFor="let project of listProjects"
+                [nzValue]="project.id"
+                [nzLabel]="project.name"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
-          >Ngày bắt đầu</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Ngày bắt đầu không được để trống!">
-          <nz-date-picker
-            class="w-100"
-            nzPlaceHolder="Chọn ngày bắt đầu"
-            [nzFormat]="'dd/MM/yyyy'"
-            id="startDate"
-            formControlName="startDate"
-          ></nz-date-picker>
-        </nz-form-control>
-      </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priority"
+            >Độ ưu tiên</nz-form-label
+          >
+          <nz-form-control>
+            <nz-select
+              nzPlaceHolder="Chọn độ ưu tiên"
+              id="priority"
+              formControlName="priority"
+            >
+              <nz-option
+                [nzValue]="TaskPriority.High"
+                nzLabel="Cao"
+              ></nz-option>
+              <nz-option
+                [nzValue]="TaskPriority.Medium"
+                nzLabel="Trung bình"
+              ></nz-option>
+              <nz-option
+                [nzValue]="TaskPriority.Low"
+                nzLabel="Thấp"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="endDate"
-          >Ngày kết thúc</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Ngày kết thúc không được để trống!">
-          <nz-date-picker
-            class="w-100"
-            nzPlaceHolder="Chọn ngày kết thúc"
-            [nzFormat]="'dd/MM/yyyy'"
-            id="endDate"
-            formControlName="endDate"
-          ></nz-date-picker>
-        </nz-form-control>
-      </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="status"
+            >Trạng thái</nz-form-label
+          >
+          <nz-form-control nzErrorTip="Trạng thái không được để trống!">
+            <nz-select
+              nzPlaceholder="Chọn trạng thái"
+              id="status"
+              formControlName="status"
+            >
+              <nz-option
+                [nzValue]="TaskStatus.Open"
+                nzLabel="Chưa thực hiện"
+              ></nz-option>
+              <nz-option
+                [nzValue]="TaskStatus.InProgress"
+                nzLabel="Đang thực hiện"
+              ></nz-option>
+              <nz-option
+                [nzValue]="TaskStatus.Done"
+                nzLabel="Hoàn thành"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description"
-          >Mô tả</nz-form-label
-        >
-        <nz-form-control>
-          <textarea
-            nz-input
-            rows="4"
-            placeholder="Nhập mô tả..."
-            id="description"
-            formControlName="description"
-          ></textarea>
-        </nz-form-control>
-      </nz-form-item>
-    </form>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
+            >Ngày bắt đầu</nz-form-label
+          >
+          <nz-form-control nzErrorTip="Ngày bắt đầu không được để trống!">
+            <nz-date-picker
+              class="w-100"
+              nzPlaceHolder="Chọn ngày bắt đầu"
+              [nzFormat]="'dd/MM/yyyy'"
+              id="startDate"
+              formControlName="startDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="endDate"
+            >Ngày kết thúc</nz-form-label
+          >
+          <nz-form-control nzErrorTip="Ngày kết thúc không được để trống!">
+            <nz-date-picker
+              class="w-100"
+              nzPlaceHolder="Chọn ngày kết thúc"
+              [nzFormat]="'dd/MM/yyyy'"
+              id="endDate"
+              formControlName="endDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description"
+            >Mô tả</nz-form-label
+          >
+          <nz-form-control>
+            <textarea
+              nz-input
+              rows="4"
+              placeholder="Nhập mô tả..."
+              id="description"
+              formControlName="description"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkList"
+            >Theo dõi</nz-form-label
+          >
+          <nz-form-control>
+            <!-- <div *ngFor="let step of task.checkList; let i = index">
+              <label nz-checkbox [(ngModel)]="step.checked" (ngModelChange)="onCheckStep($event, i)">
+                <div [ngClass]="step.checked? 'text-decoration-line-through' : ''">{{
+                step.content
+              }}</div></label>
+            </div> -->
+            <ng-container *ngFor="let step of newCheckList; let i = index">
+              <div class="list-step p-6 d-flex justify-content-space-between">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="step.checked"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <div
+                    [ngClass]="
+                      step.checked ? 'text-decoration-line-through' : ''
+                    "
+                  >
+                    {{ step.content }}
+                  </div></label
+                >
+                <button nz-button nzDanger nzSize="small" (click)="onDeleteAddCheckListItem(i)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </ng-container>
+            <div *ngIf="isAddingCheckList; else addCheckList" class="new-step">
+              <textarea
+                nz-input
+                rows="2"
+                placeholder="Thêm một bước..."
+                id="checkList"
+                ng-trim="false"
+                [(ngModel)]="currentAddCheckListItem"
+                [ngModelOptions]="{ standalone: true }"
+                (keyup.enter)="onClickAddCheckList($event)"
+                (keydown.enter)="onEnterKeyInAddCheckList($event)"
+              ></textarea>
+              <div class="new-step__action mt-6">
+                <button
+                  nz-button
+                  nzType="primary"
+                  class="mr-6"
+                  (click)="onClickAddCheckList()"
+                >
+                  Thêm
+                </button>
+                <button nz-button (click)="onClickCancelAddCheckList()">
+                  Hủy
+                </button>
+              </div>
+            </div>
+            <ng-template #addCheckList>
+              <button
+                nz-button
+                nzType="dashed"
+                (click)="onClickAddNewCheckList()"
+              >
+                Thêm một bước
+              </button>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+    <ng-container *ngIf="viewMode === TaskItemViewMode.View">
+      <div class="description-block d-flex">
+        <div class="description__icon mr-12">
+          <i class="fas fa-align-left"></i>
+        </div>
+        <div class="description__content">
+          <div class="description__label mb-6"><strong>Mô tả</strong></div>
+          <div>
+            {{ task.description ? task.description : "Chưa có mô tả..." }}
+          </div>
+        </div>
+      </div>
+      <div class="check-list-block d-flex mt-12">
+        <div class="check-list__icon mr-12">
+          <i class="far fa-check-square"></i>
+        </div>
+        <div class="check-list__content w-100">
+          <strong class="check-list__label"
+            >Theo dõi thực hiện
+            <span
+              *ngIf="isShowLoadingCheckList"
+              nz-icon
+              nzType="loading"
+              nzTheme="outline"
+            ></span>
+          </strong>
+          <nz-progress [nzPercent]="checkListPercent"></nz-progress>
+          <div *ngFor="let step of task.checkList; let i = index">
+            <label
+              nz-checkbox
+              [(ngModel)]="step.checked"
+              (ngModelChange)="onCheckStep($event, i)"
+            >
+              <div
+                [ngClass]="step.checked ? 'text-decoration-line-through' : ''"
+              >
+                {{ step.content }}
+              </div></label
+            >
+          </div>
+          <div class="mt-12">
+            <button nz-button nzType="dashed">Thêm một bước</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
 </nz-modal>
