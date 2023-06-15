@@ -10,5 +10,6 @@ export class NotificationService {
 
   sendMessage(chatId: any, message: string) {
     var sendMessageUrl = `${this.baseUrl}sendMessage?chat_id=${chatId}&text=${message}`;
+    this.http.get(sendMessageUrl);
   }
 }
