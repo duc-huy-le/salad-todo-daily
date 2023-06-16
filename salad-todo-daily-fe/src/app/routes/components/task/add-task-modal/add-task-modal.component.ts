@@ -78,6 +78,22 @@ export class AddTaskModalComponent implements OnInit {
     });
   }
 
+  onClickModalOk(): void {
+    switch (this.viewMode) {
+      case TaskItemViewMode.Create:
+        this.handleAddTask();
+        break;
+      case TaskItemViewMode.View:
+        this.handleEditTask();
+        break;
+      case TaskItemViewMode.Edit:
+        this.updateTask();
+        break;
+      default:
+        break;
+    }
+  }
+
   handleAddTask(): void {
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
     this.taskService
@@ -88,6 +104,24 @@ export class AddTaskModalComponent implements OnInit {
         this.onAddTask.emit();
         this.isVisible = false;
       });
+  }
+
+  updateTask(): void {
+    this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
+    this.taskService
+      .updateTask(this.task.id, this.addTaskForm.value)
+      .toPromise()
+      .then((res) => {
+        this.onAddTask.emit();
+        this.viewMode = TaskItemViewMode.View;
+        this.task = res;
+      });
+  }
+
+  handleEditTask(): void {
+    this.addTaskForm.patchValue(this.task);
+    this.newCheckList = [...this.task.checkList!];
+    this.viewMode = TaskItemViewMode.Edit;
   }
 
   handleCancel(): void {
@@ -126,7 +160,10 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   onClickAddCheckList(ev?: any) {
-    if (this.currentAddCheckListItem != '' && this.currentAddCheckListItem != "\n") {
+    if (
+      this.currentAddCheckListItem != '' &&
+      this.currentAddCheckListItem != '\n'
+    ) {
       this.newCheckList.push({
         checked: false,
         content: this.currentAddCheckListItem,

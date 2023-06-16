@@ -7,7 +7,7 @@ import { TaskStatus } from '../task-item/task-item.component';
 @Component({
   selector: 'app-task-group',
   templateUrl: './task-group.component.html',
-  styleUrls: ['./task-group.component.css']
+  styleUrls: ['./task-group.component.css'],
 })
 export class TaskGroupComponent implements OnInit {
   @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
@@ -16,9 +16,7 @@ export class TaskGroupComponent implements OnInit {
   listInProgressTask?: Task[];
   listDoneTask?: Task[];
 
-  constructor(
-    private taskService: TaskService
-  ) { }
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.getAllTask();
@@ -30,18 +28,37 @@ export class TaskGroupComponent implements OnInit {
       .toPromise()
       .then((response) => {
         this.listTask = response;
-        this.listOpenTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.Open);
-        this.listInProgressTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.InProgress);
-        this.listDoneTask = this.listTask.filter((item) => item.isDeleted === false && item.status === TaskStatus.Done);
+        this.listOpenTask = this.listTask.filter((item) => {
+          return (
+            item.isDeleted === false &&
+            item.status === TaskStatus.Open &&
+            new Date(item.startDate) <= new Date() &&
+            (!item.endDate || new Date(item.endDate) >= new Date())
+          );
+        });
+        this.listInProgressTask = this.listTask.filter((item) => {
+          return (
+            item.isDeleted === false &&
+            item.status === TaskStatus.InProgress &&
+            new Date(item.startDate) <= new Date() &&
+            (!item.endDate || new Date(item.endDate) >= new Date())
+          );
+        });
+        this.listDoneTask = this.listTask.filter((item) => {
+          return (
+            item.isDeleted === false &&
+            item.status === TaskStatus.Done &&
+            new Date(item.startDate) <= new Date() &&
+            (!item.endDate || new Date(item.endDate) >= new Date())
+          );
+        });
         this.listTask = this.listTask.filter(
           (item) => item.isDeleted === false
         );
-
       });
   }
 
   openAddTaskModal() {
     this.addTaskModal.isVisible = true;
   }
-
 }

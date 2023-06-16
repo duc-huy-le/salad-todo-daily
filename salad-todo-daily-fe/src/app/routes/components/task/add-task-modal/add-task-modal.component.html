@@ -4,12 +4,23 @@
     viewMode === TaskItemViewMode.Create ? 'Thêm công việc mới' : task.name
   "
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleAddTask()"
-  [nzOkText]="'Tạo công việc'"
-  [nzCancelText]="'Hủy'"
+  (nzOnOk)="onClickModalOk()"
+  [nzOkText]="
+    viewMode === TaskItemViewMode.View
+      ? 'Sửa'
+      : viewMode === TaskItemViewMode.Create
+      ? 'Tạo công việc'
+      : 'Lưu'
+  "
+  [nzCancelText]="viewMode === TaskItemViewMode.View ? 'Đóng' : 'Hủy'"
 >
   <ng-container *nzModalContent>
-    <ng-container *ngIf="viewMode === TaskItemViewMode.Create">
+    <ng-container
+      *ngIf="
+        viewMode === TaskItemViewMode.Create ||
+        viewMode === TaskItemViewMode.Edit
+      "
+    >
       <form nz-form [formGroup]="addTaskForm">
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
@@ -167,7 +178,12 @@
                     {{ step.content }}
                   </div></label
                 >
-                <button nz-button nzDanger nzSize="small" (click)="onDeleteAddCheckListItem(i)">
+                <button
+                  nz-button
+                  nzDanger
+                  nzSize="small"
+                  (click)="onDeleteAddCheckListItem(i)"
+                >
                   <i class="fas fa-trash"></i>
                 </button>
               </div>

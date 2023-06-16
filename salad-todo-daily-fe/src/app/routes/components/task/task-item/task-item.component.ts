@@ -96,6 +96,7 @@ export class TaskItemComponent implements OnInit {
   }
 
   openDetailTaskModal() {
+    this.addTaskModal.viewMode = TaskItemViewMode.View;
     this.addTaskModal.isVisible = true;
   }
 
