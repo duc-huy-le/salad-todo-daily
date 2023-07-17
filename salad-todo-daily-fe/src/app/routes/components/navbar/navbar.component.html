@@ -1,7 +1,8 @@
 <div class="container">
   <ul class="nav-bar-list">
-    <li *ngFor="let nav of listNavItems" class="nav-bar-item" [ngClass]="nav.selected ? 'nav-bar-item__selected' : ''">
-      {{ nav.name }}
+    <li *ngFor="let nav of listNavItems" class="nav-bar-item" [ngClass]="nav.selected ? 'nav-bar-item__selected' : ''" (click)="onChangeNav(nav)">
+      <!-- <a href="" class="nav-bar-link">{{ nav.name }}</a> -->
+     {{ nav.name }}
     </li>
   </ul>
 </div>

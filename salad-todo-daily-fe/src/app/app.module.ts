@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,6 +26,8 @@ import { DashboardContentComponent } from './routes/components/dashboard/dashboa
 import { TaskGroupComponent } from './routes/components/task/task-group/task-group.component';
 import { TaskItemComponent } from './routes/components/task/task-item/task-item.component';
 import { AddTaskModalComponent } from './routes/components/task/add-task-modal/add-task-modal.component';
+import { ProjectScreenComponent } from './routes/home/project-screen/project-screen.component';
+import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
 
 registerLocaleData(en);
 
@@ -46,7 +48,9 @@ registerLocaleData(en);
     DashboardContentComponent,
     TaskGroupComponent,
     TaskItemComponent,
-    AddTaskModalComponent
+    AddTaskModalComponent,
+    ProjectScreenComponent,
+    LoginScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,7 @@ registerLocaleData(en);
     NgZorroAntdModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

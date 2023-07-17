@@ -1,0 +1,35 @@
+<div class="container m-24">
+  <nz-tabset nzType="card">
+    <nz-tab nzTitle="Dự án">
+      <nz-table #basicTable [nzData]="listProjects">
+        <thead>
+          <tr>
+            <th nzWidth="5%" nzAlign="center">STT</th>
+            <th>Name</th>
+            <th nzWidth="13%">Ngày bắt đầu</th>
+            <th nzWidth="13%">Số công việc</th>
+            <th>Mô tả</th>
+            <th nzWidth="18%" nzAlign="center">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; let i = index">
+            <td nzAlign="center">{{ i + 1 }}</td>
+            <td>
+              <nz-tag [nzColor]="data.color">{{ data.name }}</nz-tag>
+            </td>
+            <td>{{ data.startDate | date : "dd/MM/yyyy" }}</td>
+            <td></td>
+            <td>
+              {{ data.description }}
+            </td>
+            <td nzAlign="center">
+              <button class="mx-3" nz-button><span nz-icon nzType="edit"></span></button>
+              <button class="mx-3" nz-button nzType="primary" nzDanger><span nz-icon nzType="delete"></span></button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+  </nz-tabset>
+</div>

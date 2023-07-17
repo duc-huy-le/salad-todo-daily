@@ -9,8 +9,22 @@
 }
 
 .nav-bar-item__selected,
-.nav-bar-item:hover {
+.nav-bar-item:hover{
   background-color: #5577FF;
   color: #fff;
   border-radius: 30px;
 }
+
+/* .nav-bar-item__selected .nav-bar-link,
+.nav-bar-item:hover .nav-bar-link {
+  color: #fff;
+}
+
+.nav-bar-link {
+  color: #000;
+} */
+/*
+.nav-bar-item__selected a,
+.nav-bar-item:hover a{
+  color: #fff;
+} */

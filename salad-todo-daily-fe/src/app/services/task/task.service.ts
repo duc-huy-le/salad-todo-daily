@@ -6,16 +6,32 @@ import { Task } from 'src/app/models/Task';
   providedIn: 'root',
 })
 export class TaskService {
-  baseUrl = 'http://localhost:3000/todo-task';
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
+  baseUrl = 'http://localhost:3000/task';
+  requestOption: any;
+  userInfo: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getRequestOption();
+  }
+
+  getRequestOption() {
+    const token = this.getJwtToken();
+    const headers = { authorization: token };
+    this.requestOption = { headers: headers };
+  }
+
+  getJwtToken(): string {
+    return localStorage.getItem(this.JWT_TOKEN)!;
+  }
 
   getAllTask() {
-    return this.http.get<Task[]>(this.baseUrl);
+    return this.http.get<any>(this.baseUrl, this.requestOption);
   }
 
   addNewTask(data: any) {
-    return this.http.post<Task>(this.baseUrl, data);
+    return this.http.post<Task>(this.baseUrl, data, this.requestOption);
   }
 
   updateTask(id: any, data: any) {
@@ -23,7 +39,7 @@ export class TaskService {
   }
 
   updatePropTask(id: any, data: any) {
-    return this.http.patch(`${this.baseUrl}/${id}`, data);
+    return this.http.patch(`${this.baseUrl}/${id}`, data, this.requestOption);
   }
 
   deleteTask(id: any) {

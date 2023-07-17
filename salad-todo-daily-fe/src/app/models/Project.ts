@@ -3,14 +3,14 @@ export class Project {
   name: string;
   color: string;
   description: string;
-  isDeleted: boolean;
+  isDeleted: number;
   startDate: Date;
   constructor(
     id: any,
     name: string,
     color: string,
     description: string,
-    isDeleted: boolean,
+    isDeleted: number,
     startDate: Date
   ) {
     this.id = id;

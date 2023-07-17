@@ -4,12 +4,13 @@ import { Task } from 'src/app/models/Task';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { AddTaskModalComponent, TaskItemViewMode } from '../add-task-modal/add-task-modal.component';
+import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 export enum TaskPriority {
   Undefined = 0,
-  High = 1,
+  Low = 1,
   Medium = 2,
-  Low = 3,
+  High = 3,
 }
 
 export enum TaskStatus {
@@ -40,7 +41,8 @@ export class TaskItemComponent implements OnInit {
   projectInfo!: Project;
   constructor(
     private taskService: TaskService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private nzContextMenuService: NzContextMenuService
   ) {}
 
   ngOnInit(): void {
@@ -52,9 +54,11 @@ export class TaskItemComponent implements OnInit {
   }
 
   getListProjects() {
-    this.projectService.getAllProject().toPromise().then(res => {
-      this.listProject = res;
-      this.getProjectInfo();
+    this.projectService.getAllProject().toPromise().then((res: any) => {
+      if(res && res.result) {
+        this.listProject = res.result;
+        this.getProjectInfo();
+      }
     })
   }
 
@@ -103,5 +107,9 @@ export class TaskItemComponent implements OnInit {
   getCheckListCount() {
     this.checkListTotalCount = this.task.checkList?.length;
     this.checkListCompleteCount = this.task.checkList?.filter(item => item.checked == true).length;
+  }
+
+  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
+    this.nzContextMenuService.create($event, menu);
   }
 }

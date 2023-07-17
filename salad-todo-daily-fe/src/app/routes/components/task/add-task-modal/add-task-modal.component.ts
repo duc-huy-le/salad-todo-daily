@@ -6,6 +6,7 @@ import { TaskPriority, TaskStatus } from '../task-item/task-item.component';
 import { Task, TaskCheckList } from 'src/app/models/Task';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { Project } from 'src/app/models/Project';
+import { DatePipe } from '@angular/common';
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -39,7 +40,8 @@ export class AddTaskModalComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private projectService: ProjectService,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -55,11 +57,10 @@ export class AddTaskModalComponent implements OnInit {
     this.projectService
       .getAllProject()
       .toPromise()
-      .then((res) => {
-        this.listProjects = res;
-        this.listProjects = this.listProjects.filter(
-          (item) => item.isDeleted === false
-        );
+      .then((res: any) => {
+        if (res && res.result) {
+          this.listProjects = res.result;
+        }
       });
   }
 
@@ -69,12 +70,10 @@ export class AddTaskModalComponent implements OnInit {
       projectId: [null],
       description: [null],
       startDate: [this.today, [Validators.required]],
+      finishDate: [null],
       checkList: [[]],
-      endDate: [null],
-      priority: [0],
+      priority: [TaskPriority.Medium],
       status: [TaskStatus.Open, [Validators.required]],
-      isDeleted: [false],
-      createdAt: [this.today],
     });
   }
 
@@ -96,6 +95,24 @@ export class AddTaskModalComponent implements OnInit {
 
   handleAddTask(): void {
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
+    this.addTaskForm
+      .get('startDate')
+      ?.setValue(
+        this.datePipe.transform(
+          this.addTaskForm.value.startDate,
+          'yyyy-MM-dd HH:mm:ss'
+        )
+      );
+    if (this.addTaskForm.get('finishDate')?.value) {
+      this.addTaskForm
+        .get('finishDate')
+        ?.setValue(
+          this.datePipe.transform(
+            this.addTaskForm.value.finishDate,
+            'yyyy-MM-dd HH:mm:ss'
+          )
+        );
+    }
     this.taskService
       .addNewTask(this.addTaskForm.value)
       .toPromise()

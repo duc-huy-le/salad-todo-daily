@@ -3,6 +3,7 @@ import { TaskDaily } from 'src/app/models/TaskDaily';
 import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
 import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 import { AddDailyTaskModalComponent } from './add-daily-task-modal/add-daily-task-modal.component';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-daily-task-group',
@@ -13,7 +14,8 @@ export class DailyTaskGroupComponent implements OnInit {
   @ViewChild('addDailyTaskModal')
   addDailyTaskModal!: AddDailyTaskModalComponent;
   listTaskDaily?: TaskDaily[];
-  constructor(private taskDailyService: TaskDailyService) {}
+  constructor(private taskDailyService: TaskDailyService,
+    private msg: NzMessageService) {}
 
   ngOnInit(): void {
     this.getAllTaskDaily();
@@ -23,11 +25,12 @@ export class DailyTaskGroupComponent implements OnInit {
     this.taskDailyService
       .getAllTaskDaily()
       .toPromise()
-      .then((response) => {
-        this.listTaskDaily = response;
-        this.listTaskDaily = this.listTaskDaily.filter(
-          (item) => item.isDeleted === false
-        );
+      .then((res: any) => {
+        if(res && res.result) {
+          this.listTaskDaily = res.result;
+        } else {
+          this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc hàng ngày.');
+        }
       });
   }
 

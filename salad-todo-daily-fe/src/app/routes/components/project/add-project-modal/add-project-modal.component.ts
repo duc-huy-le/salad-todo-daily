@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -6,7 +7,7 @@ import { ProjectService } from 'src/app/services/project/project.service';
 @Component({
   selector: 'app-add-project-modal',
   templateUrl: './add-project-modal.component.html',
-  styleUrls: ['./add-project-modal.component.css']
+  styleUrls: ['./add-project-modal.component.css'],
 })
 export class AddProjectModalComponent implements OnInit {
   @Output() onAddProject = new EventEmitter();
@@ -16,8 +17,9 @@ export class AddProjectModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private msg: NzMessageService
-  ) { }
+    private msg: NzMessageService,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     this.initAddProjectForm();
@@ -28,21 +30,30 @@ export class AddProjectModalComponent implements OnInit {
       name: [null, [Validators.required]],
       description: [null],
       startDate: [this.today, [Validators.required]],
-      isDeleted: [false],
-      createdAt: [this.today]
-    })
+    });
   }
 
   handleAddProject(): void {
-    this.projectService.addNewProject(this.addProjectForm.value).toPromise().then(res => {
-      this.msg.success('Tạo dự án thành công!');
-      this.onAddProject.emit();
-      this.isVisible = false;
-    })
+    this.addProjectForm
+      .get('startDate')
+      ?.setValue(
+        this.datePipe.transform(
+          this.addProjectForm.value.startDate,
+          'yyyy-MM-dd HH:mm:ss'
+        )
+      );
+    this.projectService
+      .addNewProject(this.addProjectForm.value)
+      .toPromise()
+      .then((res: any) => {
+        if (res && res.result) this.msg.success('Tạo dự án thành công!');
+        else this.msg.error("Có lỗi xảy ra. Không thể tạo dự án")
+        this.onAddProject.emit();
+        this.isVisible = false;
+      });
   }
 
   handleCancel(): void {
     this.isVisible = false;
   }
-
 }

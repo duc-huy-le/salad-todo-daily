@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TaskTagService } from './services/task-tag/task-tag.service';
 import { TaskTag } from './models/TaskTag';
 import { NotificationService } from './services/notification/notification.service';
+import { AuthService } from './shared/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,14 @@ export class AppComponent {
   listTaskTag?: TaskTag[];
 
   constructor(private taskTagService: TaskTagService,
-    private notificationService: NotificationService) {}
+    private notificationService: NotificationService, private authService: AuthService) {
+      // this.authService.checkSession();
+      // this.authService.getUserInfo().toPromise().then((res) => {
+      // });
+    }
   ngOnInit(): void {
     this.getAllTaskTag();
-    this.sendMessageToTelegram();
+    // this.sendMessageToTelegram();
   }
   getAllTaskTag() {
     this.taskTagService
