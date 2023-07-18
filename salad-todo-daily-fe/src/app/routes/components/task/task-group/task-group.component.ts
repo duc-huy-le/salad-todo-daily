@@ -34,8 +34,9 @@ export class TaskGroupComponent implements OnInit {
       .getAllTask()
       .toPromise()
       .then((res: any) => {
-        if(res && res.result) {
+        if (res && res.result) {
           this.listTask = res?.result;
+          this.listTask = this.listTask.sort((a, b) => b.priority - a.priority);
           this.listOpenTask = this.listTask.filter((item) => {
             return (
               item.status === TaskStatus.Open &&
@@ -58,9 +59,9 @@ export class TaskGroupComponent implements OnInit {
             );
           });
         } else {
-          this.msg.error("Có lỗi xảy ra. Không thể lấy danh sách công việc.");
+          this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc.');
         }
-    });
+      });
   }
 
   openAddTaskModal() {
@@ -74,7 +75,6 @@ export class TaskGroupComponent implements OnInit {
     this.notificationService
       .sendMessage('5426764053', todoList ?? '')
       .toPromise()
-      .then((res) => {
-      });
+      .then((res) => {});
   }
 }

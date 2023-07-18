@@ -1,4 +1,8 @@
-<div class="container p-12 my-6" (click)="openDetailTaskModal()" (contextmenu)="contextMenu($event, taskItemOptionMenu)">
+<div
+  class="container p-12 my-6"
+  (click)="openDetailTaskModal()"
+  (contextmenu)="contextMenu($event, taskItemOptionMenu)"
+>
   <ng-container *ngIf="task.projectId">
     <nz-tag [nzColor]="projectInfo?.color" class="project-tag mb-6">
       <div class="project-name">{{ projectInfo?.name }}</div>
@@ -11,7 +15,7 @@
   </div>
   <div class="d-flex justify-content-space-between">
     <div class="check-list">
-      <div *ngIf="task.checkList && task.checkList.length > 0 ">
+      <div *ngIf="task.checkList && task.checkList.length > 0">
         <i class="far fa-check-square mr-6"></i>
         {{ checkListCompleteCount + "/" + checkListTotalCount }}
       </div>
@@ -30,12 +34,14 @@
   #addTaskModal
   [task]="task"
   [viewMode]="TaskItemViewMode.View"
+  (onUpdateTask)="getCheckListCount()"
 ></app-add-task-modal>
 
 <nz-dropdown-menu #taskItemOptionMenu="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item (click)="quickChangeTaskStatus()">Chuyển trạng thái nhanh</li>
+    <li nz-menu-item (click)="quickChangeTaskStatus()">
+      Chuyển trạng thái nhanh
+    </li>
     <li nz-menu-item>2nd menu item</li>
-
   </ul>
 </nz-dropdown-menu>

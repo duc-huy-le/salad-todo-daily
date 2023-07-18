@@ -34,7 +34,7 @@ export class TaskService {
   }
 
   updateTask(id: any, data: any) {
-    return this.http.put<Task>(`${this.baseUrl}/${id}`, data);
+    return this.http.put<any>(`${this.baseUrl}/${id}`, data, this.requestOption);
   }
 
   updatePropTask(id: any, data: any) {

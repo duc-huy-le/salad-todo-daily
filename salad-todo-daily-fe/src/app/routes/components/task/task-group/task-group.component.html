@@ -41,11 +41,13 @@
         </div>
       </div>
       <nz-divider></nz-divider>
-      <div *ngFor="let task of listInProgressTask">
-        <app-task-item
-          [task]="task"
-          (onTaskChange)="getAllTask()"
-        ></app-task-item>
+      <div class="list-task-scroll">
+        <div *ngFor="let task of listInProgressTask">
+          <app-task-item
+            [task]="task"
+            (onTaskChange)="getAllTask()"
+          ></app-task-item>
+        </div>
       </div>
     </div>
     <div nz-col nzSpan="8" class="done-task-list">
@@ -64,8 +66,10 @@
         </div>
       </div>
       <nz-divider></nz-divider>
-      <div *ngFor="let task of listDoneTask">
-        <app-task-item [task]="task"></app-task-item>
+      <div class="list-task-scroll">
+        <div *ngFor="let task of listDoneTask">
+          <app-task-item [task]="task"></app-task-item>
+        </div>
       </div>
     </div>
   </div>

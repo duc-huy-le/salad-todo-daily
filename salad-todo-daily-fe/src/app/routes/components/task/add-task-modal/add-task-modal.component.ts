@@ -22,6 +22,7 @@ export class AddTaskModalComponent implements OnInit {
   @Input() task!: Task;
   @Input() viewMode: TaskItemViewMode = TaskItemViewMode.Create;
   @Output() onAddTask = new EventEmitter();
+  @Output() onUpdateTask = new EventEmitter();
   TaskPriority = TaskPriority;
   TaskStatus = TaskStatus;
   TaskItemViewMode = TaskItemViewMode;
@@ -74,6 +75,8 @@ export class AddTaskModalComponent implements OnInit {
       checkList: [[]],
       priority: [TaskPriority.Medium],
       status: [TaskStatus.Open, [Validators.required]],
+      duration: [null],
+      isDeleted: [0],
     });
   }
 
@@ -95,31 +98,17 @@ export class AddTaskModalComponent implements OnInit {
 
   handleAddTask(): void {
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
-    this.addTaskForm
-      .get('startDate')
-      ?.setValue(
-        this.datePipe.transform(
-          this.addTaskForm.value.startDate,
-          'yyyy-MM-dd HH:mm:ss'
-        )
-      );
-    if (this.addTaskForm.get('finishDate')?.value) {
-      this.addTaskForm
-        .get('finishDate')
-        ?.setValue(
-          this.datePipe.transform(
-            this.addTaskForm.value.finishDate,
-            'yyyy-MM-dd HH:mm:ss'
-          )
-        );
-    }
     this.taskService
       .addNewTask(this.addTaskForm.value)
       .toPromise()
-      .then((res) => {
-        this.msg.success('Tạo công việc thành công!');
-        this.onAddTask.emit();
-        this.isVisible = false;
+      .then((res: any) => {
+        if(res && res.result) {
+          this.msg.success('Tạo công việc thành công!');
+          this.onAddTask.emit();
+          this.isVisible = false;
+        } else {
+          this.msg.error('Tạo công việc thất bại');
+        }
       });
   }
 
@@ -128,10 +117,15 @@ export class AddTaskModalComponent implements OnInit {
     this.taskService
       .updateTask(this.task.id, this.addTaskForm.value)
       .toPromise()
-      .then((res) => {
-        this.onAddTask.emit();
+      .then((res: any) => {
+        if (res && res.result) {
+          this.msg.success('Cập nhật thành công');
+          this.task = res.result[0];
+          this.onAddTask.emit();
+        } else {
+          this.msg.error('Cập nhật thất bại');
+        }
         this.viewMode = TaskItemViewMode.View;
-        this.task = res;
       });
   }
 
@@ -157,6 +151,7 @@ export class AddTaskModalComponent implements OnInit {
       .then((res) => {
         this.isShowLoadingCheckList = false;
         this.getCheckListPercent();
+        this.onUpdateTask.emit();
       });
   }
 
