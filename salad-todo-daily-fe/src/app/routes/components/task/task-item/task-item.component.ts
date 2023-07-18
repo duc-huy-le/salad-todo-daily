@@ -30,7 +30,7 @@ export enum TaskStatus {
   styleUrls: ['./task-item.component.css'],
 })
 export class TaskItemComponent implements OnInit {
-  @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
+  @ViewChild('addTaskModalInItem') addTaskModalInItem!: AddTaskModalComponent;
   @Input() task!: Task;
   @Output() onTaskChange = new EventEmitter();
   TaskPriority = TaskPriority;
@@ -100,8 +100,8 @@ export class TaskItemComponent implements OnInit {
   }
 
   openDetailTaskModal() {
-    this.addTaskModal.viewMode = TaskItemViewMode.View;
-    this.addTaskModal.isVisible = true;
+    this.addTaskModalInItem.viewMode = TaskItemViewMode.View;
+    this.addTaskModalInItem.isVisible = true;
   }
 
   getCheckListCount() {
@@ -111,5 +111,9 @@ export class TaskItemComponent implements OnInit {
 
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
     this.nzContextMenuService.create($event, menu);
+  }
+
+  actionWhenUpdateTask() {
+    this.onTaskChange.emit();
   }
 }

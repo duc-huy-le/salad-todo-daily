@@ -23,6 +23,7 @@ export class AddTaskModalComponent implements OnInit {
   @Input() viewMode: TaskItemViewMode = TaskItemViewMode.Create;
   @Output() onAddTask = new EventEmitter();
   @Output() onUpdateTask = new EventEmitter();
+  @Output() onCheckTodo = new EventEmitter();
   TaskPriority = TaskPriority;
   TaskStatus = TaskStatus;
   TaskItemViewMode = TaskItemViewMode;
@@ -121,7 +122,7 @@ export class AddTaskModalComponent implements OnInit {
         if (res && res.result) {
           this.msg.success('Cập nhật thành công');
           this.task = res.result[0];
-          this.onAddTask.emit();
+          this.onUpdateTask.emit();
         } else {
           this.msg.error('Cập nhật thất bại');
         }
@@ -151,7 +152,7 @@ export class AddTaskModalComponent implements OnInit {
       .then((res) => {
         this.isShowLoadingCheckList = false;
         this.getCheckListPercent();
-        this.onUpdateTask.emit();
+        this.onCheckTodo.emit();
       });
   }
 

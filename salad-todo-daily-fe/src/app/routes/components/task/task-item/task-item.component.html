@@ -31,10 +31,11 @@
 </div>
 
 <app-add-task-modal
-  #addTaskModal
+  #addTaskModalInItem
   [task]="task"
   [viewMode]="TaskItemViewMode.View"
-  (onUpdateTask)="getCheckListCount()"
+  (onCheckTodo)="getCheckListCount()"
+  (onUpdateTask)="actionWhenUpdateTask()"
 ></app-add-task-modal>
 
 <nz-dropdown-menu #taskItemOptionMenu="nzDropdownMenu">
@@ -42,6 +43,6 @@
     <li nz-menu-item (click)="quickChangeTaskStatus()">
       Chuyển trạng thái nhanh
     </li>
-    <li nz-menu-item>2nd menu item</li>
+    <!-- <li nz-menu-item>2nd menu item</li> -->
   </ul>
 </nz-dropdown-menu>
