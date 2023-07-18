@@ -4,6 +4,9 @@ export class TaskDaily {
   description: string;
   tagId: number[];
   startDate: Date;
+  finishDate: Date;
+  priority: number;
+  createdAt: Date;
   isDeleted: boolean;
   constructor(
     id: any,
@@ -11,6 +14,9 @@ export class TaskDaily {
     description: string,
     tagId: number[],
     startDate: Date,
+    finishDate: Date,
+    priority: number,
+    createdAt: Date,
     isDeleted: boolean
   ) {
     this.id = id;
@@ -18,6 +24,9 @@ export class TaskDaily {
     this.description = description;
     this.tagId = tagId;
     this.startDate = startDate;
+    this.finishDate = finishDate;
+    this.priority = priority;
+    this.createdAt = createdAt;
     this.isDeleted = isDeleted;
   }
 }

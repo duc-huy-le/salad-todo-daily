@@ -6,3 +6,15 @@
   border-radius: 10px;
 }
 
+.container {
+  /* height: 100vh; */
+  /* overflow: scroll; */
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}

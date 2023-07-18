@@ -10,7 +10,6 @@ export class TaskService {
   private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/task';
   requestOption: any;
-  userInfo: any;
 
   constructor(private http: HttpClient) {
     this.getRequestOption();

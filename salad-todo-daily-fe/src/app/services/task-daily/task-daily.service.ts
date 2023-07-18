@@ -7,12 +7,28 @@ import { TaskDaily } from 'src/app/models/TaskDaily';
   providedIn: 'root',
 })
 export class TaskDailyService {
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/task-daily';
+  requestOption: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getRequestOption();
+
+  }
+
+  getRequestOption() {
+    const token = this.getJwtToken();
+    const headers = { authorization: token };
+    this.requestOption = { headers: headers };
+  }
+
+  getJwtToken(): string {
+    return localStorage.getItem(this.JWT_TOKEN)!;
+  }
 
   getAllTaskDaily() {
-    return this.http.get<TaskDaily[]>(this.baseUrl);
+    return this.http.get<any>(this.baseUrl, this.requestOption);
   }
 
   addNewTaskDaily(data: any) {

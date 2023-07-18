@@ -27,9 +27,11 @@ export class AppComponent {
     this.taskTagService
       .getAllTaskTag()
       .toPromise()
-      .then((response) => {
-        this.listTaskTag = response;
-        localStorage.setItem('listTaskTag', JSON.stringify(response));
+      .then((res: any) => {
+        if(res && res.result) {
+          this.listTaskTag = res.result;
+          localStorage.setItem('listTaskTag', JSON.stringify(res.result));
+        }
       });
   }
 

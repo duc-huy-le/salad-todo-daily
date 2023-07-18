@@ -24,6 +24,9 @@ app.use(_AuthMiddleWare.isAuth);
 require("./app/routes/user.route")(app);
 require("./app/routes/project.route")(app);
 require("./app/routes/task.route")(app);
+require("./app/routes/tag.route")(app);
+require("./app/routes/taskDaily.route")(app);
+require("./app/routes/note.route")(app);
 
 
 app.listen(3000, function () {

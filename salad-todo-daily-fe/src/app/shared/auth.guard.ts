@@ -28,7 +28,6 @@ export class AuthGuard implements CanActivate {
       expectedRole != undefined && this.authService.role != expectedRole;
     // Redirect to login page if the user is not authenticated
     if (!this.authService.isAuthenticated()) {
-      debugger;
       this.router.navigate(['login']);
       return false;
     }

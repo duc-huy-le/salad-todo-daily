@@ -1,22 +1,13 @@
 const db = require("../common/connect");
-const Task = function (task) {
-  this.id = task.id;
-  this.name = task.name;
-  this.projectId = task.projectId;
-  this.description = task.description;
-  this.startDate = task.startDate;
-  this.finishDate = task.finishDate;
-  this.priority = task.priority;
-  this.status = task.status;
-  this.checkList = task.checkList;
-  this.isDeleted = task.isDeleted;
-  this.createdAt = task.createdAt;
-  this.createdBy = task.createdBy;
+const Tag = function (tag) {
+  this.id = tag.id;
+  this.name = tag.name;
+  this.color = tag.color; 
 };
 
-const tableName = "task";
+const tableName = "tag";
 
-Task.getAll = function (userId, result) {
+Tag.getAll = function (userId, result) {
   db.query(
     `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
     function (err, data) {
@@ -29,7 +20,7 @@ Task.getAll = function (userId, result) {
   );
 };
 
-Task.getById = function (userId, recordId, result) {
+Tag.getById = function (userId, recordId, result) {
   db.query(
     `select * from ${tableName} where id = ${recordId} and createdBy = ${userId}`,
     function (err, data) {
@@ -42,7 +33,7 @@ Task.getById = function (userId, recordId, result) {
   );
 };
 
-Task.create = function (payload, result) {
+Tag.create = function (payload, result) {
   db.query(`insert into ${tableName} set ?`, payload, function (err, data) {
     if (err) {
       result(null);
@@ -52,19 +43,12 @@ Task.create = function (payload, result) {
   });
 };
 
-Task.update = function (payload, result) {
+Tag.update = function (payload, result) {
   db.query(
-    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, checkList = ?, isDeleted = ? where id = ${payload.id}`,
+    `update ${tableName} set name = ?, color = ? where id = ${payload.id}`,
     [
       payload.name,
-      payload.projectId,
-      payload.description,
-      payload.startDate,
-      payload.finishDate,
-      payload.priority,
-      payload.status,
-      payload.checkList,
-      payload.isDeleted,
+      payload.color,
     ],
     function (err, data) {
       if (err) {
@@ -76,7 +60,7 @@ Task.update = function (payload, result) {
   );
 };
 
-Task.updateLittle = function (recordId, payload, result) {
+Tag.updateLittle = function (recordId, payload, result) {
   let query = `update ${tableName} set`;
   const fields = Object.keys(payload);
   const fieldValues = [];
@@ -97,12 +81,12 @@ Task.updateLittle = function (recordId, payload, result) {
   });
 };
 
-Task.remove = function (id, result) {
+Tag.remove = function (id, result) {
   db.query(`delete from ${tableName} where id = ${id}`, function (err, data) {
     if (err) {
       result(null);
-    } else result(`Xóa ${tableName} co id: " + id + " thành công`);
+    } else result("Xóa tag co id: " + id + " thành công");
   });
 };
 
-module.exports = Task;
+module.exports = Tag;
