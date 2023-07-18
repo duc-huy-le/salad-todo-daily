@@ -7,14 +7,5 @@
 }
 
 .container {
-  /* height: 100vh; */
-  /* overflow: scroll; */
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-auto {
-  overflow: auto;
+  padding: 24px 24px 0 24px;
 }

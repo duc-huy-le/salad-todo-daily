@@ -16,11 +16,13 @@
         </div>
       </div>
       <nz-divider></nz-divider>
-      <div *ngFor="let task of listOpenTask">
-        <app-task-item
-          [task]="task"
-          (onTaskChange)="getAllTask()"
-        ></app-task-item>
+      <div class="list-task-scroll">
+        <div *ngFor="let task of listOpenTask">
+          <app-task-item
+            [task]="task"
+            (onTaskChange)="getAllTask()"
+          ></app-task-item>
+        </div>
       </div>
     </div>
     <div nz-col nzSpan="8" class="in-progress-task-list">

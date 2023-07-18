@@ -8,6 +8,7 @@ const Task = function (task) {
   this.finishDate = task.finishDate;
   this.priority = task.priority;
   this.status = task.status;
+  this.duration = task.duration;
   this.checkList = task.checkList;
   this.isDeleted = task.isDeleted;
   this.createdAt = task.createdAt;
@@ -54,7 +55,7 @@ Task.create = function (payload, result) {
 
 Task.update = function (payload, result) {
   db.query(
-    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, checkList = ?, isDeleted = ? where id = ${payload.id}`,
+    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, duration = ?, checkList = ?, isDeleted = ? where id = ${payload.id}`,
     [
       payload.name,
       payload.projectId,
@@ -63,6 +64,7 @@ Task.update = function (payload, result) {
       payload.finishDate,
       payload.priority,
       payload.status,
+      payload.duration,
       payload.checkList,
       payload.isDeleted,
     ],
