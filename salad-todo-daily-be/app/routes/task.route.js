@@ -7,7 +7,7 @@ module.exports = function (router) {
   
     router.post("/task", taskController.add);
   
-    router.put("/task", taskController.update);
+    router.put("/task/:id", taskController.update);
 
     router.patch("/task/:id", taskController.updateLittle);
   

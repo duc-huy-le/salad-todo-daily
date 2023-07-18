@@ -1,5 +1,6 @@
 var Task = require("../models/task.model");
 var JWT = require("../common/_JWT");
+const { getFormattedMySqlDateTime } = require("../helpers/helper");
 
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;
@@ -33,6 +34,10 @@ exports.add = async function (req, res) {
   const tokenInfo = await JWT.check(token);
   data.createdBy = tokenInfo.data.id;
   data.checkList = JSON.stringify(data.checkList);
+  if (data.startDate)
+    data.startDate = getFormattedMySqlDateTime(data.startDate);
+  if (data.finishDate)
+    data.finishDate = getFormattedMySqlDateTime(data.finishDate);
   Task.create(data, function (response) {
     response.checkList = JSON.parse(response.checkList);
     res.send({ result: response });
@@ -41,8 +46,11 @@ exports.add = async function (req, res) {
 
 exports.update = function (req, res) {
   var data = req.body;
-  data.checkList = JSON.stringify(data.checkList);
-  Task.update(data, function (response) {
+  if (data.checkList) data.checkList = JSON.stringify(data.checkList);
+  if (data.startDate)
+    data.startDate = getFormattedMySqlDateTime(data.startDate);
+  Task.update(req.params.id, data, function (response) {
+    if (response) response[0].checkList = JSON.parse(response[0].checkList);
     res.send({ result: response });
   });
 };

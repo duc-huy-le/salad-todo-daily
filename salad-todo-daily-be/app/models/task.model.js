@@ -53,9 +53,9 @@ Task.create = function (payload, result) {
   });
 };
 
-Task.update = function (payload, result) {
+Task.update = function (recordId, payload, result) {
   db.query(
-    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, duration = ?, checkList = ?, isDeleted = ? where id = ${payload.id}`,
+    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, duration = ?, checkList = ?, isDeleted = ? where id = ${recordId}`,
     [
       payload.name,
       payload.projectId,
@@ -72,7 +72,13 @@ Task.update = function (payload, result) {
       if (err) {
         result(null);
       } else {
-        result(data);
+        db.query(`select * from ${tableName} where id = ${recordId}`, function (err, updatedData) {
+          if (err) {
+            result(null);
+          } else {
+            result(updatedData);
+          }
+        });
       }
     }
   );
