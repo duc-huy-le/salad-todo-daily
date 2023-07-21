@@ -41,7 +41,10 @@
 <nz-dropdown-menu #taskItemOptionMenu="nzDropdownMenu">
   <ul nz-menu>
     <li nz-menu-item (click)="quickChangeTaskStatus()">
-      Chuyển trạng thái nhanh
+      <i class="fas fa-angle-double-right mr-6"></i>Chuyển trạng thái nhanh
+    </li>
+    <li nz-menu-item nzDanger (click)="deleteTask()">
+      <i class="fas fa-trash-alt mr-6"></i>Xóa
     </li>
     <!-- <li nz-menu-item>2nd menu item</li> -->
   </ul>

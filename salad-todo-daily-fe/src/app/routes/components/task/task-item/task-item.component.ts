@@ -1,10 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Project } from 'src/app/models/Project';
 import { Task } from 'src/app/models/Task';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { TaskService } from 'src/app/services/task/task.service';
-import { AddTaskModalComponent, TaskItemViewMode } from '../add-task-modal/add-task-modal.component';
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import {
+  AddTaskModalComponent,
+  TaskItemViewMode,
+} from '../add-task-modal/add-task-modal.component';
+import {
+  NzContextMenuService,
+  NzDropdownMenuComponent,
+} from 'ng-zorro-antd/dropdown';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 export enum TaskPriority {
   Undefined = 0,
@@ -42,11 +56,11 @@ export class TaskItemComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private projectService: ProjectService,
-    private nzContextMenuService: NzContextMenuService
+    private nzContextMenuService: NzContextMenuService,
+    private msg: NzMessageService
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.getListProjects();
@@ -54,16 +68,21 @@ export class TaskItemComponent implements OnInit {
   }
 
   getListProjects() {
-    this.projectService.getAllProject().toPromise().then((res: any) => {
-      if(res && res.result) {
-        this.listProject = res.result;
-        this.getProjectInfo();
-      }
-    })
+    this.projectService
+      .getAllProject()
+      .toPromise()
+      .then((res: any) => {
+        if (res && res.result) {
+          this.listProject = res.result;
+          this.getProjectInfo();
+        }
+      });
   }
 
   getProjectInfo(): void {
-    this.projectInfo = this.listProject.find((p: any) => p.id === this.task.projectId)!;
+    this.projectInfo = this.listProject.find(
+      (p: any) => p.id === this.task.projectId
+    )!;
   }
 
   getPriorityLabel(taskPriority: TaskPriority): string {
@@ -93,10 +112,16 @@ export class TaskItemComponent implements OnInit {
   }
 
   quickChangeTaskStatus() {
-    var newStatus = this.task.status === TaskStatus.Open ? TaskStatus.InProgress : TaskStatus.Done;
-    this.taskService.updatePropTask(this.task.id, {status: newStatus}).toPromise().then(res => {
-      this.onTaskChange.emit();
-    })
+    var newStatus =
+      this.task.status === TaskStatus.Open
+        ? TaskStatus.InProgress
+        : TaskStatus.Done;
+    this.taskService
+      .updatePropTask(this.task.id, { status: newStatus })
+      .toPromise()
+      .then((res) => {
+        this.onTaskChange.emit();
+      });
   }
 
   openDetailTaskModal() {
@@ -106,7 +131,9 @@ export class TaskItemComponent implements OnInit {
 
   getCheckListCount() {
     this.checkListTotalCount = this.task.checkList?.length;
-    this.checkListCompleteCount = this.task.checkList?.filter(item => item.checked == true).length;
+    this.checkListCompleteCount = this.task.checkList?.filter(
+      (item) => item.checked == true
+    ).length;
   }
 
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
@@ -115,5 +142,19 @@ export class TaskItemComponent implements OnInit {
 
   actionWhenUpdateTask() {
     this.onTaskChange.emit();
+  }
+
+  deleteTask() {
+    this.taskService
+      .updatePropTask(this.task.id, { isDeleted: true })
+      .toPromise()
+      .then((res: any) => {
+        if (res && res.result) {
+          this.msg.success('Xoá công việc thành công');
+          this.actionWhenUpdateTask();
+        } else {
+          this.msg.error('Có lỗi xảy ra. Xóa công việc thất bại');
+        }
+      });
   }
 }
