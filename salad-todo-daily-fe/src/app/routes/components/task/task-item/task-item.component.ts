@@ -19,6 +19,7 @@ import {
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 export enum TaskPriority {
   Undefined = 0,
@@ -57,7 +58,8 @@ export class TaskItemComponent implements OnInit {
     private taskService: TaskService,
     private projectService: ProjectService,
     private nzContextMenuService: NzContextMenuService,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {}
@@ -144,14 +146,27 @@ export class TaskItemComponent implements OnInit {
     this.onTaskChange.emit();
   }
 
+  showDeleteConfirm() {
+    this.modal.confirm({
+      nzTitle:
+        'Xóa công việc?',
+      nzContent: `Bạn có chắc chắn muốn xóa công việc: <b style="color: red;">${this.task?.name}</b>`,
+      nzOkText: 'Xóa',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this.deleteTask(),
+      nzCancelText: 'Hủy',
+    });
+  }
+
   deleteTask() {
     this.taskService
       .updatePropTask(this.task.id, { isDeleted: true })
       .toPromise()
       .then((res: any) => {
         if (res && res.result) {
-          this.msg.success('Xoá công việc thành công');
           this.actionWhenUpdateTask();
+          this.msg.success('Xoá công việc thành công');
         } else {
           this.msg.error('Có lỗi xảy ra. Xóa công việc thất bại');
         }

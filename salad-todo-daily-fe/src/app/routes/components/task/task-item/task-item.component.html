@@ -21,6 +21,9 @@
       </div>
     </div>
     <div class="priority">
+      <ng-container *ngIf="task.duration && task.duration !== 0">
+        <nz-tag>{{ task.duration }}'</nz-tag>
+      </ng-container>
       <ng-container *ngIf="task.priority !== TaskPriority.Undefined">
         <nz-tag [nzColor]="getPriorityColor(task.priority)">{{
           getPriorityLabel(task.priority)
@@ -43,7 +46,7 @@
     <li nz-menu-item (click)="quickChangeTaskStatus()">
       <i class="fas fa-angle-double-right mr-6"></i>Chuyển trạng thái nhanh
     </li>
-    <li nz-menu-item nzDanger (click)="deleteTask()">
+    <li nz-menu-item nzDanger (click)="showDeleteConfirm()">
       <i class="fas fa-trash-alt mr-6"></i>Xóa
     </li>
     <!-- <li nz-menu-item>2nd menu item</li> -->

@@ -56,6 +56,28 @@
         </nz-form-item>
 
         <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="duration"
+            >Thời gian</nz-form-label
+          >
+          <nz-form-control>
+            <!-- <input
+              nz-input
+              placeholder="Nhập thời gian"
+              id="duration"
+              formControlName="duration"
+            /> -->
+            <nz-input-number
+              placeholder="Nhập thời gian"
+              id="duration"
+              formControlName="duration"
+              [nzStep]="15"
+              [nzMin]="0"
+              style="width: 100%"
+            ></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="priority"
             >Độ ưu tiên</nz-form-label
           >
@@ -134,28 +156,6 @@
               id="finishDate"
               formControlName="finishDate"
             ></nz-date-picker>
-          </nz-form-control>
-        </nz-form-item>
-
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="duration"
-            >Thời gian</nz-form-label
-          >
-          <nz-form-control>
-            <!-- <input
-              nz-input
-              placeholder="Nhập thời gian"
-              id="duration"
-              formControlName="duration"
-            /> -->
-            <nz-input-number
-              placeholder="Nhập thời gian"
-              id="duration"
-              formControlName="duration"
-              [nzStep]="15"
-              [nzMin]="0"
-              style="width: 100%"
-            ></nz-input-number>
           </nz-form-control>
         </nz-form-item>
 
