@@ -38,10 +38,10 @@ exports.add = async function (req, res) {
   data.createdBy = tokenInfo.data.id;
   data.checkList = JSON.stringify(data.checkList);
   if (data.startDate)
-    data.startDate = getFormattedTaskTime(data.startDate, "start");
+    data.startDate = getFormattedMySqlDateTime(data.startDate);
 
   if (data.finishDate)
-    data.finishDate = getFormattedTaskTime(data.finishDate, "finish");
+    data.finishDate = getFormattedMySqlDateTime(data.finishDate);
   Task.create(data, function (response) {
     response.checkList = JSON.parse(response.checkList);
     res.send({ result: response });
