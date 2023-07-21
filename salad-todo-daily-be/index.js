@@ -27,6 +27,7 @@ require("./app/routes/task.route")(app);
 require("./app/routes/tag.route")(app);
 require("./app/routes/taskDaily.route")(app);
 require("./app/routes/note.route")(app);
+require("./app/routes/taskDailyHistory.route")(app);
 
 
 app.listen(3000, function () {
