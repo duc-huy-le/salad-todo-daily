@@ -2,6 +2,8 @@ module.exports = function (router) {
     var taskDailyController = require("../controllers/taskDaily.controller");
   
     router.get("/task-daily", taskDailyController.getList);
+
+    router.get("/task-daily/today", taskDailyController.getListToday);
   
     router.get("/task-daily/:id", taskDailyController.getById);
   

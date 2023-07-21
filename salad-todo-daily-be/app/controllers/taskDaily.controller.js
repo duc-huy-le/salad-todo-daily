@@ -9,6 +9,20 @@ exports.getList = async function (req, res) {
   });
 };
 
+exports.getListToday = async function (req, res) {
+  const token = req.headers.authorization;
+  const tokenInfo = await JWT.check(token);
+  TaskDaily.getAllToday(tokenInfo.data.id, function (data) {
+    if(data) {
+      data.forEach((element) => {
+        if(element.checked === 1) element.checked = true;
+        else element.checked = false;
+      })
+    }
+    res.send({ result: data });
+  });
+};
+
 exports.getById = async function (req, res) {
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);

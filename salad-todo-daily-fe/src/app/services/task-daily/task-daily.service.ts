@@ -31,6 +31,10 @@ export class TaskDailyService {
     return this.http.get<any>(this.baseUrl, this.requestOption);
   }
 
+  getAllTaskDailyToday() {
+    return this.http.get<any>(`${this.baseUrl}/today`, this.requestOption);
+  }
+
   addNewTaskDaily(data: any) {
     return this.http.post<TaskDaily>(this.baseUrl, data);
   }

@@ -4,6 +4,8 @@ const Project = function (project) {
   this.name = project.name;
   this.description = project.description;
   this.color = project.color;
+  this.totalTask = project.totalTask;
+  this.completedTask = project.completedTask;
   this.isDeleted = project.isDeleted;
   this.startDate = project.startDate;
   this.createdAt = project.createdAt;
@@ -14,7 +16,6 @@ const tableName = "project";
 Project.getAll = function (userId, result) {
   db.query(`select * from ${tableName} where createdBy = ${userId}`, function (err, data) {
     if (err) {
-      console.log('error: ' + err);
       result(null);
     } else {
       result(data);
@@ -33,7 +34,6 @@ Project.getById = function (userId, projectId, result) {
 Project.create = function (payload, result) {
   db.query(`insert into ${tableName} set ?`, payload, function (err, data) {
     if (err) {
-      console.log(err);
       result(null);
     } else result({ id: data.insertId, ...payload });
   });

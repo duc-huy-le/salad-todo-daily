@@ -23,7 +23,7 @@ export class DailyTaskGroupComponent implements OnInit {
 
   getAllTaskDaily() {
     this.taskDailyService
-      .getAllTaskDaily()
+      .getAllTaskDailyToday()
       .toPromise()
       .then((res: any) => {
         if(res && res.result) {

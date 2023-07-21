@@ -1,5 +1,6 @@
 function getFormattedMySqlDateTime(dateTime) {
-  const date = new Date(dateTime);
+  let date = new Date(dateTime);
+  date.setHours(date.getHours() + 7);
   const formattedDateTime = date
     .toISOString()
     .replace("T", " ")
@@ -7,4 +8,23 @@ function getFormattedMySqlDateTime(dateTime) {
   return formattedDateTime;
 }
 
-exports.getFormattedMySqlDateTime = getFormattedMySqlDateTime;
+function getFormattedTaskTime(dateTime, type) {
+  let date = new Date(dateTime);
+  date.setHours(date.getHours() + 7);
+  let formattedDateTime = date
+    .toISOString()
+    .replace("T", " ")
+    .substring(0, 11);
+  if (type == "start") {
+    formattedDateTime += "00:00:01";
+  } else if (type == "finish") {
+    formattedDateTime += "23:59:59";
+  }
+  return formattedDateTime;
+}
+
+// exports.getFormattedMySqlDateTime = getFormattedMySqlDateTime;
+module.exports = {
+  getFormattedMySqlDateTime: getFormattedMySqlDateTime,
+  getFormattedTaskTime: getFormattedTaskTime,
+};

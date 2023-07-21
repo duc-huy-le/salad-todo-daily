@@ -17,6 +17,9 @@ export class TaskGroupComponent implements OnInit {
   listOpenTask?: Task[];
   listInProgressTask?: Task[];
   listDoneTask?: Task[];
+  openDuration: string = '';
+  inProgressDuration: string = '';
+  doneDuration: string = '';
 
   constructor(
     private taskService: TaskService,
@@ -29,35 +32,31 @@ export class TaskGroupComponent implements OnInit {
   }
 
   async getAllTask() {
-    // const response = await this.taskService.getAllTask().toPromise();
     await this.taskService
       .getAllTask()
       .toPromise()
       .then((res: any) => {
         if (res && res.result) {
           this.listTask = res?.result;
+          this.listTask = this.listTask.filter(
+            (item) =>
+              new Date(item.startDate) <= new Date() &&
+              (!item.finishDate || new Date(item.finishDate) >= new Date())
+          );
           this.listTask = this.listTask.sort((a, b) => b.priority - a.priority);
-          this.listOpenTask = this.listTask.filter((item) => {
-            return (
-              item.status === TaskStatus.Open &&
-              new Date(item.startDate) <= new Date() &&
-              (!item.finishDate || new Date(item.finishDate) >= new Date())
-            );
-          });
-          this.listInProgressTask = this.listTask.filter((item) => {
-            return (
-              item.status === TaskStatus.InProgress &&
-              new Date(item.startDate) <= new Date() &&
-              (!item.finishDate || new Date(item.finishDate) >= new Date())
-            );
-          });
-          this.listDoneTask = this.listTask.filter((item) => {
-            return (
-              item.status === TaskStatus.Done &&
-              new Date(item.startDate) <= new Date() &&
-              (!item.finishDate || new Date(item.finishDate) >= new Date())
-            );
-          });
+          this.listOpenTask = this.listTask.filter(
+            (item) => item.status === TaskStatus.Open
+          );
+          this.openDuration = this.getRemainingTime(this.listOpenTask);
+          this.listInProgressTask = this.listTask.filter(
+            (item) => item.status === TaskStatus.InProgress
+          );
+          this.inProgressDuration = this.getRemainingTime(
+            this.listInProgressTask
+          );
+          this.listDoneTask = this.listTask.filter(
+            (item) => item.status === TaskStatus.Done
+          );
         } else {
           this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc.');
         }
@@ -76,5 +75,19 @@ export class TaskGroupComponent implements OnInit {
       .sendMessage('5426764053', todoList ?? '')
       .toPromise()
       .then((res) => {});
+  }
+
+  getRemainingTime(listTask: any): string {
+    let remainingTimeText = '';
+    const total = listTask.reduce(
+      (sum: number, item: any) => sum + item.duration,
+      0
+    );
+    const hours = Math.floor(total / 60);
+    const remainingMinutes = total % 60;
+    if (hours != 0) remainingTimeText += `${hours} giờ `;
+    if (remainingMinutes != 0) remainingTimeText += `${remainingMinutes} phút`;
+    else remainingTimeText.slice(0, -1);
+    return remainingTimeText;
   }
 }

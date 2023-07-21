@@ -4,7 +4,8 @@
   "description": "Dự án quản lý công việc hàng ngày",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --inspect index.js"
   },
   "keywords": [],
   "author": "SaladLe",
@@ -16,5 +17,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

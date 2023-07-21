@@ -8,6 +8,7 @@ export class TaskDaily {
   priority: number;
   createdAt: Date;
   isDeleted: boolean;
+  checked: boolean;
   constructor(
     id: any,
     name: string,
@@ -17,7 +18,8 @@ export class TaskDaily {
     finishDate: Date,
     priority: number,
     createdAt: Date,
-    isDeleted: boolean
+    isDeleted: boolean,
+    checked: boolean
   ) {
     this.id = id;
     this.name = name;
@@ -28,5 +30,6 @@ export class TaskDaily {
     this.priority = priority;
     this.createdAt = createdAt;
     this.isDeleted = isDeleted;
+    this.checked = checked;
   }
 }

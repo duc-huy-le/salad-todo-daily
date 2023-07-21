@@ -7,10 +7,11 @@ export class Task {
   finishDate: Date;
   priority: number;
   status: number;
+  duration: number;
   checkList: Array<TaskCheckList>;
   createdAt: Date;
   isDeleted: boolean;
-  constructor(id: any, name: string, projectId: any, description: string, startDate: Date, finishDate: Date, priority: number, status: number, checkList: Array<TaskCheckList>, createdAt: Date, isDeleted: boolean) {
+  constructor(id: any, name: string, projectId: any, description: string, startDate: Date, finishDate: Date, priority: number, status: number, duration: number, checkList: Array<TaskCheckList>, createdAt: Date, isDeleted: boolean) {
     this.id = id;
     this.name = name;
     this.projectId = projectId;
@@ -19,6 +20,7 @@ export class Task {
     this.finishDate = finishDate;
     this.priority = priority;
     this.status = status;
+    this.duration = duration;
     this.checkList = checkList;
     this.createdAt = createdAt;
     this.isDeleted = isDeleted;

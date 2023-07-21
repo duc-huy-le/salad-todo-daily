@@ -5,7 +5,7 @@
 >
   <ng-container *ngIf="task.projectId">
     <nz-tag [nzColor]="projectInfo?.color" class="project-tag mb-6">
-      <div class="project-name">{{ projectInfo?.name }}</div>
+      <div class="project-name">{{ projectInfo?.name }} {{task.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
     </nz-tag>
   </ng-container>
   <div class="d-flex justify-content-space-between">

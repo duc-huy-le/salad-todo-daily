@@ -5,13 +5,17 @@ export class Project {
   description: string;
   isDeleted: number;
   startDate: Date;
+  totalTask: number;
+  completedTask: number;
   constructor(
     id: any,
     name: string,
     color: string,
     description: string,
     isDeleted: number,
-    startDate: Date
+    startDate: Date,
+    totalTask: number,
+    completedTask: number
   ) {
     this.id = id;
     this.name = name;
@@ -19,5 +23,7 @@ export class Project {
     this.description = description;
     this.isDeleted = isDeleted;
     this.startDate = startDate;
+    this.totalTask = totalTask;
+    this.completedTask = completedTask;
   }
 }

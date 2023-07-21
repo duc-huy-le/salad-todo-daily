@@ -4,7 +4,7 @@
       <div
         class="list-header d-flex align-items-center justify-content-space-between"
       >
-        <div class="header__title">Chưa thực hiện</div>
+        <div class="header__title">Chưa thực hiện <span *ngIf="openDuration != ''" nz-tooltip nzTooltipTitle="Thời gian thực hiện còn lại">({{openDuration}})</span></div>
         <div class="header__action">
           <button nz-button nzShape="circle" (click)="openAddTaskModal()">
             <i class="fas fa-plus"></i>
@@ -29,7 +29,7 @@
       <div
         class="list-header d-flex align-items-center justify-content-space-between"
       >
-        <div class="header__title">Đang thực hiện</div>
+        <div class="header__title">Đang thực hiện  <span *ngIf="inProgressDuration != ''" nz-tooltip nzTooltipTitle="Thời gian thực hiện còn lại">({{inProgressDuration}})</span></div>
         <div class="header__action">
           <button nz-button nzShape="circle" (click)="openAddTaskModal()">
             <i class="fas fa-plus"></i>

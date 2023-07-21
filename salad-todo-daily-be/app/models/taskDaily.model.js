@@ -26,6 +26,22 @@ TaskDaily.getAll = function (userId, result) {
     }
   );
 };
+TaskDaily.getAllToday = function (userId, result) {
+  const query = `select td.*, tdh.taskDailyId IS NOT NULL AS checked FROM ${tableName} td
+  LEFT JOIN task_daily_history tdh ON td.id = tdh.taskDailyId AND DATE(tdh.completionDate) = CURDATE()
+  WHERE td.createdBy = ${userId} AND td.isDeleted = 0;`;
+  db.query(
+    // `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
+    query,
+    function (err, data) {
+      if (err) {
+        result(null);
+      } else {
+        result(data);
+      }
+    }
+  );
+};
 
 TaskDaily.getById = function (userId, recordId, result) {
   db.query(

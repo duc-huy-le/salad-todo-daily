@@ -57,6 +57,8 @@ CREATE TABLE IF NOT EXISTS task (
     status TINYINT DEFAULT 0,
     -- 0: Chờ thực hiện, 1: Đang thực hiện, 2: Hoàn thành
     checkList JSON,
+    totalTask INT DEFAULT 0,
+    completedTask INT DEFAULT 0,
     isDeleted BOOLEAN NOT NULL DEFAULT FALSE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     createdBy INT NOT NULL,
@@ -84,6 +86,18 @@ ENGINE = INNODB,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_0900_ai_ci;
 
+CREATE TABLE IF NOT EXISTS task_daily_history (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    taskDailyId INT NOT NULL,
+    completionDate TIMESTAMP NOT NULL DEFAULT NOW(),
+    -- createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- createdBy INT NOT NULL,
+    FOREIGN KEY (taskDailyId) REFERENCES task_daily(id)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8mb4,
+COLLATE utf8mb4_0900_ai_ci;
+
 CREATE TABLE IF NOT EXISTS note (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(256) NOT NULL,
@@ -95,6 +109,70 @@ CREATE TABLE IF NOT EXISTS note (
 ENGINE = INNODB,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_0900_ai_ci;
+
+SELECT *, tdh.taskDailyId IS NOT NULL AS checked
+FROM task_daily td
+LEFT JOIN task_daily_history tdh ON td.id = tdh.taskDailyId AND DATE(tdh.completionDate) = CURDATE()
+-- WHERE tdh.id IS NOT NULL OR DATE(td.createdAt) = CURDATE();
+
+DROP TRIGGER tg_update_task;
+CREATE TRIGGER tg_update_task
+BEFORE UPDATE ON task
+FOR EACH ROW
+BEGIN
+  IF NEW.status = 2 AND NEW.status != OLD.status THEN
+    SET NEW.finishDate = TIMESTAMP(DATE(NOW()), TIME('23:59:59'));
+   END IF;
+END;
+
+DROP TRIGGER tg_update_totalTask;
+CREATE TRIGGER tg_update_totalTask
+AFTER INSERT ON task
+FOR EACH ROW
+BEGIN
+    IF NEW.projectId IS NOT NULL THEN
+        UPDATE project
+        SET totalTask = totalTask + 1
+        WHERE id = NEW.projectId;
+    END IF;
+END;
+
+DROP TRIGGER delete_task_tg_update_totalTask;
+CREATE TRIGGER delete_task_tg_update_totalTask
+AFTER UPDATE ON task
+FOR EACH ROW
+BEGIN
+    IF OLD.isDeleted = 0 AND NEW.isDeleted = 1 THEN
+        UPDATE project
+        SET totalTask = totalTask - 1
+        WHERE id = NEW.projectId;
+    END IF;
+END;
+
+DROP TRIGGER update_task_tg_update_completedTask;
+CREATE TRIGGER update_task_tg_update_completedTask
+AFTER UPDATE ON task
+FOR EACH ROW
+BEGIN
+    IF OLD.projectId != NEW.projectId THEN
+        UPDATE project
+        SET totalTask = (
+          SELECT COUNT(*) FROM task t WHERE t.projectId = OLD.projectId AND t.createdBy = OLD.createdBy AND t.isDeleted = 0
+        ),
+        completedTask = (
+          SELECT COUNT(*) FROM task t WHERE t.projectId = OLD.projectId AND t.status = 2 AND t.createdBy = OLD.createdBy AND t.isDeleted = 0
+        )
+        WHERE id = OLD.projectId;
+    END IF;
+    UPDATE project
+        SET totalTask = (
+          SELECT COUNT(*) FROM task t WHERE t.projectId = NEW.projectId AND t.createdBy = NEW.createdBy AND t.isDeleted = 0
+        ),
+        completedTask = (
+          SELECT COUNT(*) FROM task t WHERE t.projectId = NEW.projectId AND t.status = 2 AND t.createdBy = NEW.createdBy AND t.isDeleted = 0
+        )
+        WHERE id = NEW.projectId;
+END;
 
 INSERT INTO user (name, email, password)
 VALUES ('Nguyen Van A', '3wqjX@example.com', '123456'),

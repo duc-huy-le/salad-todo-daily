@@ -10,7 +10,7 @@
       <!-- <app-daily-task-item [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()"></app-daily-task-item> -->
       <div class="project-item d-flex justify-content-space-between align-items-center">
         <button nz-button nzType="text" class="project-item__name">{{project.name}}</button>
-        <div class="project-item__count">12</div>
+        <div class="project-item__count">{{project.completedTask}}/{{project.totalTask}}</div>
       </div>
     </ng-container>
   </div>

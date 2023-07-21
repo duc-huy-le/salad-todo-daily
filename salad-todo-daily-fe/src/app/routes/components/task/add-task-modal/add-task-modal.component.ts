@@ -7,6 +7,7 @@ import { Task, TaskCheckList } from 'src/app/models/Task';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { Project } from 'src/app/models/Project';
 import { DatePipe } from '@angular/common';
+import { DateType, getFormattedStartDate } from 'src/app/helpers/helper';
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -115,6 +116,16 @@ export class AddTaskModalComponent implements OnInit {
 
   updateTask(): void {
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
+    if(this.addTaskForm.get('startDate')?.value) {
+      this.addTaskForm.get('startDate')?.patchValue(
+        getFormattedStartDate(this.addTaskForm.get('startDate')?.value, DateType.StartDate)
+      );
+    }
+    if(this.addTaskForm.get('finishDate')?.value) {
+      this.addTaskForm.get('finishDate')?.patchValue(
+        getFormattedStartDate(this.addTaskForm.get('finishDate')?.value, DateType.FinishDate)
+      );
+    }
     this.taskService
       .updateTask(this.task.id, this.addTaskForm.value)
       .toPromise()
