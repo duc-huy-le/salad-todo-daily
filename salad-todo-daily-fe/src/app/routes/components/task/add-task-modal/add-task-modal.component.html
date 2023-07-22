@@ -178,7 +178,7 @@
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkList"
             >Theo dõi</nz-form-label
           >
-          <nz-form-control>
+          <nz-form-control [nzSm]="18" [nzXs]="24">
             <!-- <div *ngFor="let step of task.checkList; let i = index">
               <label nz-checkbox [(ngModel)]="step.checked" (ngModelChange)="onCheckStep($event, i)">
                 <div [ngClass]="step.checked? 'text-decoration-line-through' : ''">{{
@@ -191,11 +191,12 @@
                   nz-checkbox
                   [(ngModel)]="step.checked"
                   [ngModelOptions]="{ standalone: true }"
-                >
+                  >
                   <div
-                    [ngClass]="
-                      step.checked ? 'text-decoration-line-through' : ''
-                    "
+                  [ngClass]="
+                  step.checked ? 'text-decoration-line-through' : ''
+                  "
+                  class="step-label-editing"
                   >
                     {{ step.content }}
                   </div></label
@@ -284,6 +285,7 @@
             >
               <div
                 [ngClass]="step.checked ? 'text-decoration-line-through' : ''"
+                class="step-label"
               >
                 {{ step.content }}
               </div></label

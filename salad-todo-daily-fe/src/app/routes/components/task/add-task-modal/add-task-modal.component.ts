@@ -38,6 +38,11 @@ export class AddTaskModalComponent implements OnInit {
   isAddingCheckList: boolean = false;
   newCheckList: TaskCheckList[] = [];
   currentAddCheckListItem: string = '';
+  defaultFormValue: any = {
+    startDate: this.today,
+    priority: TaskPriority.Medium,
+    status: TaskStatus.Open,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -105,8 +110,10 @@ export class AddTaskModalComponent implements OnInit {
       .addNewTask(this.addTaskForm.value)
       .toPromise()
       .then((res: any) => {
-        if(res && res.result) {
+        if (res && res.result) {
           this.msg.success('Tạo công việc thành công!');
+          this.addTaskForm.reset();
+          this.addTaskForm.patchValue(this.defaultFormValue);
           this.onAddTask.emit();
           this.isVisible = false;
         } else {
@@ -197,15 +204,25 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   getCurrentFormattedDate(): void {
-    if(this.addTaskForm.get('startDate')?.value) {
-      this.addTaskForm.get('startDate')?.patchValue(
-        getFormattedStartDate(this.addTaskForm.get('startDate')?.value, DateType.StartDate)
-      );
+    if (this.addTaskForm.get('startDate')?.value) {
+      this.addTaskForm
+        .get('startDate')
+        ?.patchValue(
+          getFormattedStartDate(
+            this.addTaskForm.get('startDate')?.value,
+            DateType.StartDate
+          )
+        );
     }
-    if(this.addTaskForm.get('finishDate')?.value) {
-      this.addTaskForm.get('finishDate')?.patchValue(
-        getFormattedStartDate(this.addTaskForm.get('finishDate')?.value, DateType.FinishDate)
-      );
+    if (this.addTaskForm.get('finishDate')?.value) {
+      this.addTaskForm
+        .get('finishDate')
+        ?.patchValue(
+          getFormattedStartDate(
+            this.addTaskForm.get('finishDate')?.value,
+            DateType.FinishDate
+          )
+        );
     }
   }
 }

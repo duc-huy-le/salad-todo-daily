@@ -6,3 +6,11 @@
   background-color: #eee;
   border-radius: 5px;
 }
+
+.step-label {
+  width: 380px;
+}
+
+.step-label-editing {
+  width: 280px;
+}
