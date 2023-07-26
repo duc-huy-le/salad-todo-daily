@@ -65,8 +65,14 @@ export class TaskItemComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges(): void {
+    this.transformTaskData();
     this.getListProjects();
     this.getCheckListCount();
+  }
+
+  transformTaskData(): void {
+    this.task.priorityColor = this.getPriorityColor(this.task.priority);
+    this.task.priorityLabel = this.getPriorityLabel(this.task.priority);
   }
 
   getListProjects() {

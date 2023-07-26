@@ -25,8 +25,8 @@
         <nz-tag>{{ task.duration }}'</nz-tag>
       </ng-container>
       <ng-container *ngIf="task.priority !== TaskPriority.Undefined">
-        <nz-tag [nzColor]="getPriorityColor(task.priority)">{{
-          getPriorityLabel(task.priority)
+        <nz-tag [nzColor]="task.priorityColor">{{
+          task.priorityLabel
         }}</nz-tag>
       </ng-container>
     </div>
