@@ -9,7 +9,7 @@ export class NotificationService {
   constructor(private http: HttpClient) { }
 
   sendMessage(chatId: any, message: string) {
-    var sendMessageUrl = `${this.baseUrl}sendMessage?chat_id=${chatId}&text=${message}`;
+    var sendMessageUrl = `${this.baseUrl}sendMessage?chat_id=${chatId}&text=${message}&parse_mode=html`;
     return this.http.get(sendMessageUrl);
   }
 }

@@ -21,7 +21,9 @@ export class AppComponent {
     }
   ngOnInit(): void {
     this.getAllTaskTag();
-    // this.sendMessageToTelegram();
+    // setTimeout(() => {
+    //   this.sendMessageToTelegram();
+    // }, 10000);
   }
   getAllTaskTag() {
     this.taskTagService

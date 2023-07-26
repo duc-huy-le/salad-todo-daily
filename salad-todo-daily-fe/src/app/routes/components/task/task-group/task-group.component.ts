@@ -29,6 +29,7 @@ export class TaskGroupComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getAllTask();
+    this.sendMessageToTelegram();
   }
 
   async getAllTask() {
@@ -68,13 +69,26 @@ export class TaskGroupComponent implements OnInit {
   }
 
   sendMessageToTelegram() {
-    var listTodoTitle = this.listOpenTask?.map((task) => task.name);
-    var todoList = listTodoTitle?.join(', ');
-    todoList = 'Bạn còn các công việc sau chưa hoàn thành: ' + todoList;
-    this.notificationService
-      .sendMessage('5426764053', todoList ?? '')
-      .toPromise()
-      .then((res) => {});
+    const ENTER = '%0A';
+    let message = '';
+    if(this.listOpenTask && this.listOpenTask.length > 0) {
+      message += `<b><u>Bạn còn ${this.listOpenTask?.length} việc chưa thực hiện:</u></b>`;
+      this.listOpenTask?.forEach((task) => {
+        message += `${ENTER}- ${task.name}`;
+      })
+    }
+    if(this.listInProgressTask && this.listInProgressTask.length > 0) {
+      message += `${ENTER}${ENTER}<b><u>Và ${this.listInProgressTask?.length} việc đang thực hiện:</u></b>`;
+      this.listInProgressTask?.forEach((task) => {
+        message += `${ENTER}> ${task.name}`;
+      })
+    }
+    if(message != '') {
+      this.notificationService
+        .sendMessage('5426764053', message)
+        .toPromise()
+        .then((res) => {});
+    }
   }
 
   getRemainingTime(listTask: any): string {

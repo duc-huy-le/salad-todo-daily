@@ -141,9 +141,9 @@ export class AddTaskModalComponent implements OnInit {
       });
   }
 
-  handleEditTask(): void {
-    this.addTaskForm.patchValue(this.task);
-    this.newCheckList = [...this.task.checkList!];
+  handleEditTask(inputTask: any = this.task): void {
+    this.addTaskForm.patchValue(inputTask);
+    this.newCheckList = [...inputTask.checkList];
     this.viewMode = TaskItemViewMode.Edit;
   }
 

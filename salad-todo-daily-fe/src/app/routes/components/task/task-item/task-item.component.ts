@@ -131,6 +131,11 @@ export class TaskItemComponent implements OnInit {
     this.addTaskModalInItem.isVisible = true;
   }
 
+  openEditTaskModal() {
+    this.addTaskModalInItem.handleEditTask(this.task);
+    this.addTaskModalInItem.isVisible = true;
+  }
+
   getCheckListCount() {
     this.checkListTotalCount = this.task.checkList?.length;
     this.checkListCompleteCount = this.task.checkList?.filter(
