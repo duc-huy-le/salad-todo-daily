@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JWT_TOKEN } from 'src/app/constants/constants';
 import { TaskTag } from 'src/app/models/TaskTag';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskTagService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/tag';
   requestOption: any;
   constructor(private http: HttpClient) {
@@ -21,7 +20,7 @@ export class TaskTagService {
   }
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
 
   getAllTaskTag() {

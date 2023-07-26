@@ -1,0 +1,9 @@
+.user-info-container {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.user-avatar img {
+  height: 30px;
+  border-radius: 10px;
+}

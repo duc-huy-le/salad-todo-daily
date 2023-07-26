@@ -1,0 +1,28 @@
+<div class="user-info-container m-12 p-6">
+  <div class="d-flex justify-content-space-between align-items-center">
+    <div class="d-flex align-items-center">
+      <div class="user-avatar mx-3">
+        <img src="https://i.postimg.cc/8zV5L91p/Hunters.png" alt="" />
+      </div>
+      <div class="d-flex">
+        <div class="user-name mx-3">
+          <strong>{{ userInfo?.name }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="user-action mx-3">
+      <button
+        nz-button
+        nzType="text"
+        nz-popconfirm
+        nzPopconfirmTitle="Bạn có chắc chắn muốn đăng xuất"
+        nzPopconfirmPlacement="top"
+        (nzOnConfirm)="logout()"
+        nzOkText="Đăng xuất"
+        nzCancelText="Hủy"
+      >
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+</div>

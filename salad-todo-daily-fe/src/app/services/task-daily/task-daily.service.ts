@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { JWT_TOKEN } from 'src/app/constants/constants';
 import { TaskDaily } from 'src/app/models/TaskDaily';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskDailyService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/task-daily';
   requestOption: any;
 
@@ -24,7 +23,7 @@ export class TaskDailyService {
   }
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
 
   getAllTaskDaily() {

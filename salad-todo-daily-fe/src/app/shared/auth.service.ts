@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { JWT_TOKEN, USER_INFO } from '../constants/constants';
 
 export enum Role {
   Admin = 0,
@@ -13,13 +14,13 @@ export enum Role {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   loginUrl = 'http://localhost:3000/account/login';
   checkSessionUrl = 'http://localhost:3000/user/info';
   loginSuccess: boolean = false;
   role?: Role;
   userInfo: any;
+  private userInfoSubject = new Subject<string>();
+  userInfo$ = this.userInfoSubject.asObservable();
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -54,6 +55,7 @@ export class AuthService {
       tap((res: any) => {
         if (res.status) {
           this.userInfo = res.data;
+          this.userInfo$ = res.data;
         } else {
           this.msg.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
           this.logout();
@@ -74,17 +76,18 @@ export class AuthService {
   }
 
   private storeTokens(token: string): void {
-    localStorage.setItem(this.JWT_TOKEN, token);
+    localStorage.setItem(JWT_TOKEN, token);
   }
   private storeUserInfo(data: any): void {
-    localStorage.setItem(this.USER_INFO, JSON.stringify(data));
+    localStorage.setItem(USER_INFO, JSON.stringify(data));
   }
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
 
   logout() {
-    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(JWT_TOKEN);
+    localStorage.removeItem(USER_INFO);
     this.loginSuccess = false;
     this.router.navigate(['/login']);
   }

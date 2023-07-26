@@ -28,6 +28,7 @@ import { TaskItemComponent } from './routes/components/task/task-item/task-item.
 import { AddTaskModalComponent } from './routes/components/task/add-task-modal/add-task-modal.component';
 import { ProjectScreenComponent } from './routes/home/project-screen/project-screen.component';
 import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
+import { UserInfoComponent } from './routes/components/user-info/user-info.component';
 
 registerLocaleData(en);
 
@@ -50,7 +51,8 @@ registerLocaleData(en);
     TaskItemComponent,
     AddTaskModalComponent,
     ProjectScreenComponent,
-    LoginScreenComponent
+    LoginScreenComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,

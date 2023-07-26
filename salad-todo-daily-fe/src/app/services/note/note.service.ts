@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JWT_TOKEN } from 'src/app/constants/constants';
 import { Note } from 'src/app/models/Note';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NoteService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
-
   baseUrl = 'http://localhost:3000/note';
   requestOption: any;
 
@@ -22,7 +20,7 @@ export class NoteService {
   }
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
   getAllNote() {
     return this.http.get<any>(this.baseUrl, this.requestOption);

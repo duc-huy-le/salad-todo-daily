@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JWT_TOKEN } from 'src/app/constants/constants';
 import { TaskDailyHistory } from 'src/app/models/TaskDailyHistory';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskDailyHistoryService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/task-daily-history';
   requestOption: any;
   constructor(private http: HttpClient) {
@@ -21,7 +20,7 @@ export class TaskDailyHistoryService {
   }
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
 
   addNewTaskDailyHistory(data: any) {

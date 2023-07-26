@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JWT_TOKEN } from 'src/app/constants/constants';
 import { Project } from 'src/app/models/Project';
 import { AuthService } from 'src/app/shared/auth.service';
 
@@ -7,8 +8,6 @@ import { AuthService } from 'src/app/shared/auth.service';
   providedIn: 'root'
 })
 export class ProjectService {
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly USER_INFO = 'TODO_DAILY_USER_INFO';
   baseUrl = 'http://localhost:3000/project';
   requestOption: any;
   userInfo: any;
@@ -20,7 +19,7 @@ export class ProjectService {
 
 
   getJwtToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(JWT_TOKEN)!;
   }
   getRequestOption() {
     const token = this.getJwtToken();
