@@ -42,6 +42,7 @@ export class AddTaskModalComponent implements OnInit {
     startDate: this.today,
     priority: TaskPriority.Medium,
     status: TaskStatus.Open,
+    checkList: [],
   };
 
   constructor(
