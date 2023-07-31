@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS user (
     name VARCHAR(256) NOT NULL,
     email VARCHAR(256) NOT NULL,
     password VARCHAR(256) NOT NULL,
+    avatar varchar(255) DEFAULT NULL,
+    telegramId varchar(50) DEFAULT NULL,
     PRIMARY KEY (id)
 )
 ENGINE = INNODB,
@@ -72,15 +74,14 @@ CREATE TABLE IF NOT EXISTS task_daily (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(256) NOT NULL,
     description TEXT,
-    tagId INT,
+    tagId JSON DEFAULT NULL,
     startDate TIMESTAMP DEFAULT NULL,
     finishDate TIMESTAMP DEFAULT NULL,
     priority TINYINT DEFAULT 1,
     -- 0: Chưa xác định, 1: Ưu tiên thấp, 2: Ưu tiêu trung bình, 3: Ưu tiên cao   
     isDeleted BOOLEAN NOT NULL DEFAULT FALSE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    createdBy INT NOT NULL,
-    FOREIGN KEY (tagId) REFERENCES tag(id)
+    createdBy INT NOT NULL
 )
 ENGINE = INNODB,
 CHARACTER SET utf8mb4,

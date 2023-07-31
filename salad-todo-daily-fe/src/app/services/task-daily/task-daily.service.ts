@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { JWT_TOKEN } from 'src/app/constants/constants';
+import { getRequestOption } from 'src/app/helpers/helper';
 import { TaskDaily } from 'src/app/models/TaskDaily';
 
 @Injectable({
@@ -9,33 +10,20 @@ import { TaskDaily } from 'src/app/models/TaskDaily';
 })
 export class TaskDailyService {
   baseUrl = 'http://localhost:3000/task-daily';
-  requestOption: any;
 
   constructor(private http: HttpClient) {
-    this.getRequestOption();
-
-  }
-
-  getRequestOption() {
-    const token = this.getJwtToken();
-    const headers = { authorization: token };
-    this.requestOption = { headers: headers };
-  }
-
-  getJwtToken(): string {
-    return localStorage.getItem(JWT_TOKEN)!;
   }
 
   getAllTaskDaily() {
-    return this.http.get<any>(this.baseUrl, this.requestOption);
+    return this.http.get<any>(this.baseUrl, getRequestOption());
   }
 
   getAllTaskDailyToday() {
-    return this.http.get<any>(`${this.baseUrl}/today`, this.requestOption);
+    return this.http.get<any>(`${this.baseUrl}/today`, getRequestOption());
   }
 
   addNewTaskDaily(data: any) {
-    return this.http.post<TaskDaily>(this.baseUrl, data);
+    return this.http.post<TaskDaily>(this.baseUrl, data, getRequestOption());
   }
 
   updateTaskDaily(id: any, data: any) {

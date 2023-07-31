@@ -1,9 +1,6 @@
 var Task = require("../models/task.model");
 var JWT = require("../common/_JWT");
-const {
-  getFormattedMySqlDateTime,
-  getFormattedTaskTime,
-} = require("../helpers/helper");
+const { getFormattedMySqlDateTime } = require("../helpers/helper");
 
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;

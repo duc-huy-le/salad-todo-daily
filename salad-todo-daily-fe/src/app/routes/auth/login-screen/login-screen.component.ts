@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from 'src/app/shared/auth.service';
 
@@ -11,7 +12,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 export class LoginScreenComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private msg: NzMessageService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private msg: NzMessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({

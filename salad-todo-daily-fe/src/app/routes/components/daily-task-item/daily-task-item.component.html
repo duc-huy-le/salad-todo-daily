@@ -4,14 +4,14 @@
   </div>
   <div nz-row>
     <div nz-col nzSpan="24" class="task__tag">
-      <!-- <ng-container *ngFor="let tagId of task?.tagId">
+      <ng-container *ngFor="let tagId of task?.tagId">
         <nz-tag [nzColor]="getTaskTagColor(tagId)">{{
           getTaskTagName(tagId)
         }}</nz-tag>
-      </ng-container> -->
-      <nz-tag [nzColor]="getTaskTagColor(task?.tagId)">{{
+      </ng-container>
+      <!-- <nz-tag [nzColor]="getTaskTagColor(task?.tagId)">{{
         getTaskTagName(task?.tagId)
-      }}</nz-tag>
+      }}</nz-tag> -->
     </div>
   </div>
 </div>

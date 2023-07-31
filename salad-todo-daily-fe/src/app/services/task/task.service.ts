@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JWT_TOKEN } from 'src/app/constants/constants';
+import { getRequestOption } from 'src/app/helpers/helper';
 import { Task } from 'src/app/models/Task';
 
 @Injectable({
@@ -8,36 +9,27 @@ import { Task } from 'src/app/models/Task';
 })
 export class TaskService {
   baseUrl = 'http://localhost:3000/task';
-  requestOption: any;
 
-  constructor(private http: HttpClient) {
-    this.getRequestOption();
-  }
-
-  getRequestOption() {
-    const token = this.getJwtToken();
-    const headers = { authorization: token };
-    this.requestOption = { headers: headers };
-  }
-
-  getJwtToken(): string {
-    return localStorage.getItem(JWT_TOKEN)!;
-  }
+  constructor(private http: HttpClient) {}
 
   getAllTask() {
-    return this.http.get<any>(this.baseUrl, this.requestOption);
+    return this.http.get<any>(this.baseUrl, getRequestOption());
   }
 
   addNewTask(data: any) {
-    return this.http.post<Task>(this.baseUrl, data, this.requestOption);
+    return this.http.post<Task>(this.baseUrl, data, getRequestOption());
   }
 
   updateTask(id: any, data: any) {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, data, this.requestOption);
+    return this.http.put<any>(
+      `${this.baseUrl}/${id}`,
+      data,
+      getRequestOption()
+    );
   }
 
   updatePropTask(id: any, data: any) {
-    return this.http.patch(`${this.baseUrl}/${id}`, data, this.requestOption);
+    return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
   }
 
   deleteTask(id: any) {

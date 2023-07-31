@@ -5,6 +5,7 @@ export class Project {
   description: string;
   isDeleted: number;
   startDate: Date;
+  finishDate: Date;
   totalTask: number;
   completedTask: number;
   constructor(
@@ -14,6 +15,7 @@ export class Project {
     description: string,
     isDeleted: number,
     startDate: Date,
+    finishDate: Date,
     totalTask: number,
     completedTask: number
   ) {
@@ -23,6 +25,7 @@ export class Project {
     this.description = description;
     this.isDeleted = isDeleted;
     this.startDate = startDate;
+    this.finishDate = finishDate;
     this.totalTask = totalTask;
     this.completedTask = completedTask;
   }

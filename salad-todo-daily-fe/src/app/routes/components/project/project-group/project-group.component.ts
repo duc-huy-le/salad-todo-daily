@@ -28,6 +28,10 @@ export class ProjectGroupComponent implements OnInit {
       .then((res: any) => {
         if (res && res.result) {
           this.listProject = res.result;
+          this.listProject = this.listProject?.filter(
+            (item) =>
+              item.totalTask !== 0 && item.totalTask !== item.completedTask
+          );
         } else {
           this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách dự án.');
         }

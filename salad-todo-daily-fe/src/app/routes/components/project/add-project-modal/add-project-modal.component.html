@@ -2,8 +2,8 @@
   [(nzVisible)]="isVisible"
   nzTitle="Thêm dự án mới"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleAddProject()"
-  [nzOkText]="'Tạo dự án'"
+  (nzOnOk)="onClickModalOk()"
+  [nzOkText]="viewMode === ProjectModalViewMode.Create ? 'Tạo dự án' : 'Lưu'"
   [nzCancelText]="'Hủy'"
 >
   <ng-container *nzModalContent>
@@ -34,6 +34,45 @@
             id="startDate"
             formControlName="startDate"
           ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="finishDate"
+          >Ngày kết thúc</nz-form-label
+        >
+        <nz-form-control>
+          <nz-date-picker
+            class="w-100"
+            nzPlaceHolder="Chọn ngày kết thúc"
+            [nzFormat]="'dd/MM/yyyy'"
+            id="finishDate"
+            formControlName="finishDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="color"
+          >Màu dự án</nz-form-label
+        >
+        <nz-form-control [nzSm]="10">
+          <input
+            nz-input
+            placeholder="Nhập tên hoặc mã màu"
+            id="color"
+            formControlName="color"
+          />
+        </nz-form-control>
+        <nz-form-control
+          *ngIf="addProjectForm.value.name"
+          class="overflow-hidden"
+          [nzSm]="7"
+          [nzOffset]="1"
+        >
+          <nz-tag [nzColor]="addProjectForm.value.color">{{
+            addProjectForm.value.name
+          }}</nz-tag>
         </nz-form-control>
       </nz-form-item>
 

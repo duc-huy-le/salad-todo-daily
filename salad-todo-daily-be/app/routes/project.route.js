@@ -7,7 +7,9 @@ module.exports = function (router) {
 
   router.post("/project", projectController.add);
 
-  router.put("/project", projectController.update);
+  router.put("/project/:id", projectController.update);
+
+  router.patch("/project/:id", projectController.updateLittle);
 
   router.delete("/project/:id", projectController.remove);
 };

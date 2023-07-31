@@ -1,3 +1,5 @@
+import { JWT_TOKEN } from "../constants/constants";
+
 export enum DateType {
   StartDate = 0,
   FinishDate = 1,
@@ -15,4 +17,14 @@ export function getFormattedStartDate(originalDate: any, dateType: DateType) {
     formattedDate.setSeconds(59);
   }
   return formattedDate;
+}
+
+function getJwtToken(): string {
+  return localStorage.getItem(JWT_TOKEN)!;
+}
+
+export function getRequestOption() {
+  const token = getJwtToken();
+  const headers = { authorization: token };
+  return {headers: headers};
 }

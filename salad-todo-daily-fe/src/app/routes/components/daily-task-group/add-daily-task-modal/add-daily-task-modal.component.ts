@@ -37,8 +37,7 @@ export class AddDailyTaskModalComponent implements OnInit {
       tagId: [[]],
       startDate: [this.today, [Validators.required]],
       description: [null],
-      isDeleted: [false],
-      createdAt: [this.today]
+      isDeleted: [0],
     });
   }
 

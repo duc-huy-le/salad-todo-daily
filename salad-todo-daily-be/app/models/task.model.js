@@ -70,15 +70,18 @@ Task.update = function (recordId, payload, result) {
     ],
     function (err, data) {
       if (err) {
-        result(null);
+        result(err);
       } else {
-        db.query(`select * from ${tableName} where id = ${recordId}`, function (err, updatedData) {
-          if (err) {
-            result(null);
-          } else {
-            result(updatedData);
+        db.query(
+          `select * from ${tableName} where id = ${recordId}`,
+          function (err, updatedData) {
+            if (err) {
+              result(err);
+            } else {
+              result(updatedData);
+            }
           }
-        });
+        );
       }
     }
   );

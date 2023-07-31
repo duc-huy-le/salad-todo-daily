@@ -59,7 +59,7 @@ TaskDaily.getById = function (userId, recordId, result) {
 TaskDaily.create = function (payload, result) {
   db.query(`insert into ${tableName} set ?`, payload, function (err, data) {
     if (err) {
-      result(null);
+      result(err);
     } else {
       result({ id: data.insertId, ...payload });
     }

@@ -43,6 +43,7 @@ export class AddTaskModalComponent implements OnInit {
     priority: TaskPriority.Medium,
     status: TaskStatus.Open,
     checkList: [],
+    isDeleted: 0,
   };
 
   constructor(
