@@ -7,7 +7,7 @@ module.exports = function (router) {
   
     router.post("/tag", tagController.add);
   
-    router.put("/tag", tagController.update);
+    router.put("/tag/:id", tagController.update);
 
     router.patch("/tag/:id", tagController.updateLittle);
   

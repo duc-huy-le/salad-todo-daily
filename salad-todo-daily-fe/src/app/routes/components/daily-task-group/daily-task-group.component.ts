@@ -14,8 +14,12 @@ export class DailyTaskGroupComponent implements OnInit {
   @ViewChild('addDailyTaskModal')
   addDailyTaskModal!: AddDailyTaskModalComponent;
   listTaskDaily?: TaskDaily[];
-  constructor(private taskDailyService: TaskDailyService,
-    private msg: NzMessageService) {}
+  totalTaskDaily?: number;
+  completedTaskDaily?: number;
+  constructor(
+    private taskDailyService: TaskDailyService,
+    private msg: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.getAllTaskDaily();
@@ -26,10 +30,16 @@ export class DailyTaskGroupComponent implements OnInit {
       .getAllTaskDailyToday()
       .toPromise()
       .then((res: any) => {
-        if(res && res.result) {
+        if (res && res.result) {
           this.listTaskDaily = res.result;
+          this.totalTaskDaily = this.listTaskDaily?.length;
+          this.completedTaskDaily = this.listTaskDaily?.filter(
+            (item) => item.checked === true
+          ).length;
         } else {
-          this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc hàng ngày.');
+          this.msg.error(
+            'Có lỗi xảy ra. Không thể lấy danh sách công việc hàng ngày.'
+          );
         }
       });
   }

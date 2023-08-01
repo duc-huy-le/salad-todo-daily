@@ -2,7 +2,7 @@ const db = require("../common/connect");
 const Tag = function (tag) {
   this.id = tag.id;
   this.name = tag.name;
-  this.color = tag.color; 
+  this.color = tag.color;
 };
 
 const tableName = "tag";
@@ -43,18 +43,24 @@ Tag.create = function (payload, result) {
   });
 };
 
-Tag.update = function (payload, result) {
+Tag.update = function (recordId, payload, result) {
   db.query(
-    `update ${tableName} set name = ?, color = ? where id = ${payload.id}`,
-    [
-      payload.name,
-      payload.color,
-    ],
+    `update ${tableName} set name = ?, color = ? where id = ${recordId}`,
+    [payload.name, payload.color],
     function (err, data) {
       if (err) {
-        result(null);
+        result(err);
       } else {
-        result(data);
+        db.query(
+          `select * from ${tableName} where id = ${recordId}`,
+          function (err, updatedData) {
+            if (err) {
+              result(err);
+            } else {
+              result(updatedData);
+            }
+          }
+        );
       }
     }
   );

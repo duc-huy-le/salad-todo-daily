@@ -1,0 +1,91 @@
+<div class="container">
+  <button nz-button (click)="openAddModal()">
+    <i class="fas fa-plus-circle mr-6"></i>Thêm nhãn
+  </button>
+  <nz-table #basicTable class="mt-12" [nzData]="listTags">
+    <thead>
+      <tr>
+        <th nzWidth="5%" nzAlign="center">STT</th>
+        <th>Tên nhãn</th>
+        <th nzWidth="18%" nzAlign="center">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data; let i = index">
+        <td nzAlign="center">{{ i + 1 }}</td>
+        <td>
+          <nz-tag [nzColor]="data.color">{{ data.name }}</nz-tag>
+        </td>
+        <td nzAlign="center">
+          <button class="mx-3" nz-button (click)="openEditModal(data)">
+            <span nz-icon nzType="edit"></span>
+          </button>
+          <button
+            class="mx-3"
+            nz-button
+            nzType="primary"
+            nzDanger
+            nz-popconfirm
+            nzPopconfirmTitle="Bạn có chắc chắn muốn xóa nhãn này?"
+            nzPopconfirmPlacement="top"
+            nzOkText="Xóa"
+            nzCancelText="Hủy"
+            (nzOnConfirm)="deleteTag(data.id)"
+          >
+            <span nz-icon nzType="delete"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isShowModal"
+  [nzTitle]="
+    modalViewMode === TagModalViewMode.Create ? 'Thêm nhãn mới' : 'Sửa nhãn'
+  "
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkText]="modalViewMode === TagModalViewMode.Create ? 'Tạo nhãn' : 'Lưu'"
+  [nzCancelText]="'Hủy'"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="tagForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
+          >Tên nhãn</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Tên nhãn không được để trống!">
+          <input
+            nz-input
+            placeholder="Nhập tên nhãn"
+            id="name"
+            formControlName="name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="color"
+          >Màu nhãn</nz-form-label
+        >
+        <nz-form-control>
+          <input
+            nz-input
+            placeholder="Nhập màu nhãn"
+            id="color"
+            formControlName="color"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <div nz-row class="" *ngIf="tagForm.value.name">
+        <div nz-col nzSpan="6"></div>
+        <nz-tag [nzColor]="tagForm.value.color">{{
+          tagForm.value.name
+        }}</nz-tag>
+      </div>
+    </form>
+  </ng-container></nz-modal
+>

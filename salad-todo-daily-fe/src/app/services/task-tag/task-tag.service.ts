@@ -16,6 +16,18 @@ export class TaskTagService {
     return this.http.get<any>(this.baseUrl, getRequestOption());
   }
 
+  addNewTag(data: any) {
+    return this.http.post<TaskTag>(this.baseUrl, data, getRequestOption());
+  }
+
+  updateTag(id: any, data: any) {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, data, getRequestOption());
+  }
+
+  updatePropTag(id: any, data: any) {
+    return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
+  }
+
   // getMatchById(id: any) {
   //   return this.http.get(`${this.baseUrl}/${id}`);
   // }

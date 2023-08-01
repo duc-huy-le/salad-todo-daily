@@ -30,7 +30,7 @@ exports.add = async function (req, res) {
 exports.update = function (req, res) {
   var data = req.body;
   data.checkList = JSON.stringify(data.checkList);
-  Tag.update(data, function (response) {
+  Tag.update(req.params.id, data, function (response) {
     res.send({ result: response });
   });
 };
