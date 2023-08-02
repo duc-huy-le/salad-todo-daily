@@ -55,23 +55,15 @@ export class AddTaskModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getListProjects();
     this.initAddTaskForm();
+
+    this.projectService
+      .getProjectList()
+      .subscribe((projects) => (this.listProjects = projects));
   }
 
   ngOnChanges() {
     this.getCheckListPercent();
-  }
-
-  getListProjects() {
-    this.projectService
-      .getAllProject()
-      .toPromise()
-      .then((res: any) => {
-        if (res && res.result) {
-          this.listProjects = res.result;
-        }
-      });
   }
 
   initAddTaskForm() {

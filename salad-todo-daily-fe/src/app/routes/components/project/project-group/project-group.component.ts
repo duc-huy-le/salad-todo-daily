@@ -18,7 +18,13 @@ export class ProjectGroupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllProjects();
+    // this.getAllProjects();
+    this.projectService.getProjectList().subscribe((projects) => {
+      this.listProject = projects;
+      this.listProject = this.listProject?.filter(
+        (item) => item.totalTask !== 0 && item.totalTask !== item.completedTask
+      );
+    });
   }
 
   getAllProjects(): void {
@@ -35,9 +41,6 @@ export class ProjectGroupComponent implements OnInit {
         } else {
           this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách dự án.');
         }
-        this.listProject = this.listProject?.filter(
-          (item) => item.isDeleted === 0
-        );
       });
   }
 

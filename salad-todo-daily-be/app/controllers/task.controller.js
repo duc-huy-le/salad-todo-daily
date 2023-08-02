@@ -5,7 +5,7 @@ const { getFormattedMySqlDateTime } = require("../helpers/helper");
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);
-  Task.getAll(tokenInfo.data.id, function (data) {
+  Task.getAll(tokenInfo.data.id, req.query, function (data) {
     if (data) {
       data.forEach((element) => {
         element.checkList = JSON.parse(element.checkList);

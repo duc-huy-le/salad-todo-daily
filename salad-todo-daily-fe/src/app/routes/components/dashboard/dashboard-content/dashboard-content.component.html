@@ -1,19 +1,67 @@
 <div class="container">
-  <div class="view-type">
-    <button nz-button [nzType]="currentViewType === ViewType.Kanban?'primary':'default'" class="view-type__button mr-6">
-      <i class="fas fa-th-large mr-12"></i>
-      Kanban
-    </button>
-    <button nz-button class="view-type__button mr-6">
-      <i class="fas fa-list mr-12"></i>
-      List
-    </button>
-    <button nz-button class="view-type__button mr-6">
-      <i class="fas fa-calendar mr-12"></i>
-      Calendar
-    </button>
+  <div class="d-flex justify-content-space-between">
+    <div class="view-type">
+      <button
+        nz-button
+        [nzType]="currentViewType === ViewType.Kanban ? 'primary' : 'default'"
+        class="view-type__button mr-6"
+      >
+        <i class="fas fa-th-large mr-12"></i>
+        Kanban
+      </button>
+      <button nz-button class="view-type__button mr-6">
+        <i class="fas fa-list mr-12"></i>
+        List
+      </button>
+      <button nz-button class="view-type__button mr-6">
+        <i class="fas fa-calendar mr-12"></i>
+        Calendar
+      </button>
+    </div>
+    <div class="filter-group">
+      <button
+        nz-button
+        nzType="dashed"
+        nz-dropdown
+        nzTrigger="click"
+        [nzDropdownMenu]="filterMenu"
+        nzPlacement="bottomRight"
+      >
+        <i class="fas fa-filter mr-12"></i>
+        Bộ lọc
+      </button>
+    </div>
   </div>
   <div class="task-group">
-    <app-task-group></app-task-group>
+    <app-task-group #taskGroup [filterForm]="filterForm.value"></app-task-group>
   </div>
 </div>
+
+<nz-dropdown-menu #filterMenu="nzDropdownMenu">
+  <div class="filter-block p-12">
+    <form nz-form [formGroup]="filterForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="project"
+          >Dự án</nz-form-label
+        >
+        <nz-form-control>
+          <nz-select
+            nzMode="multiple"
+            nzPlaceHolder="Lọc dự án"
+            id="project"
+            [nzAllowClear]="true"
+            formControlName="projectId"
+            (ngModelChange)="onChangeProject($event)"
+          >
+            <nz-option [nzValue]="0" [nzLabel]="'Không có dự án'"></nz-option>
+            <nz-option
+              *ngFor="let project of projectList"
+              [nzValue]="project.id"
+              [nzLabel]="project.name"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</nz-dropdown-menu>

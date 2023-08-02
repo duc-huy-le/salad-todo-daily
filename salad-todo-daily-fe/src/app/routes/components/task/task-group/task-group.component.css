@@ -3,8 +3,9 @@
 }
 
 .list-task-scroll {
-  height: calc(100vh - 140px);
+  height: calc(100vh - 120px);
   overflow-y: auto;
+  border-radius: 15px;
   /* -ms-overflow-style: none;   Hide scrollbar for IE and Edge */
   /* scrollbar-width: none;  Hide scrollbar for Firefox */
 }

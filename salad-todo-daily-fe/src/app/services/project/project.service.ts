@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { Project } from 'src/app/models/Project';
@@ -10,9 +11,21 @@ import { AuthService } from 'src/app/shared/auth.service';
 })
 export class ProjectService {
   baseUrl = 'http://localhost:3000/project';
-  userInfo: any;
+  private projectList$: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>([]);
 
   constructor(private http: HttpClient) {
+    this.fetchProjectList();
+  }
+
+  getProjectList(): Observable<Project[]> {
+    return this.projectList$.asObservable();
+  }
+
+  private fetchProjectList() {
+    this.http.get<any>(this.baseUrl, getRequestOption()).subscribe(
+      (res) => this.projectList$.next(res.result),
+      (err) => console.error(err)
+    )
   }
 
   getAllProject() {

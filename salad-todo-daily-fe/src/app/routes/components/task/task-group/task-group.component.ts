@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/models/Task';
 import { TaskService } from 'src/app/services/task/task.service';
 import { AddTaskModalComponent } from '../add-task-modal/add-task-modal.component';
@@ -13,6 +13,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class TaskGroupComponent implements OnInit {
   @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
+  @Input() filterForm: any;
   listTask: Task[] = [];
   listOpenTask?: Task[];
   listInProgressTask?: Task[];
@@ -29,12 +30,16 @@ export class TaskGroupComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getAllTask();
-    this.sendMessageToTelegram();
+    // this.sendMessageToTelegram();
+  }
+
+  ngOnChanges() {
+    this.getAllTask();
   }
 
   async getAllTask() {
     await this.taskService
-      .getAllTask()
+      .getAllTask(this.filterForm)
       .toPromise()
       .then((res: any) => {
         if (res && res.result) {

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
@@ -12,8 +12,15 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTask() {
-    return this.http.get<any>(this.baseUrl, getRequestOption());
+  getAllTask(query: any) {
+    let params = new HttpParams();
+    for (const key in query) {
+      if(query[key])
+      params = params.append(key, query[key]);
+    }
+    // params = params.append('projectId', '2');
+    return this.http.get<any>(this.baseUrl, { ...getRequestOption(), params });
+    // return this.http.get<any>(this.baseUrl, {...getRequestOption()});
   }
 
   addNewTask(data: any) {

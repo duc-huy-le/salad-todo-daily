@@ -17,17 +17,24 @@ const Task = function (task) {
 
 const tableName = "task";
 
-Task.getAll = function (userId, result) {
-  db.query(
-    `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
-    function (err, data) {
-      if (err) {
-        result(null);
-      } else {
-        result(data);
-      }
+Task.getAll = function (userId, query, result) {
+  let querySQL = `select * from ${tableName} where createdBy = ${userId}`;
+  if (query.projectId) {
+    if (query.projectId.includes("0")) {
+      querySQL += ` and (projectId in (${query.projectId}) or projectId is null)`;
+    } else {
+      querySQL += ` and projectId in (${query.projectId})`;
     }
-  );
+  }
+  querySQL += ` and isDeleted = 0`;
+
+  db.query(querySQL, function (err, data) {
+    if (err) {
+      result(err);
+    } else {
+      result(data);
+    }
+  });
 };
 
 Task.getById = function (userId, recordId, result) {

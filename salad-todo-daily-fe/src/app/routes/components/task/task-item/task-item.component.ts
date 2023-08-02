@@ -62,29 +62,24 @@ export class TaskItemComponent implements OnInit {
     private modal: NzModalService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.projectService.getProjectList().subscribe((projects) => {
+      this.listProject = projects;
+    });
+    this.getProjectInfo();
+  }
 
   ngOnChanges(): void {
     this.transformTaskData();
-    this.getListProjects();
     this.getCheckListCount();
+    this.projectService
+      .getProjectList()
+      .subscribe((projects) => (this.listProject = projects));
   }
 
   transformTaskData(): void {
     this.task.priorityColor = this.getPriorityColor(this.task.priority);
     this.task.priorityLabel = this.getPriorityLabel(this.task.priority);
-  }
-
-  getListProjects() {
-    this.projectService
-      .getAllProject()
-      .toPromise()
-      .then((res: any) => {
-        if (res && res.result) {
-          this.listProject = res.result;
-          this.getProjectInfo();
-        }
-      });
   }
 
   getProjectInfo(): void {
@@ -159,8 +154,7 @@ export class TaskItemComponent implements OnInit {
 
   showDeleteConfirm() {
     this.modal.confirm({
-      nzTitle:
-        'Xóa công việc?',
+      nzTitle: 'Xóa công việc?',
       nzContent: `Bạn có chắc chắn muốn xóa công việc: <b style="color: red;">${this.task?.name}</b>`,
       nzOkText: 'Xóa',
       nzOkType: 'primary',
