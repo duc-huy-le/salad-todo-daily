@@ -61,7 +61,8 @@ exports.update = function (req, res) {
   data.tagId = JSON.stringify(data.tagId);
   if (data.startDate)
     data.startDate = getFormattedMySqlDateTime(data.startDate);
-  TaskDaily.update(data, function (response) {
+  TaskDaily.update(req.params.id, data, function (response) {
+    if (response) response[0].tagId = JSON.parse(response[0].tagId);
     res.send({ result: response });
   });
 };

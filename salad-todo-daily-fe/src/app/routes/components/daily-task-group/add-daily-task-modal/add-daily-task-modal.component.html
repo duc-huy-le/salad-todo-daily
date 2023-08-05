@@ -2,8 +2,8 @@
   [(nzVisible)]="isVisible"
   nzTitle="Thêm thói quen mới"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleAddTaskDaily()"
-  [nzOkText]="'Tạo thói quen'"
+  (nzOnOk)="onClickModalOk()"
+  [nzOkText]="viewMode === DailyTaskModalViewMode.Create? 'Tạo thói quen': 'Lưu'"
   [nzCancelText]="'Hủy'"
 >
   <ng-container *nzModalContent>

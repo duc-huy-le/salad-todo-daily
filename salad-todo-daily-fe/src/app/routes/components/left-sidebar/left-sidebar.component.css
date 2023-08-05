@@ -12,3 +12,9 @@
 .logo h1 {
   margin-bottom: 0;
 }
+
+.user-info {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+}

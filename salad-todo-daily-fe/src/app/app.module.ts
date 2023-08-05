@@ -30,6 +30,7 @@ import { ProjectScreenComponent } from './routes/home/project-screen/project-scr
 import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
 import { UserInfoComponent } from './routes/components/user-info/user-info.component';
 import { TagManagementComponent } from './routes/home/project-screen/tag-management/tag-management.component';
+import { TaskDailyManagementComponent } from './routes/home/project-screen/task-daily-management/task-daily-management.component';
 
 registerLocaleData(en);
 
@@ -54,7 +55,8 @@ registerLocaleData(en);
     ProjectScreenComponent,
     LoginScreenComponent,
     UserInfoComponent,
-    TagManagementComponent
+    TagManagementComponent,
+    TaskDailyManagementComponent
   ],
   imports: [
     BrowserModule,

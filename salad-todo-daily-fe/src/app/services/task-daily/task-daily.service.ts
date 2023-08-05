@@ -27,11 +27,11 @@ export class TaskDailyService {
   }
 
   updateTaskDaily(id: any, data: any) {
-    return this.http.put<TaskDaily>(`${this.baseUrl}/${id}`, data);
+    return this.http.put<TaskDaily>(`${this.baseUrl}/${id}`, data, getRequestOption());
   }
 
   updatePropTaskDaily(id: any, data: any) {
-    return this.http.patch(`${this.baseUrl}/${id}`, data);
+    return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
   }
 
   deleteTaskDaily(id: any) {

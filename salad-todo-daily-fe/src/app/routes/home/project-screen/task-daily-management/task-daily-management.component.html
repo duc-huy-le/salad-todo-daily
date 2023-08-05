@@ -1,0 +1,56 @@
+<div class="container">
+  <button nz-button>
+    <i class="fas fa-plus-circle mr-6"></i>Thêm thói quen
+  </button>
+  <nz-table #basicTable class="mt-12" [nzData]="taskDailyList" [nzScroll]="{y: '440px'}">
+    <thead>
+      <tr>
+        <th nzWidth="7%" nzAlign="center">STT</th>
+        <th>Tên</th>
+        <th nzWidth="13%">Ngày bắt đầu</th>
+        <th nzWidth="13%">Nhãn</th>
+        <th>Mô tả</th>
+        <th nzWidth="18%" nzAlign="center">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data; let i = index">
+        <td nzAlign="center">{{ i + 1 }}</td>
+        <td>
+          {{ data.name }}
+        </td>
+        <td>{{ data.startDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <!-- <nz-tag [nzColor]="data.tagColor">{{ data.tagName }}</nz-tag> -->
+        </td>
+        <td>
+          {{ data.description }}
+        </td>
+        <td nzAlign="center">
+          <button class="mx-3" nz-button (click)="onClickEdit(data)">
+            <span nz-icon nzType="edit"></span>
+          </button>
+          <button
+            class="mx-3"
+            nz-button
+            nzType="primary"
+            nzDanger
+            nz-popconfirm
+            nzPopconfirmTitle="Bạn có chắc chắn muốn xóa thói quen này?"
+            nzPopconfirmPlacement="top"
+            nzOkText="Xóa"
+            nzCancelText="Hủy"
+            (nzOnConfirm)="deleteDailyTask(data.id)"
+          >
+            <span nz-icon nzType="delete"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<app-add-daily-task-modal
+  #addDailyTaskModal
+  (onUpdateTaskDaily)="getTaskDailyList()"
+></app-add-daily-task-modal>

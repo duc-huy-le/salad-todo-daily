@@ -9,7 +9,7 @@ module.exports = function (router) {
   
     router.post("/task-daily", taskDailyController.add);
   
-    router.put("/task-daily", taskDailyController.update);
+    router.put("/task-daily/:id", taskDailyController.update);
 
     router.patch("/task-daily/:id", taskDailyController.updateLittle);
   

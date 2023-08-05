@@ -1,20 +1,29 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { TaskDaily } from 'src/app/models/TaskDaily';
 import { TaskTag } from 'src/app/models/TaskTag';
 import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
 
+export enum DailyTaskModalViewMode {
+  Create = 0,
+  Edit = 1,
+}
 @Component({
   selector: 'app-add-daily-task-modal',
   templateUrl: './add-daily-task-modal.component.html',
   styleUrls: ['./add-daily-task-modal.component.css'],
 })
 export class AddDailyTaskModalComponent implements OnInit {
-  @Output() onAddTaskDaily = new EventEmitter();
+  @Input() dailyTask!: TaskDaily;
+  @Output() onUpdateTaskDaily = new EventEmitter();
+  viewMode: DailyTaskModalViewMode = DailyTaskModalViewMode.Create;
   isVisible = false;
   addDailyTaskForm!: FormGroup;
   listTaskTag: TaskTag[] = [];
   today: Date = new Date();
+
+  DailyTaskModalViewMode = DailyTaskModalViewMode;
 
   constructor(
     private fb: FormBuilder,
@@ -41,18 +50,38 @@ export class AddDailyTaskModalComponent implements OnInit {
     });
   }
 
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  onClickModalOk() {
+    if (this.viewMode === DailyTaskModalViewMode.Create) {
+      this.handleAddTaskDaily();
+    } else if (this.viewMode === DailyTaskModalViewMode.Edit) {
+      this.handleEditTaskDaily();
+    }
+  }
+
   handleAddTaskDaily(): void {
     this.taskDailyService
       .addNewTaskDaily(this.addDailyTaskForm.value)
       .toPromise()
       .then((res) => {
         this.msg.success('Tạo thói quen thành công!');
-        this.onAddTaskDaily.emit();
+        this.onUpdateTaskDaily.emit();
         this.isVisible = false;
       });
   }
 
-  handleCancel(): void {
-    this.isVisible = false;
+  handleEditTaskDaily(): void {
+    this.taskDailyService
+      .updateTaskDaily(this.dailyTask.id, this.addDailyTaskForm.value)
+      .toPromise()
+      .then((res) => {
+        this.msg.success('Cập nhật thói quen thành công!');
+        this.onUpdateTaskDaily.emit();
+        this.isVisible = false;
+      });
   }
+
 }
