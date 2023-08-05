@@ -59,7 +59,8 @@ User.checkLogin = function (data, result) {
     [data.email, data.password],
     function (err, user) {
       if (err || user.length == 0) {
-        result(err);
+        console.error(err);
+        result(null);
       } else result(user[0]);
     }
   );
