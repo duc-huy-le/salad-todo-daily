@@ -35,6 +35,12 @@ export class TaskDailyManagementComponent implements OnInit {
     // taskDailyItem.tagName
   }
 
+  openAddModal(): void {
+    this.addDailyTaskModal.viewMode = DailyTaskModalViewMode.Create;
+    this.addDailyTaskModal.isVisible = true;
+    this.addDailyTaskModal.setDefaultValue();
+  }
+
   onClickEdit(data: TaskDaily) {
     this.addDailyTaskModal.dailyTask = data;
     this.addDailyTaskModal.viewMode = DailyTaskModalViewMode.Edit;

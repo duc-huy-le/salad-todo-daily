@@ -22,6 +22,10 @@ export class AddDailyTaskModalComponent implements OnInit {
   addDailyTaskForm!: FormGroup;
   listTaskTag: TaskTag[] = [];
   today: Date = new Date();
+  formDefaultValue: any = {
+    startDate: this.today,
+    isDeleted: 0,
+  }
 
   DailyTaskModalViewMode = DailyTaskModalViewMode;
 
@@ -82,6 +86,11 @@ export class AddDailyTaskModalComponent implements OnInit {
         this.onUpdateTaskDaily.emit();
         this.isVisible = false;
       });
+  }
+
+  setDefaultValue(): void {
+    this.addDailyTaskForm.reset();
+    this.addDailyTaskForm.patchValue(this.formDefaultValue);
   }
 
 }

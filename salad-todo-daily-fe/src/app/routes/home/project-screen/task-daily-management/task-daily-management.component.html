@@ -1,5 +1,5 @@
 <div class="container">
-  <button nz-button>
+  <button nz-button (click)="openAddModal()">
     <i class="fas fa-plus-circle mr-6"></i>Thêm thói quen
   </button>
   <nz-table #basicTable class="mt-12" [nzData]="taskDailyList" [nzScroll]="{y: '440px'}">
