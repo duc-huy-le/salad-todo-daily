@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
   listNavItems: NavItem[] = [
     new NavItem('Trang chủ', 0, true, '/home/dashboard', 'fa-columns'),
     new NavItem('Thống kê', 1, false, '/a', 'fa-list'),
-    new NavItem('Dự án', 2, false, '/home/project', 'fa-project-diagram'),
+    new NavItem('Quản lý danh mục', 2, false, '/home/project', 'fa-project-diagram'),
     new NavItem('Việc hàng ngày', 3, false, '/', 'fa-calendar'),
   ];
 

@@ -1,5 +1,5 @@
 <div class="container m-24">
-  <nz-tabset nzType="card">
+  <nz-tabset nzType="card" [nzSelectedIndex]="initialTabIndex" (nzSelectedIndexChange)="onChangeTab($event)">
     <nz-tab nzTitle="Dự án">
       <nz-table #basicTable [nzData]="listProjects">
         <thead>
