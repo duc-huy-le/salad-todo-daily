@@ -68,21 +68,19 @@ TaskDaily.create = function (payload, result) {
 
 TaskDaily.update = function (recordId, payload, result) {
   db.query(
-    `update ${tableName} set name = ?, projectId = ?, description = ?, startDate = ?, finishDate = ?, priority = ?, status = ?, checkList = ?, isDeleted = ? where id = ${recordId}`,
+    `update ${tableName} set name = ?, description = ?, tagId = ?, startDate = ?, finishDate = ?, priority = ?, isDeleted = ? where id = ${recordId}`,
     [
       payload.name,
-      payload.projectId,
       payload.description,
+      payload.tagId,
       payload.startDate,
       payload.finishDate,
       payload.priority,
-      payload.status,
-      payload.checkList,
       payload.isDeleted,
     ],
     function (err, data) {
       if (err) {
-        result(null);
+        result(err);
       } else {
         db.query(
           `select * from ${tableName} where id = ${recordId}`,
