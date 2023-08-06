@@ -11,7 +11,7 @@
   <div class="group-body d-flex flex-direction-column">
     <nz-divider></nz-divider>
     <ng-container *ngFor="let task of listTaskDaily">
-      <app-daily-task-item [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()"></app-daily-task-item>
+      <app-daily-task-item [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()" (onUpdateTaskDaily)="setDailyTaskAmount()"></app-daily-task-item>
     </ng-container>
   </div>
 </div>

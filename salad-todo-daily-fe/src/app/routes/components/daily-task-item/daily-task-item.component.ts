@@ -18,6 +18,7 @@ import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 export class DailyTaskItemComponent implements OnInit {
   @Input() task?: TaskDaily;
   @Output() onDeleteTaskDaily = new EventEmitter();
+  @Output() onUpdateTaskDaily = new EventEmitter();
   listTaskTag?: TaskTag[];
   checked: boolean = false;
   constructor(
@@ -86,5 +87,6 @@ export class DailyTaskItemComponent implements OnInit {
           }
         });
     }
+    this.onUpdateTaskDaily.emit();
   }
 }

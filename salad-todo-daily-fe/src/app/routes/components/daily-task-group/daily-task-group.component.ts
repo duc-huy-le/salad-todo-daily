@@ -32,10 +32,7 @@ export class DailyTaskGroupComponent implements OnInit {
       .then((res: any) => {
         if (res && res.result) {
           this.listTaskDaily = res.result;
-          this.totalTaskDaily = this.listTaskDaily?.length;
-          this.completedTaskDaily = this.listTaskDaily?.filter(
-            (item) => item.checked === true
-          ).length;
+          this.setDailyTaskAmount();
         } else {
           this.msg.error(
             'Có lỗi xảy ra. Không thể lấy danh sách công việc hàng ngày.'
@@ -46,5 +43,12 @@ export class DailyTaskGroupComponent implements OnInit {
 
   openAddTaskDailyModal() {
     this.addDailyTaskModal.isVisible = true;
+  }
+
+  setDailyTaskAmount() {
+    this.totalTaskDaily = this.listTaskDaily?.length;
+    this.completedTaskDaily = this.listTaskDaily?.filter(
+      (item) => item.checked === true
+    ).length;
   }
 }
