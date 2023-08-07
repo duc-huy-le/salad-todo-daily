@@ -1,6 +1,12 @@
 <div class="container p-12 mb-6" (contextmenu)="contextMenu($event, menu)">
   <div nz-row class="task__name mb-6">
-    <label nz-checkbox [(ngModel)]="task!.checked" (ngModelChange)="onCheckTaskDaily($event)">{{ task?.name }}</label>
+    <label
+      nz-checkbox
+      [ngClass]="task!.checked ? 'text-decoration-line-through' : ''"
+      [(ngModel)]="task!.checked"
+      (ngModelChange)="onCheckTaskDaily($event)"
+      >{{ task?.name }}</label
+    >
   </div>
   <div nz-row>
     <div nz-col nzSpan="24" class="task__tag">
@@ -18,7 +24,15 @@
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item><i class="fas fa-tachometer mr-12  "></i>Xem thống kê</li>
-    <li nz-menu-item nzDanger nz-popconfirm nzPopconfirmTitle="Bạn có chắc chắn muốn xóa thói quen này?" (nzOnConfirm)="onDeleteTaskDailyContextMenu()"><i class="fas fa-trash mr-12"></i>Xóa thói quen</li>
+    <li nz-menu-item><i class="fas fa-tachometer mr-12"></i>Xem thống kê</li>
+    <li
+      nz-menu-item
+      nzDanger
+      nz-popconfirm
+      nzPopconfirmTitle="Bạn có chắc chắn muốn xóa thói quen này?"
+      (nzOnConfirm)="onDeleteTaskDailyContextMenu()"
+    >
+      <i class="fas fa-trash mr-12"></i>Xóa thói quen
+    </li>
   </ul>
 </nz-dropdown-menu>
