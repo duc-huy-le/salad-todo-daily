@@ -27,6 +27,7 @@ export class DashboardContentComponent implements OnInit {
   ViewType = ViewType;
   filterForm!: FormGroup;
   projectList: Project[] = [];
+  listFilteringProject: string = '';
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
@@ -39,12 +40,14 @@ export class DashboardContentComponent implements OnInit {
 
     this.projectService.getProjectList().subscribe((projects) => {
       this.projectList = projects;
+      this.getListFilteringProject();
     });
 
     this.route.queryParams.subscribe((params) => {
       if (params.projectId) {
         const projectIdNumberArr = [...params.projectId].map(Number);
         this.filterForm.get('projectId')?.setValue(projectIdNumberArr);
+        this.getListFilteringProject();
       }
     });
   }
@@ -59,5 +62,20 @@ export class DashboardContentComponent implements OnInit {
     this.router.navigate(['/home/dashboard'], {
       queryParams: { projectId: [...ev] },
     });
+  }
+
+  getListFilteringProject(): void {
+    let result = '';
+    for (const projectId of this.filterForm.value.projectId) {
+      const projectName = this.projectList.find(
+        (p: any) => p.id === projectId
+      )?.name;
+      result += `${projectName}, `;
+    }
+    result = result.slice(0, -2);
+    if (result.length > 50) {
+      result = result.slice(0, 50) + '...';
+    }
+    this.listFilteringProject = result;
   }
 }

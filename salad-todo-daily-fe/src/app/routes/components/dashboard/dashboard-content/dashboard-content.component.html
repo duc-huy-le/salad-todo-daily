@@ -19,6 +19,7 @@
       </button>
     </div>
     <div class="filter-group">
+      <nz-tag *ngIf="filterForm.value.projectId && filterForm.value.projectId.length > 0" nzColor="blue">Dự án: {{listFilteringProject}}</nz-tag>
       <button
         nz-button
         nzType="dashed"
