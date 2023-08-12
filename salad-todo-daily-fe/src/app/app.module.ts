@@ -31,6 +31,8 @@ import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.co
 import { UserInfoComponent } from './routes/components/user-info/user-info.component';
 import { TagManagementComponent } from './routes/home/project-screen/tag-management/tag-management.component';
 import { TaskDailyManagementComponent } from './routes/home/project-screen/task-daily-management/task-daily-management.component';
+import { DailyTaskScreenComponent } from './routes/home/daily-task-screen/daily-task-screen.component';
+
 
 registerLocaleData(en);
 
@@ -56,7 +58,8 @@ registerLocaleData(en);
     LoginScreenComponent,
     UserInfoComponent,
     TagManagementComponent,
-    TaskDailyManagementComponent
+    TaskDailyManagementComponent,
+    DailyTaskScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,7 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NgZorroAntdModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }, DatePipe],
   bootstrap: [AppComponent]

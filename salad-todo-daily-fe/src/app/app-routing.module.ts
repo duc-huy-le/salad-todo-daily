@@ -5,6 +5,7 @@ import { ProjectScreenComponent } from './routes/home/project-screen/project-scr
 import { DashboardContentComponent } from './routes/components/dashboard/dashboard-content/dashboard-content.component';
 import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
 import { AuthGuard } from './shared/auth.guard';
+import { DailyTaskScreenComponent } from './routes/home/daily-task-screen/daily-task-screen.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/dashboard' },
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardContentComponent },
       { path: 'project', component: ProjectScreenComponent },
+      { path: 'daily-task', component: DailyTaskScreenComponent },
     ]
   },
 ];
