@@ -1,0 +1,19 @@
+<div class="daily-task-item-detail-container p-12 my-6">
+  <div nz-row>
+    <div nz-col nzSpan="8">
+      {{ dailyTask?.name }}
+    </div>
+    <div nz-col nzSpan="16" class="daily-task-heatmap">
+      <app-s-heatmap
+        [heatMapStyle]="{ height: '120px' }"
+        [chartId]="dailyTask?.id"
+        [dataSource]="heatmapData"
+        [yAxis]="yAxis"
+        [xAxis]="xAxis"
+        [titleSettings]="titleSettings"
+        [paletteSettings]="paletteSettings"
+        [tooltipRender]="tooltipRender"
+      ></app-s-heatmap>
+    </div>
+  </div>
+</div>

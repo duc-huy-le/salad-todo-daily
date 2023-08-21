@@ -1,0 +1,12 @@
+<ejs-heatmap
+  [ngStyle]="heatMapStyle"
+  [id]="'container' + chartId"
+  [dataSource]="dataSource"
+  [xAxis]="xAxis"
+  [yAxis]="yAxis"
+  [legendSettings]="legendSettings"
+  [titleSettings]="titleSettings"
+  [cellSettings]="cellSettings"
+  [paletteSettings]="paletteSettings"
+  (tooltipRender)="onTooltipRender($event)"
+></ejs-heatmap>

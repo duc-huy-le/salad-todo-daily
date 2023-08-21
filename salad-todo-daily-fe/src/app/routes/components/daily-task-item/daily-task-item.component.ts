@@ -4,10 +4,10 @@ import {
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { TaskDaily } from 'src/app/models/TaskDaily';
+import { DailyTask } from 'src/app/models/DailyTask';
 import { TaskTag } from 'src/app/models/TaskTag';
 import { TaskDailyHistoryService } from 'src/app/services/task-daily-history/task-daily-history.service';
-import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
+import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
 import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 
 @Component({
@@ -16,14 +16,14 @@ import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
   styleUrls: ['./daily-task-item.component.css'],
 })
 export class DailyTaskItemComponent implements OnInit {
-  @Input() task?: TaskDaily;
+  @Input() task?: DailyTask;
   @Output() onDeleteTaskDaily = new EventEmitter();
   @Output() onUpdateTaskDaily = new EventEmitter();
   listTaskTag?: TaskTag[];
   checked: boolean = false;
   constructor(
     private taskTagService: TaskTagService,
-    private taskDailyService: TaskDailyService,
+    private taskDailyService: DailyTaskService,
     private nzContextMenuService: NzContextMenuService,
     private msg: NzMessageService,
     private taskDailyHistory: TaskDailyHistoryService
@@ -57,7 +57,7 @@ export class DailyTaskItemComponent implements OnInit {
     this.taskDailyService
       .updatePropTaskDaily(this.task?.id, { isDeleted: true })
       .toPromise()
-      .then((res) => {
+      .then((res: any) => {
         this.msg.success(
           'Xóa thói quen thành công. Thói quen đã được chuyển vào thùng rác.'
         );

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { TaskDaily } from 'src/app/models/TaskDaily';
+import { DailyTask } from 'src/app/models/DailyTask';
 import { TaskTag } from 'src/app/models/TaskTag';
-import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
+import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
 
 export enum DailyTaskModalViewMode {
   Create = 0,
@@ -15,7 +15,7 @@ export enum DailyTaskModalViewMode {
   styleUrls: ['./add-daily-task-modal.component.css'],
 })
 export class AddDailyTaskModalComponent implements OnInit {
-  @Input() dailyTask!: TaskDaily;
+  @Input() dailyTask!: DailyTask;
   @Output() onUpdateTaskDaily = new EventEmitter();
   viewMode: DailyTaskModalViewMode = DailyTaskModalViewMode.Create;
   isVisible = false;
@@ -31,7 +31,7 @@ export class AddDailyTaskModalComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private taskDailyService: TaskDailyService,
+    private taskDailyService: DailyTaskService,
     private msg: NzMessageService
   ) {}
 

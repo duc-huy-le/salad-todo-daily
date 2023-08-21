@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { TaskDaily } from 'src/app/models/TaskDaily';
+import { DailyTask } from 'src/app/models/DailyTask';
 import { AddDailyTaskModalComponent, DailyTaskModalViewMode } from 'src/app/routes/components/daily-task-group/add-daily-task-modal/add-daily-task-modal.component';
-import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
+import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
 
 @Component({
   selector: 'app-task-daily-management',
@@ -11,10 +11,10 @@ import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service
 })
 export class TaskDailyManagementComponent implements OnInit {
   @ViewChild('addDailyTaskModal') addDailyTaskModal!: AddDailyTaskModalComponent;
-  taskDailyList: TaskDaily[] = [];
+  taskDailyList: DailyTask[] = [];
 
   constructor(
-    private taskDailyService: TaskDailyService,
+    private taskDailyService: DailyTaskService,
     private msg: NzMessageService
   ) { }
 
@@ -31,7 +31,7 @@ export class TaskDailyManagementComponent implements OnInit {
     })
   }
 
-  transformDailyTaskData(taskDailyItem: TaskDaily): void {
+  transformDailyTaskData(taskDailyItem: DailyTask): void {
     // taskDailyItem.tagName
   }
 
@@ -41,7 +41,7 @@ export class TaskDailyManagementComponent implements OnInit {
     this.addDailyTaskModal.setDefaultValue();
   }
 
-  onClickEdit(data: TaskDaily) {
+  onClickEdit(data: DailyTask) {
     this.addDailyTaskModal.dailyTask = data;
     this.addDailyTaskModal.viewMode = DailyTaskModalViewMode.Edit;
     this.addDailyTaskModal.addDailyTaskForm.patchValue(data);

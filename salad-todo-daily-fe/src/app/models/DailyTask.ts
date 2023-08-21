@@ -1,4 +1,4 @@
-export class TaskDaily {
+export class DailyTask {
   id: any;
   name: string;
   description: string;

@@ -8,18 +8,21 @@ const TaskDailyHistory = function (taskDailyHistory) {
 
 const tableName = "task_daily_history";
 
-// TaskDailyHistory.getAll = function (userId, result) {
-//   db.query(
-//     `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
-//     function (err, data) {
-//       if (err) {
-//         result(null);
-//       } else {
-//         result(data);
-//       }
-//     }
-//   );
-// };
+TaskDailyHistory.getAll = function (userId, result) {
+  const query = `select * from ${tableName}`;
+  db.query(
+    query,
+    function (err, data) {
+      if (err) {
+        result(err);
+      } else {
+        result(data);
+      }
+    }
+  );
+};
+
+
 // TaskDailyHistory.getAllToday = function (userId, result) {
 //   const query = `select td.*, tdh.taskDailyId IS NOT NULL AS checked FROM ${tableName} td
 //   LEFT JOIN task_daily_history tdh ON td.id = tdh.taskDailyId AND DATE(tdh.completionDate) = CURDATE()

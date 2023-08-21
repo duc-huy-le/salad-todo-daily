@@ -32,7 +32,9 @@ import { UserInfoComponent } from './routes/components/user-info/user-info.compo
 import { TagManagementComponent } from './routes/home/project-screen/tag-management/tag-management.component';
 import { TaskDailyManagementComponent } from './routes/home/project-screen/task-daily-management/task-daily-management.component';
 import { DailyTaskScreenComponent } from './routes/home/daily-task-screen/daily-task-screen.component';
-
+import { HeatMapAllModule } from '@syncfusion/ej2-angular-heatmap';
+import { DailyTaskItemDetailComponent } from './routes/components/daily-task-item-detail/daily-task-item-detail.component';
+import { SHeatmapComponent } from './routes/components/s-heatmap/s-heatmap.component';
 
 registerLocaleData(en);
 
@@ -59,7 +61,9 @@ registerLocaleData(en);
     UserInfoComponent,
     TagManagementComponent,
     TaskDailyManagementComponent,
-    DailyTaskScreenComponent
+    DailyTaskScreenComponent,
+    DailyTaskItemDetailComponent,
+    SHeatmapComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
+    HeatMapAllModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }, DatePipe],
   bootstrap: [AppComponent]

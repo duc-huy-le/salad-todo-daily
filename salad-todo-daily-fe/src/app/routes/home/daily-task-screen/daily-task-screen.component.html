@@ -1,3 +1,7 @@
-<div class="daily-task-screen-container m-12">
-
+<div class="daily-task-screen-container p-12">
+  <div *ngFor="let dailyTask of dailyTaskList">
+    <app-daily-task-item-detail
+      [dailyTask]="dailyTask"
+    ></app-daily-task-item-detail>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TaskDaily } from 'src/app/models/TaskDaily';
-import { TaskDailyService } from 'src/app/services/task-daily/task-daily.service';
+import { DailyTask } from 'src/app/models/DailyTask';
+import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
 import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 import { AddDailyTaskModalComponent } from './add-daily-task-modal/add-daily-task-modal.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -13,11 +13,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class DailyTaskGroupComponent implements OnInit {
   @ViewChild('addDailyTaskModal')
   addDailyTaskModal!: AddDailyTaskModalComponent;
-  listTaskDaily?: TaskDaily[];
+  listTaskDaily?: DailyTask[];
   totalTaskDaily?: number;
   completedTaskDaily?: number;
   constructor(
-    private taskDailyService: TaskDailyService,
+    private taskDailyService: DailyTaskService,
     private msg: NzMessageService
   ) {}
 
@@ -26,19 +26,10 @@ export class DailyTaskGroupComponent implements OnInit {
   }
 
   getAllTaskDaily() {
-    this.taskDailyService
-      .getAllTaskDailyToday()
-      .toPromise()
-      .then((res: any) => {
-        if (res && res.result) {
-          this.listTaskDaily = res.result;
-          this.setDailyTaskAmount();
-        } else {
-          this.msg.error(
-            'Có lỗi xảy ra. Không thể lấy danh sách công việc hàng ngày.'
-          );
-        }
-      });
+    this.taskDailyService.getAllTaskDailyToday().subscribe((dailyTask) => {
+      this.listTaskDaily = dailyTask;
+      this.setDailyTaskAmount();
+    });
   }
 
   openAddTaskDailyModal() {

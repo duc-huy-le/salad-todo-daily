@@ -1,3 +1,4 @@
+var TaskDailyHistory = require("../models/taskDailyHistory.model");
 var TaskDaily = require("../models/taskDaily.model");
 var JWT = require("../common/_JWT");
 const { getFormattedMySqlDateTime } = require("../helpers/helper");
