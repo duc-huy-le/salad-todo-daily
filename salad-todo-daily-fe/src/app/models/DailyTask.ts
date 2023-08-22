@@ -9,8 +9,8 @@ export class DailyTask {
   createdAt: Date;
   isDeleted: boolean;
   checked: boolean;
-  tagName: string;
-  tagColor: string;
+  tagName: string[];
+  tagColor: string[];
   constructor(
     id: any,
     name: string,
@@ -22,8 +22,8 @@ export class DailyTask {
     createdAt: Date,
     isDeleted: boolean,
     checked: boolean,
-    tagName: string,
-    tagColor: string
+    tagName: string[],
+    tagColor: string[]
   ) {
     this.id = id;
     this.name = name;

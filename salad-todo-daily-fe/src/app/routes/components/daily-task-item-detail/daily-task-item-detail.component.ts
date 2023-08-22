@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ITooltipEventArgs } from '@syncfusion/ej2-angular-heatmap';
 import { Internationalization } from '@syncfusion/ej2-base';
 import { DailyTask } from 'src/app/models/DailyTask';
+import { TaskTag } from 'src/app/models/TaskTag';
 import { DailyTaskStatisticService } from 'src/app/services/daily-task/daily-task-statistic.service';
 
 @Component({
@@ -11,6 +12,8 @@ import { DailyTaskStatisticService } from 'src/app/services/daily-task/daily-tas
 })
 export class DailyTaskItemDetailComponent implements OnInit {
   @Input() dailyTask!: DailyTask;
+  listTaskTag?: TaskTag[];
+
   listAllDailyTaskHeatmapData: any[] = [];
   heatmapData: any;
   startFrom!: Date;
@@ -55,6 +58,26 @@ export class DailyTaskItemDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListHeatmapData();
+  }
+
+  ngOnChanges(): void {
+    this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    this.transformDailyTaskData();
+  }
+
+  transformDailyTaskData() {
+    this.dailyTask.tagName = this.getTaskTagName(this.dailyTask.tagId);
+    this.dailyTask.tagColor = this.getTaskTagColor(this.dailyTask.tagId);
+  }
+
+  getTaskTagName(tagId: any[]): string[] {
+    const listTag = this.listTaskTag?.filter((item) => tagId.includes(item.id));
+    return listTag!.map((item) => item.name);
+  }
+
+  getTaskTagColor(tagId: any[]): string[] {
+    const listTag = this.listTaskTag?.filter((item) => tagId.includes(item.id));
+    return listTag!.map((item) => item.color);
   }
 
   getListHeatmapData() {

@@ -1,7 +1,13 @@
 <div class="daily-task-item-detail-container p-12 my-6">
   <div nz-row>
     <div nz-col nzSpan="8">
-      {{ dailyTask?.name }}
+      <b> {{ dailyTask?.name }}</b>
+      <p> {{ dailyTask?.description }}</p>
+      <ng-container *ngFor="let tagId of dailyTask?.tagId; let i = index">
+        <nz-tag [nzColor]="dailyTask!.tagColor[i]">{{
+          dailyTask!.tagName[i]
+        }}</nz-tag>
+      </ng-container>
     </div>
     <div nz-col nzSpan="16" class="daily-task-heatmap">
       <app-s-heatmap
