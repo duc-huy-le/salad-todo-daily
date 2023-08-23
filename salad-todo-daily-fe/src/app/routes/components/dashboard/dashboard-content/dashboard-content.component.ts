@@ -45,7 +45,10 @@ export class DashboardContentComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       if (params.projectId) {
-        const projectIdNumberArr = [...params.projectId].map(Number);
+        let paramProjectIdList = [];
+        if(typeof params.projectId === 'string') paramProjectIdList = [params.projectId];
+        else paramProjectIdList = [...params.projectId];
+        const projectIdNumberArr = paramProjectIdList.map(id => parseInt(id));
         this.filterForm.get('projectId')?.setValue(projectIdNumberArr);
         this.getListFilteringProject();
       }
