@@ -14,7 +14,7 @@ export class TaskDailyManagementComponent implements OnInit {
   taskDailyList: DailyTask[] = [];
 
   constructor(
-    private taskDailyService: DailyTaskService,
+    private dailyTaskService: DailyTaskService,
     private msg: NzMessageService
   ) { }
 
@@ -22,12 +22,8 @@ export class TaskDailyManagementComponent implements OnInit {
     this.getTaskDailyList();
   }
   getTaskDailyList() {
-    this.taskDailyService.getAllTaskDaily().toPromise().then((res: any) => {
-      if(res && res.result) {
-        this.taskDailyList = res.result;
-      } else {
-        this.msg.error("Có lỗi xảy ra. Không thể lấy danh sách thói quen.");
-      }
+    this.dailyTaskService.getAllTaskDaily().subscribe((dailyTaskList: any) => {
+        this.taskDailyList = dailyTaskList;
     })
   }
 
@@ -52,7 +48,7 @@ export class TaskDailyManagementComponent implements OnInit {
     const payload = {
       isDeleted: 1,
     };
-    this.taskDailyService.updatePropTaskDaily(dailyTaskId, payload).toPromise().then((res: any) => {
+    this.dailyTaskService.updatePropTaskDaily(dailyTaskId, payload).toPromise().then((res: any) => {
       if(res && res.result) {
         this.msg.success('Xóa thói quen thành công!');
         this.getTaskDailyList();

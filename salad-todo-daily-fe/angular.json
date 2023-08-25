@@ -36,6 +36,7 @@
               }
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/theme.less",
               "src/styles.css"
             ],
