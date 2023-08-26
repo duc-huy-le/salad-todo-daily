@@ -64,6 +64,7 @@ exports.updateLittle = function (req, res) {
     data.checkList = JSON.stringify(data.checkList);
   }
   Task.updateLittle(req.params.id, data, function (response) {
+    if (response) response[0].checkList = JSON.parse(response[0].checkList);
     res.send({ result: response });
   });
 };

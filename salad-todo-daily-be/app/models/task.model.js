@@ -108,9 +108,18 @@ Task.updateLittle = function (recordId, payload, result) {
   query += ` where id = ${recordId}`;
   db.query(query, fieldValues, function (err, data) {
     if (err) {
-      result(null);
+      result(err);
     } else {
-      result(data);
+      db.query(
+        `select * from ${tableName} where id = ${recordId}`,
+        function (err, updatedData) {
+          if (err) {
+            result(err);
+          } else {
+            result(updatedData);
+          }
+        }
+      );
     }
   });
 };

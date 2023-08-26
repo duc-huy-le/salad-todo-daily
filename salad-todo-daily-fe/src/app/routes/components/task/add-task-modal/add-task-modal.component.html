@@ -13,6 +13,7 @@
       : 'Lưu'
   "
   [nzCancelText]="viewMode === TaskItemViewMode.View ? 'Đóng' : 'Hủy'"
+  (nzAfterClose)="afterCloseTaskModal()"
 >
   <ng-container *nzModalContent>
     <ng-container
@@ -185,18 +186,22 @@
                 step.content
               }}</div></label>
             </div> -->
-            <ng-container *ngFor="let step of newCheckList; let i = index">
-              <div class="list-step p-6 d-flex justify-content-space-between">
+            <div cdkDropList (cdkDropListDropped)="drop($event)">
+              <div
+                cdkDrag
+                *ngFor="let step of newCheckList; let i = index"
+                class="list-step p-6 d-flex justify-content-space-between"
+              >
                 <label
                   nz-checkbox
                   [(ngModel)]="step.checked"
                   [ngModelOptions]="{ standalone: true }"
-                  >
+                >
                   <div
-                  [ngClass]="
-                  step.checked ? 'text-decoration-line-through' : ''
-                  "
-                  class="step-label-editing"
+                    [ngClass]="
+                      step.checked ? 'text-decoration-line-through' : ''
+                    "
+                    class="step-label-editing"
                   >
                     {{ step.content }}
                   </div></label
@@ -210,7 +215,7 @@
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
-            </ng-container>
+            </div>
             <div *ngIf="isAddingCheckList; else addCheckList" class="new-step">
               <textarea
                 nz-input
@@ -277,19 +282,22 @@
             ></span>
           </strong>
           <nz-progress [nzPercent]="checkListPercent"></nz-progress>
-          <div *ngFor="let step of task.checkList; let i = index">
-            <label
-              nz-checkbox
-              [(ngModel)]="step.checked"
-              (ngModelChange)="onCheckStep($event, i)"
-            >
-              <div
-                [ngClass]="step.checked ? 'text-decoration-line-through' : ''"
-                class="step-label"
+          <div cdkDropList (cdkDropListDropped)="dropInViewMode($event)">
+            <div cdkDrag *ngFor="let step of task.checkList; let i = index">
+              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+              <label
+                nz-checkbox
+                [(ngModel)]="step.checked"
+                (ngModelChange)="onCheckStep($event, i)"
               >
-                {{ step.content }}
-              </div></label
-            >
+                <div
+                  [ngClass]="step.checked ? 'text-decoration-line-through' : ''"
+                  class="step-label"
+                >
+                  {{ step.content }}
+                </div></label
+              >
+            </div>
           </div>
           <div class="mt-12">
             <button nz-button nzType="dashed">Thêm một bước</button>

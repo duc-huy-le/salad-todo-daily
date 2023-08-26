@@ -8,6 +8,7 @@ import { ProjectService } from 'src/app/services/project/project.service';
 import { Project } from 'src/app/models/Project';
 import { DatePipe } from '@angular/common';
 import { DateType, getFormattedStartDate } from 'src/app/helpers/helper';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -126,11 +127,21 @@ export class AddTaskModalComponent implements OnInit {
         if (res && res.result) {
           this.msg.success('Cập nhật thành công');
           this.task = res.result[0];
-          this.onUpdateTask.emit();
         } else {
           this.msg.error('Cập nhật thất bại');
         }
         this.viewMode = TaskItemViewMode.View;
+      });
+  }
+
+  updateCheckList(newCheckList: TaskCheckList[]): void {
+    this.addTaskForm.get('checkList')?.patchValue(newCheckList);
+    this.getCurrentFormattedDate();
+    this.taskService
+      .updatePropTask(this.task.id, { checkList: newCheckList })
+      .toPromise()
+      .then((res: any) => {
+        this.task = res.result[0];
       });
   }
 
@@ -141,7 +152,11 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   handleCancel(): void {
-    this.isVisible = false;
+    // if(this.viewMode === TaskItemViewMode.Edit) {
+    //   this.viewMode = TaskItemViewMode.View;
+    // } else {
+      this.isVisible = false;
+    // }
   }
 
   onCheckStep(ev: any, index: number): void {
@@ -218,5 +233,18 @@ export class AddTaskModalComponent implements OnInit {
           )
         );
     }
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.newCheckList, event.previousIndex, event.currentIndex);
+    this.updateCheckList(this.newCheckList);
+  }
+  dropInViewMode(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.task.checkList, event.previousIndex, event.currentIndex);
+    this.updateCheckList(this.task.checkList);
+  }
+
+  afterCloseTaskModal() {
+    this.onUpdateTask.emit();
   }
 }
