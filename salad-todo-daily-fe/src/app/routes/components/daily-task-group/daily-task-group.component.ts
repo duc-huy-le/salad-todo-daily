@@ -4,6 +4,7 @@ import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service
 import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 import { AddDailyTaskModalComponent } from './add-daily-task-modal/add-daily-task-modal.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-daily-task-group',
@@ -13,7 +14,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class DailyTaskGroupComponent implements OnInit {
   @ViewChild('addDailyTaskModal')
   addDailyTaskModal!: AddDailyTaskModalComponent;
-  listTaskDaily?: DailyTask[];
+  listTaskDaily: DailyTask[] = [];
   totalTaskDaily?: number;
   completedTaskDaily?: number;
   constructor(
@@ -41,5 +42,9 @@ export class DailyTaskGroupComponent implements OnInit {
     this.completedTaskDaily = this.listTaskDaily?.filter(
       (item) => item.checked === true
     ).length;
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.listTaskDaily, event.previousIndex, event.currentIndex);
   }
 }

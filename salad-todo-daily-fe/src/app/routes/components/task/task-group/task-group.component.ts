@@ -5,6 +5,7 @@ import { AddTaskModalComponent } from '../add-task-modal/add-task-modal.componen
 import { TaskStatus } from '../task-item/task-item.component';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-task-group',
@@ -15,9 +16,9 @@ export class TaskGroupComponent implements OnInit {
   @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
   @Input() filterForm: any;
   listTask: Task[] = [];
-  listOpenTask?: Task[];
-  listInProgressTask?: Task[];
-  listDoneTask?: Task[];
+  listOpenTask: Task[] = [];
+  listInProgressTask: Task[] = [];
+  listDoneTask: Task[] = [];
   openDuration: string = '';
   inProgressDuration: string = '';
   doneDuration: string = '';
@@ -108,5 +109,18 @@ export class TaskGroupComponent implements OnInit {
     if (remainingMinutes != 0) remainingTimeText += `${remainingMinutes} phút`;
     else remainingTimeText.slice(0, -1);
     return remainingTimeText;
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 }

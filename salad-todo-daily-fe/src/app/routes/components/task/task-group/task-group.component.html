@@ -4,7 +4,15 @@
       <div
         class="list-header d-flex align-items-center justify-content-space-between"
       >
-        <div class="header__title">Chưa thực hiện <span *ngIf="openDuration != ''" nz-tooltip nzTooltipTitle="Thời gian thực hiện còn lại">({{openDuration}})</span></div>
+        <div class="header__title">
+          Chưa thực hiện
+          <span
+            *ngIf="openDuration != ''"
+            nz-tooltip
+            nzTooltipTitle="Thời gian thực hiện còn lại"
+            >({{ openDuration }})</span
+          >
+        </div>
         <div class="header__action">
           <button nz-button nzShape="circle" (click)="openAddTaskModal()">
             <i class="fas fa-plus"></i>
@@ -17,8 +25,17 @@
       </div>
       <nz-divider></nz-divider>
       <div class="list-task-scroll">
-        <div *ngFor="let task of listOpenTask">
+        <div
+          cdkDropList
+          #openList="cdkDropList"
+          [cdkDropListData]="listOpenTask"
+          [cdkDropListConnectedTo]="[inProgressList]"
+          (cdkDropListDropped)="drop($event)"
+        >
           <app-task-item
+            cdkDrag
+            class="d-flex"
+            *ngFor="let task of listOpenTask"
             [task]="task"
             (onTaskChange)="getAllTask()"
           ></app-task-item>
@@ -29,7 +46,15 @@
       <div
         class="list-header d-flex align-items-center justify-content-space-between"
       >
-        <div class="header__title">Đang thực hiện  <span *ngIf="inProgressDuration != ''" nz-tooltip nzTooltipTitle="Thời gian thực hiện còn lại">({{inProgressDuration}})</span></div>
+        <div class="header__title">
+          Đang thực hiện
+          <span
+            *ngIf="inProgressDuration != ''"
+            nz-tooltip
+            nzTooltipTitle="Thời gian thực hiện còn lại"
+            >({{ inProgressDuration }})</span
+          >
+        </div>
         <div class="header__action">
           <button nz-button nzShape="circle" (click)="openAddTaskModal()">
             <i class="fas fa-plus"></i>
@@ -42,8 +67,18 @@
       </div>
       <nz-divider></nz-divider>
       <div class="list-task-scroll">
-        <div *ngFor="let task of listInProgressTask">
+        <div
+          cdkDropList
+          #inProgressList="cdkDropList"
+          [cdkDropListData]="listInProgressTask"
+          [cdkDropListConnectedTo]="[openList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
           <app-task-item
+            cdkDrag
+            class="d-flex"
+            *ngFor="let task of listInProgressTask"
             [task]="task"
             (onTaskChange)="getAllTask()"
           ></app-task-item>

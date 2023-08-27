@@ -10,9 +10,9 @@
   </div>
   <div class="group-body d-flex flex-direction-column">
     <nz-divider></nz-divider>
-    <ng-container *ngFor="let task of listTaskDaily">
-      <app-daily-task-item [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()" (onUpdateTaskDaily)="setDailyTaskAmount()"></app-daily-task-item>
-    </ng-container>
+    <div cdkDropList (cdkDropListDropped)="drop($event)">
+      <app-daily-task-item class="d-flex" *ngFor="let task of listTaskDaily" cdkDrag [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()" (onUpdateTaskDaily)="setDailyTaskAmount()"></app-daily-task-item>
+    </div>
   </div>
 </div>
 
