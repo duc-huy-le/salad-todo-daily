@@ -28,18 +28,23 @@ class NavItem {
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  currentLink?: string;
+  currentRoute: string = this.router.url.split('?')[0].replace('/', '');
 
   listNavItems: NavItem[] = [
-    new NavItem('Trang chủ', 0, true, '/home/dashboard', 'fa-columns'),
-    new NavItem('Thống kê', 1, false, '/a', 'fa-list'),
-    new NavItem('Quản lý danh mục', 2, false, '/home/project', 'fa-project-diagram'),
-    new NavItem('Việc hàng ngày', 3, false, '/home/daily-task', 'fa-calendar'),
+    new NavItem('Trang chủ', 0, true, 'home/dashboard', 'fa-columns'),
+    new NavItem('Thống kê', 1, false, 'a', 'fa-list'),
+    new NavItem('Quản lý danh mục', 2, false, 'home/project', 'fa-project-diagram'),
+    new NavItem('Việc hàng ngày', 3, false, 'home/daily-task', 'fa-calendar'),
   ];
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.listNavItems = this.listNavItems.map((item) => {
+      item.selected = item.routerLink === this.currentRoute;
+      return item;
+    });
+  }
 
   onChangeNav(nav: NavItem) {
     this.listNavItems = this.listNavItems.map((item) => {
