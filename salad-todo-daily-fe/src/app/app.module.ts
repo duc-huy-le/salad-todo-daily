@@ -36,6 +36,7 @@ import { DailyTaskScreenComponent } from './routes/home/daily-task-screen/daily-
 import { HeatMapAllModule } from '@syncfusion/ej2-angular-heatmap';
 import { DailyTaskItemDetailComponent } from './routes/components/daily-task-item-detail/daily-task-item-detail.component';
 import { SHeatmapComponent } from './routes/components/s-heatmap/s-heatmap.component';
+import { WebVersionComponent } from './routes/components/web-version/web-version.component';
 
 registerLocaleData(en);
 
@@ -64,7 +65,8 @@ registerLocaleData(en);
     TaskDailyManagementComponent,
     DailyTaskScreenComponent,
     DailyTaskItemDetailComponent,
-    SHeatmapComponent
+    SHeatmapComponent,
+    WebVersionComponent
   ],
   imports: [
     BrowserModule,
