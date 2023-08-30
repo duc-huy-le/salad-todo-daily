@@ -9,6 +9,10 @@ import { Project } from 'src/app/models/Project';
 import { DatePipe } from '@angular/common';
 import { DateType, getFormattedStartDate } from 'src/app/helpers/helper';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  NzContextMenuService,
+  NzDropdownMenuComponent,
+} from 'ng-zorro-antd/dropdown';
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -37,6 +41,8 @@ export class AddTaskModalComponent implements OnInit {
   listProjects: Project[] = [];
   checkListPercent!: number;
   isAddingCheckList: boolean = false;
+  isEditingCheckList: boolean = false;
+  editingCheckListIndex: number | null = null;
   newCheckList: TaskCheckList[] = [];
   currentAddCheckListItem: string = '';
   defaultFormValue: any = {
@@ -52,7 +58,7 @@ export class AddTaskModalComponent implements OnInit {
     private taskService: TaskService,
     private projectService: ProjectService,
     private msg: NzMessageService,
-    private datePipe: DatePipe
+    private nzContextMenuService: NzContextMenuService
   ) {}
 
   ngOnInit(): void {
@@ -155,7 +161,7 @@ export class AddTaskModalComponent implements OnInit {
     // if(this.viewMode === TaskItemViewMode.Edit) {
     //   this.viewMode = TaskItemViewMode.View;
     // } else {
-      this.isVisible = false;
+    this.isVisible = false;
     // }
   }
 
@@ -236,15 +242,42 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    if (this.isEditingCheckList)
+      this.editingCheckListIndex = event.currentIndex; // Nếu drop khi đang trong chế độ sửa thì phải đổi cả editing index
     moveItemInArray(this.newCheckList, event.previousIndex, event.currentIndex);
     this.updateCheckList(this.newCheckList);
   }
   dropInViewMode(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.task.checkList, event.previousIndex, event.currentIndex);
+    moveItemInArray(
+      this.task.checkList,
+      event.previousIndex,
+      event.currentIndex
+    );
     this.updateCheckList(this.task.checkList);
   }
 
   afterCloseTaskModal() {
     this.onUpdateTask.emit();
+  }
+
+  openCheckListItemMenu(
+    $event: MouseEvent,
+    menu: NzDropdownMenuComponent,
+    index: number
+  ): void {
+    this.nzContextMenuService.create($event, menu);
+    this.editingCheckListIndex = index;
+  }
+
+  onEditCheckListItem() {
+    this.isEditingCheckList = true;
+  }
+  cancelEditCheckListItem() {
+    this.isEditingCheckList = false;
+  }
+  saveChangeCheckListItem(newContent: string, index: number) {
+    this.newCheckList[index].content = newContent;
+    this.isEditingCheckList = false;
+    this.updateCheckList(this.newCheckList);
   }
 }
