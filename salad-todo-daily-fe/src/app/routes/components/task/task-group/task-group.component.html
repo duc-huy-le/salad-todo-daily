@@ -14,7 +14,7 @@
           >
         </div>
         <div class="header__action">
-          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal(TaskStatus.Open)">
             <i class="fas fa-plus"></i>
           </button>
 
@@ -56,7 +56,7 @@
           >
         </div>
         <div class="header__action">
-          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal(TaskStatus.InProgress)">
             <i class="fas fa-plus"></i>
           </button>
 
@@ -91,7 +91,7 @@
       >
         <div class="header__title">Hoàn thành</div>
         <div class="header__action">
-          <button nz-button nzShape="circle" (click)="openAddTaskModal()">
+          <button nz-button nzShape="circle" (click)="openAddTaskModal(TaskStatus.Done)">
             <i class="fas fa-plus"></i>
           </button>
 

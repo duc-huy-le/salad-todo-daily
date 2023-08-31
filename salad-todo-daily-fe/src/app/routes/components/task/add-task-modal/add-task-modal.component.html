@@ -228,12 +228,20 @@
                         nz-input
                         [(ngModel)]="step.content"
                         [ngModelOptions]="{ standalone: true }"
+                        (keyup.enter)="saveChangeCheckListItem(step.content, i)"
+                        (keydown.enter)="onEnterKeyInAddCheckList($event)"
                       ></textarea>
                     </div>
                   </div>
                   <div nz-row class="mt-6">
                     <div nz-col nzSpan="24">
-                      <button nz-button nzType="primary" (click)="saveChangeCheckListItem(step.content, i)">Lưu</button>
+                      <button
+                        nz-button
+                        nzType="primary"
+                        (click)="saveChangeCheckListItem(step.content, i)"
+                      >
+                        Lưu
+                      </button>
                       <button
                         nz-button
                         nzType="text"
@@ -314,23 +322,100 @@
           <nz-progress [nzPercent]="checkListPercent"></nz-progress>
           <div cdkDropList (cdkDropListDropped)="dropInViewMode($event)">
             <div cdkDrag *ngFor="let step of task.checkList; let i = index">
-              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-              <label
-                nz-checkbox
-                [(ngModel)]="step.checked"
-                (ngModelChange)="onCheckStep($event, i)"
+              <div
+                *ngIf="
+                  editingCheckListIndex != i || !isEditingCheckList;
+                  else editCheckListItem
+                "
+                class="list-step p-6"
               >
-                <div
-                  [ngClass]="step.checked ? 'text-decoration-line-through' : ''"
-                  class="step-label"
+                <label
+                  nz-checkbox
+                  (contextmenu)="
+                    openCheckListItemMenu($event, checkListItemMenu, i)
+                  "
+                  [(ngModel)]="step.checked"
+                  (ngModelChange)="onCheckStep($event, i)"
                 >
-                  {{ step.content }}
-                </div></label
-              >
+                  <div
+                    [ngClass]="
+                      step.checked ? 'text-decoration-line-through' : ''
+                    "
+                    class="step-label"
+                  >
+                    {{ step.content }}
+                  </div></label
+                >
+              </div>
+              <ng-template #editCheckListItem>
+                <div nz-row>
+                  <div nz-col nzSpan="24">
+                    <textarea
+                      nz-input
+                      [(ngModel)]="step.content"
+                      [ngModelOptions]="{ standalone: true }"
+                      (keyup.enter)="saveChangeCheckListItem(step.content, i)"
+                      (keydown.enter)="onEnterKeyInAddCheckList($event)"
+                    ></textarea>
+                  </div>
+                </div>
+                <div nz-row class="mt-6">
+                  <div nz-col nzSpan="24">
+                    <button
+                      nz-button
+                      nzType="primary"
+                      (click)="saveChangeCheckListItem(step.content, i)"
+                    >
+                      Lưu
+                    </button>
+                    <button
+                      nz-button
+                      nzType="text"
+                      (click)="cancelEditCheckListItem()"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
           <div class="mt-12">
-            <button nz-button nzType="dashed">Thêm một bước</button>
+            <div *ngIf="isAddingCheckList; else addCheckList" class="new-step">
+              <textarea
+                nz-input
+                rows="2"
+                placeholder="Thêm một bước..."
+                id="checkList"
+                ng-trim="false"
+                [(ngModel)]="currentAddCheckListItem"
+                [ngModelOptions]="{ standalone: true }"
+                (keyup.enter)="onClickAddCheckList($event)"
+                (keydown.enter)="onEnterKeyInAddCheckList($event)"
+              ></textarea>
+              <div class="new-step__action mt-6">
+                <button
+                  nz-button
+                  nzType="primary"
+                  class="mr-6"
+                  (click)="onClickAddCheckList()"
+                >
+                  Thêm
+                </button>
+                <button nz-button (click)="onClickCancelAddCheckList()">
+                  Hủy
+                </button>
+              </div>
+            </div>
+            <ng-template #addCheckList>
+              <button
+                nz-button
+                nzType="dashed"
+                (click)="onClickAddNewCheckList()"
+              >
+                Thêm một bước
+              </button>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -340,6 +425,19 @@
 
 <nz-dropdown-menu #checkListItemMenu="nzDropdownMenu">
   <ul nz-menu>
-    <li nz-menu-item (click)="onEditCheckListItem()">Sửa</li>
+    <li nz-menu-item (click)="onEditCheckListItem()">
+      <i class="fas fa-pen mr-6"></i>Sửa
+    </li>
+    <li nz-menu-item (click)="onCopyCheckListItem()">
+      <i class="fas fa-copy mr-6"></i>Nhân bản
+    </li>
+    <li
+      *ngIf="viewMode == TaskItemViewMode.View"
+      nzDanger
+      nz-menu-item
+      (click)="onDeleteCheckListItemViewMode()"
+    >
+      <i class="fas fa-trash mr-6"></i>Xóa
+    </li>
   </ul>
 </nz-dropdown-menu>

@@ -202,13 +202,30 @@ export class AddTaskModalComponent implements OnInit {
       this.currentAddCheckListItem != '' &&
       this.currentAddCheckListItem != '\n'
     ) {
-      this.newCheckList.push({
-        checked: false,
-        content: this.currentAddCheckListItem,
-      });
+      if (this.viewMode === TaskItemViewMode.View) {
+        this.task.checkList.push({
+          checked: false,
+          content: this.currentAddCheckListItem,
+        });
+        this.updateCheckList(this.task.checkList);
+      } else {
+        this.newCheckList.push({
+          checked: false,
+          content: this.currentAddCheckListItem,
+        });
+      }
       this.currentAddCheckListItem = '';
     }
   }
+
+  // onClickAddCheckListInViewMode(ev?: any) {
+  //   this.task.checkList.push({
+  //     checked: false,
+  //     content: this.currentAddCheckListItem,
+  //   });
+  //   this.updateCheckList(this.task.checkList);
+  //   this.currentAddCheckListItem = '';
+  // }
 
   onDeleteAddCheckListItem(index: number) {
     this.newCheckList.splice(index, 1);
@@ -248,6 +265,8 @@ export class AddTaskModalComponent implements OnInit {
     this.updateCheckList(this.newCheckList);
   }
   dropInViewMode(event: CdkDragDrop<string[]>) {
+    if (this.isEditingCheckList)
+      this.editingCheckListIndex = event.currentIndex; // Nếu drop khi đang trong chế độ sửa thì phải đổi cả editing index
     moveItemInArray(
       this.task.checkList,
       event.previousIndex,
@@ -276,8 +295,35 @@ export class AddTaskModalComponent implements OnInit {
     this.isEditingCheckList = false;
   }
   saveChangeCheckListItem(newContent: string, index: number) {
-    this.newCheckList[index].content = newContent;
+    if (this.viewMode === TaskItemViewMode.View) {
+      this.task.checkList[index].content = newContent;
+      this.updateCheckList(this.task.checkList);
+    } else {
+      this.newCheckList[index].content = newContent;
+      this.updateCheckList(this.newCheckList);
+    }
     this.isEditingCheckList = false;
-    this.updateCheckList(this.newCheckList);
+  }
+
+  onCopyCheckListItem() {
+    if (this.viewMode === TaskItemViewMode.View) {
+      this.task.checkList.splice(
+        this.editingCheckListIndex!,
+        0,
+        this.task.checkList[this.editingCheckListIndex!]
+      );
+      this.updateCheckList(this.task.checkList);
+    } else {
+      this.newCheckList.splice(
+        this.editingCheckListIndex!,
+        0,
+        this.newCheckList[this.editingCheckListIndex!]
+      );
+      this.updateCheckList(this.newCheckList);
+    }
+  }
+  onDeleteCheckListItemViewMode() {
+    this.task.checkList.splice(this.editingCheckListIndex!, 1);
+    this.updateCheckList(this.task.checkList);
   }
 }

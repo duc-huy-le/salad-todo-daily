@@ -15,6 +15,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 export class TaskGroupComponent implements OnInit {
   @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
   @Input() filterForm: any;
+  readonly TaskStatus = TaskStatus;
   listTask: Task[] = [];
   listOpenTask: Task[] = [];
   listInProgressTask: Task[] = [];
@@ -70,8 +71,9 @@ export class TaskGroupComponent implements OnInit {
       });
   }
 
-  openAddTaskModal() {
+  openAddTaskModal(taskStatus: TaskStatus) {
     this.addTaskModal.isVisible = true;
+    this.addTaskModal.addTaskForm.get('status')?.patchValue(taskStatus);
   }
 
   sendMessageToTelegram() {
