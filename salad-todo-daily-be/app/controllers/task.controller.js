@@ -40,7 +40,7 @@ exports.add = async function (req, res) {
   if (data.finishDate)
     data.finishDate = getFormattedMySqlDateTime(data.finishDate);
   Task.create(data, function (response) {
-    response.checkList = JSON.parse(response.checkList);
+    if (response.checkList) response.checkList = JSON.parse(response.checkList);
     res.send({ result: response });
   });
 };

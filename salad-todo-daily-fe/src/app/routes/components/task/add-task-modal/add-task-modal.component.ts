@@ -117,6 +117,8 @@ export class AddTaskModalComponent implements OnInit {
           this.addTaskForm.patchValue(this.defaultFormValue);
           this.onAddTask.emit();
           this.isVisible = false;
+          this.newCheckList = [];
+          this.isAddingCheckList = false;
         } else {
           this.msg.error('Tạo công việc thất bại');
         }
@@ -133,6 +135,8 @@ export class AddTaskModalComponent implements OnInit {
         if (res && res.result) {
           this.msg.success('Cập nhật thành công');
           this.task = res.result[0];
+          this.newCheckList = [];
+          this.isAddingCheckList = false;
         } else {
           this.msg.error('Cập nhật thất bại');
         }
