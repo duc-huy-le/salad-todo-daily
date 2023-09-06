@@ -3,6 +3,7 @@ import { TaskTagService } from './services/task-tag/task-tag.service';
 import { TaskTag } from './models/TaskTag';
 import { NotificationService } from './services/notification/notification.service';
 import { AuthService } from './shared/auth.service';
+import { LoadingService } from './services/common/loading/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,23 @@ import { AuthService } from './shared/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'salad-todo-daily-fe';
+  title = 'Quản lý công việc Salad Task';
+  isLoading: boolean = false;
   listTaskTag?: TaskTag[];
 
-  constructor(private taskTagService: TaskTagService,
-    private notificationService: NotificationService, private authService: AuthService) {
-      // this.authService.checkSession();
-      // this.authService.getUserInfo().toPromise().then((res) => {
-      // });
-    }
+  constructor(
+    private taskTagService: TaskTagService,
+    private notificationService: NotificationService,
+    private authService: AuthService,
+    private loadingService: LoadingService
+  ) {
+    // this.authService.checkSession();
+    // this.authService.getUserInfo().toPromise().then((res) => {
+    // });
+    this.loadingService.loading$.subscribe(data => {
+      this.isLoading = data;
+    })
+  }
   ngOnInit(): void {
     this.getAllTaskTag();
     // setTimeout(() => {
@@ -30,7 +39,7 @@ export class AppComponent {
       .getAllTaskTag()
       .toPromise()
       .then((res: any) => {
-        if(res && res.result) {
+        if (res && res.result) {
           this.listTaskTag = res.result;
           localStorage.setItem('listTaskTag', JSON.stringify(res.result));
         }
@@ -38,7 +47,9 @@ export class AppComponent {
   }
 
   sendMessageToTelegram() {
-    this.notificationService.sendMessage('5426764053', 'adsf\nALoo').toPromise().then(res => {
-    })
+    this.notificationService
+      .sendMessage('5426764053', 'adsf\nALoo')
+      .toPromise()
+      .then((res) => {});
   }
 }

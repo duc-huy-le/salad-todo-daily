@@ -9,13 +9,15 @@ import { TaskTag } from 'src/app/models/TaskTag';
 import { TaskDailyHistoryService } from 'src/app/services/task-daily-history/task-daily-history.service';
 import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
 import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
+import { LoadingService } from 'src/app/services/common/loading/loading.service';
+import { BaseScreenComponent } from 'src/app/base/base-screen/base-screen.component';
 
 @Component({
   selector: 'app-daily-task-item',
   templateUrl: './daily-task-item.component.html',
   styleUrls: ['./daily-task-item.component.css'],
 })
-export class DailyTaskItemComponent implements OnInit {
+export class DailyTaskItemComponent extends BaseScreenComponent implements OnInit {
   @Input() task?: DailyTask;
   @Output() onDeleteTaskDaily = new EventEmitter();
   @Output() onUpdateTaskDaily = new EventEmitter();
@@ -26,8 +28,11 @@ export class DailyTaskItemComponent implements OnInit {
     private taskDailyService: DailyTaskService,
     private nzContextMenuService: NzContextMenuService,
     private msg: NzMessageService,
-    private taskDailyHistory: TaskDailyHistoryService
-  ) {}
+    private taskDailyHistory: TaskDailyHistoryService,
+    protected loadingService: LoadingService
+  ) {
+    super(loadingService);
+  }
 
   ngOnInit(): void {
     this.getAllTaskTag();
@@ -66,6 +71,7 @@ export class DailyTaskItemComponent implements OnInit {
   }
 
   onCheckTaskDaily(ev: any) {
+    this.setLoading(true);
     if (ev) {
       const payload = {
         taskDailyId: this.task?.id,
@@ -76,6 +82,7 @@ export class DailyTaskItemComponent implements OnInit {
         .toPromise()
         .then((res: any) => {
           if (res && res.result) {
+            this.setLoading(false);
           }
         });
     } else {
@@ -84,6 +91,7 @@ export class DailyTaskItemComponent implements OnInit {
         .toPromise()
         .then((res: any) => {
           if (res && res.result) {
+            this.setLoading(false);
           }
         });
     }
