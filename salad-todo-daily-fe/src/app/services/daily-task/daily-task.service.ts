@@ -4,12 +4,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { DailyTask } from 'src/app/models/DailyTask';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DailyTaskService {
-  baseUrl = 'http://localhost:3000/task-daily';
+  baseUrl = `${environment.apiBaseUrl}/task-daily`;
   private dailyTaskList$: BehaviorSubject<DailyTask[]> = new BehaviorSubject<
   DailyTask[]
   >([]);

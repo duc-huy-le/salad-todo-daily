@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { TaskDailyHistory } from 'src/app/models/TaskDailyHistory';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskDailyHistoryService {
-  baseUrl = 'http://localhost:3000/task-daily-history';
+  baseUrl = `${environment.apiBaseUrl}/task-daily-history`;
+
   constructor(private http: HttpClient) {
   }
 

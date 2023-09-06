@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { JWT_TOKEN, USER_INFO } from '../constants/constants';
+import { environment } from 'src/environments/environment';
 
 export enum Role {
   Admin = 0,
@@ -14,8 +15,8 @@ export enum Role {
   providedIn: 'root',
 })
 export class AuthService {
-  loginUrl = 'http://localhost:3000/account/login';
-  checkSessionUrl = 'http://localhost:3000/user/info';
+  loginUrl = `${environment.apiBaseUrl}/account/login`;
+  checkSessionUrl = `${environment.apiBaseUrl}/user/info`;
   loginSuccess: boolean = false;
   role?: Role;
   userInfo: any;

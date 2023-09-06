@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { Task } from 'src/app/models/Task';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  baseUrl = 'http://localhost:3000/task';
+  baseUrl = `${environment.apiBaseUrl}/task`;
 
   constructor(private http: HttpClient) {}
 

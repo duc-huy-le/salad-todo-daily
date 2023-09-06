@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { TaskTag } from 'src/app/models/TaskTag';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskTagService {
-  baseUrl = 'http://localhost:3000/tag';
+  baseUrl = `${environment.apiBaseUrl}/tag`;
   constructor(private http: HttpClient) {
   }
 

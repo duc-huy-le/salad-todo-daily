@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { getRequestOption } from 'src/app/helpers/helper';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DailyTaskStatisticService {
-  baseUrl = 'http://localhost:3000/task-daily-statistic';
+  baseUrl = `${environment.apiBaseUrl}/task-daily-statistic`;
   private dailyTaskHeatmapDataList$: BehaviorSubject<any[]> =
     new BehaviorSubject<any[]>([]);
   constructor(private http: HttpClient) {

@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  // apiBaseUrl: 'http://localhost:3000',
+  apiBaseUrl: 'https://salad-todo-daily.onrender.com',
   production: false
 };
 

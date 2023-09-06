@@ -5,12 +5,14 @@ import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { Project } from 'src/app/models/Project';
 import { AuthService } from 'src/app/shared/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  baseUrl = 'http://localhost:3000/project';
+  baseUrl = `${environment.apiBaseUrl}/project`;
+
   private projectList$: BehaviorSubject<Project[]> = new BehaviorSubject<Project[]>([]);
 
   constructor(private http: HttpClient) {
