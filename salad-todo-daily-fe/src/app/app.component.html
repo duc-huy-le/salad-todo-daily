@@ -1,3 +1,6 @@
-<nz-spin [nzSpinning]="isLoading">
+<ng-template #indicatorLoadingTemplate>
+  <img src="assets/loadingGif2.gif" alt="GIF Image">
+</ng-template>
+<nz-spin [nzSize]="'large'" [nzTip]="loadingMessage" [nzSpinning]="isLoading">
   <router-outlet></router-outlet>
 </nz-spin>

@@ -5,7 +5,12 @@ import { AddTaskModalComponent } from '../add-task-modal/add-task-modal.componen
 import { TaskStatus } from '../task-item/task-item.component';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+import { LoadingService } from 'src/app/services/common/loading/loading.service';
 
 @Component({
   selector: 'app-task-group',
@@ -27,7 +32,8 @@ export class TaskGroupComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private msg: NzMessageService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private loadingService: LoadingService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -40,6 +46,7 @@ export class TaskGroupComponent implements OnInit {
   }
 
   async getAllTask() {
+    this.loadingService.setLoading(true);
     await this.taskService
       .getAllTask(this.filterForm)
       .toPromise()
@@ -65,6 +72,7 @@ export class TaskGroupComponent implements OnInit {
           this.listDoneTask = this.listTask.filter(
             (item) => item.status === TaskStatus.Done
           );
+          this.loadingService.setLoading(false);
         } else {
           this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc.');
         }
@@ -79,19 +87,19 @@ export class TaskGroupComponent implements OnInit {
   sendMessageToTelegram() {
     const ENTER = '%0A';
     let message = '';
-    if(this.listOpenTask && this.listOpenTask.length > 0) {
+    if (this.listOpenTask && this.listOpenTask.length > 0) {
       message += `<b><u>Bạn còn ${this.listOpenTask?.length} việc chưa thực hiện:</u></b>`;
       this.listOpenTask?.forEach((task) => {
         message += `${ENTER}- ${task.name}`;
-      })
+      });
     }
-    if(this.listInProgressTask && this.listInProgressTask.length > 0) {
+    if (this.listInProgressTask && this.listInProgressTask.length > 0) {
       message += `${ENTER}${ENTER}<b><u>Và ${this.listInProgressTask?.length} việc đang thực hiện:</u></b>`;
       this.listInProgressTask?.forEach((task) => {
         message += `${ENTER}> ${task.name}`;
-      })
+      });
     }
-    if(message != '') {
+    if (message != '') {
       this.notificationService
         .sendMessage('5426764053', message)
         .toPromise()
@@ -115,13 +123,17 @@ export class TaskGroupComponent implements OnInit {
 
   drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        event.currentIndex
       );
     }
   }

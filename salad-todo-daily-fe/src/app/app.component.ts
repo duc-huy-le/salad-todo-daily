@@ -13,6 +13,7 @@ import { LoadingService } from './services/common/loading/loading.service';
 export class AppComponent {
   title = 'Quản lý công việc Salad Task';
   isLoading: boolean = false;
+  loadingMessage: string = 'Đang lấy dữ liệu...';
   listTaskTag?: TaskTag[];
 
   constructor(

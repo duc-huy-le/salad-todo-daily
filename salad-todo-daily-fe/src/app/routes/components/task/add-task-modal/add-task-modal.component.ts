@@ -13,6 +13,7 @@ import {
   NzContextMenuService,
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
+import { LoadingService } from 'src/app/services/common/loading/loading.service';
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -58,7 +59,8 @@ export class AddTaskModalComponent implements OnInit {
     private taskService: TaskService,
     private projectService: ProjectService,
     private msg: NzMessageService,
-    private nzContextMenuService: NzContextMenuService
+    private nzContextMenuService: NzContextMenuService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +107,7 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   handleAddTask(): void {
+    this.loadingService.setLoading(true);
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
     this.getCurrentFormattedDate();
     this.taskService
@@ -122,6 +125,7 @@ export class AddTaskModalComponent implements OnInit {
         } else {
           this.msg.error('Tạo công việc thất bại');
         }
+        this.loadingService.setLoading(false);
       });
   }
 
