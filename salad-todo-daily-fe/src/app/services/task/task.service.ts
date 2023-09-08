@@ -16,8 +16,9 @@ export class TaskService {
   getAllTask(query: any) {
     let params = new HttpParams();
     for (const key in query) {
-      if(query[key])
-      params = params.append(key, query[key]);
+      if (query[key]) {
+        params = params.append(key, query[key]);
+      }
     }
     // params = params.append('projectId', '2');
     return this.http.get<any>(this.baseUrl, { ...getRequestOption(), params });

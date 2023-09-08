@@ -28,6 +28,7 @@ export class DashboardContentComponent implements OnInit {
   filterForm!: FormGroup;
   projectList: Project[] = [];
   listFilteringProject: string = '';
+  filteringProjectTooltip: string = '';
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
@@ -46,9 +47,10 @@ export class DashboardContentComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.projectId) {
         let paramProjectIdList = [];
-        if(typeof params.projectId === 'string') paramProjectIdList = [params.projectId];
+        if (typeof params.projectId === 'string')
+          paramProjectIdList = [params.projectId];
         else paramProjectIdList = [...params.projectId];
-        const projectIdNumberArr = paramProjectIdList.map(id => parseInt(id));
+        const projectIdNumberArr = paramProjectIdList.map((id) => parseInt(id));
         this.filterForm.get('projectId')?.setValue(projectIdNumberArr);
         this.getListFilteringProject();
       }
@@ -73,9 +75,10 @@ export class DashboardContentComponent implements OnInit {
       const projectName = this.projectList.find(
         (p: any) => p.id === projectId
       )?.name;
-      result += `${projectName}, `;
+      result += projectId === 0 ? `Không có dự án, ` : `${projectName}, `;
     }
     result = result.slice(0, -2);
+    this.filteringProjectTooltip = result;
     if (result.length > 50) {
       result = result.slice(0, 50) + '...';
     }

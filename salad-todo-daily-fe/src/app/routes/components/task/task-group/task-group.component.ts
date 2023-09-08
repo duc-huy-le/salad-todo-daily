@@ -19,7 +19,7 @@ import { LoadingService } from 'src/app/services/common/loading/loading.service'
 })
 export class TaskGroupComponent implements OnInit {
   @ViewChild('addTaskModal') addTaskModal!: AddTaskModalComponent;
-  @Input() filterForm: any;
+  @Input() filterFormValue: any;
   readonly TaskStatus = TaskStatus;
   listTask: Task[] = [];
   listOpenTask: Task[] = [];
@@ -41,14 +41,21 @@ export class TaskGroupComponent implements OnInit {
     // this.sendMessageToTelegram();
   }
 
-  ngOnChanges() {
-    this.getAllTask();
-  }
+  // ngOnChanges() {
+  //   this.getAllTask();
+  // }
 
   async getAllTask() {
     this.loadingService.setLoading(true);
+    const queryParam = {
+      ...this.filterFormValue,
+      projectId:
+        this.filterFormValue.projectId.length > 0
+          ? this.filterFormValue.projectId
+          : null,
+    };
     await this.taskService
-      .getAllTask(this.filterForm)
+      .getAllTask(queryParam)
       .toPromise()
       .then((res: any) => {
         if (res && res.result) {
