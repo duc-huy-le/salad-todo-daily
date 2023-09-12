@@ -11,7 +11,7 @@
   <div class="group-body d-flex flex-direction-column">
     <nz-divider></nz-divider>
     <div cdkDropList (cdkDropListDropped)="drop($event)">
-      <app-daily-task-item class="d-flex" *ngFor="let task of listTaskDaily" cdkDrag [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()" (onUpdateTaskDaily)="setDailyTaskAmount()"></app-daily-task-item>
+      <app-daily-task-item class="d-flex" *ngFor="let task of listDailyTask" cdkDrag [task]="task" (onDeleteTaskDaily)="getAllTaskDaily()" (onUpdateTaskDaily)="setDailyTaskAmount()"></app-daily-task-item>
     </div>
   </div>
 </div>

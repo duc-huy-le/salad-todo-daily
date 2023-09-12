@@ -7,8 +7,10 @@ const TaskDaily = function (taskDaily) {
   this.startDate = taskDaily.startDate;
   this.finishDate = taskDaily.finishDate;
   this.priority = taskDaily.priority;
+  this.orderIndex = taskDaily.orderIndex;
   this.isDeleted = taskDaily.isDeleted;
   this.createdAt = taskDaily.createdAt;
+  this.lastUpdatedAt = taskDaily.lastUpdatedAt;
   this.createdBy = taskDaily.createdBy;
 };
 
@@ -19,7 +21,7 @@ TaskDaily.getAll = function (userId, result) {
     `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
     function (err, data) {
       if (err) {
-        result(null);
+        result(err);
       } else {
         result(data);
       }
@@ -111,9 +113,18 @@ TaskDaily.updateLittle = function (recordId, payload, result) {
   query += ` where id = ${recordId}`;
   db.query(query, fieldValues, function (err, data) {
     if (err) {
-      result(null);
+      result(err);
     } else {
-      result(data);
+      db.query(
+        `select * from ${tableName} where id = ${recordId}`,
+        function (err, updatedData) {
+          if (err) {
+            result(err);
+          } else {
+            result(updatedData);
+          }
+        }
+      );
     }
   });
 };

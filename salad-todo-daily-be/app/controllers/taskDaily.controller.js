@@ -70,8 +70,8 @@ exports.update = function (req, res) {
 
 exports.updateLittle = function (req, res) {
   var data = req.body;
-  if (data && data.checkList) {
-    data.checkList = JSON.stringify(data.checkList);
+  if (data ) {
+    data=  {...data, lastUpdatedAt: getFormattedMySqlDateTime(new Date())}
   }
   TaskDaily.updateLittle(req.params.id, data, function (response) {
     res.send({ result: response });

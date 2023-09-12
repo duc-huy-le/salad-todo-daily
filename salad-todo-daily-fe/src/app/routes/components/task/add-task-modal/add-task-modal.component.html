@@ -294,6 +294,20 @@
       </form>
     </ng-container>
     <ng-container *ngIf="viewMode === TaskItemViewMode.View">
+      <div *ngIf="task.duration" nz-row class="mb-6">
+        <div nz-col nzSpan="4" class="d-flex align-items-center">
+          <button nz-button nzType="primary" nzShape="circle" (click)="onClickCountDown()">
+            <span nz-icon nzType="play-circle"></span>
+          </button>
+        </div>
+        <div nz-col nzSpan="20">
+          <nz-countdown
+          *ngIf="isCountdown"
+            [nzValue]="deadline"
+            [nzTitle]="'Thời gian còn lại'"
+          ></nz-countdown>
+        </div>
+      </div>
       <div class="description-block d-flex">
         <div class="description__icon mr-12">
           <i class="fas fa-align-left"></i>

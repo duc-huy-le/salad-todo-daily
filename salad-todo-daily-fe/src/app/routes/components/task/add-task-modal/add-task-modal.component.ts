@@ -35,6 +35,8 @@ export class AddTaskModalComponent implements OnInit {
   TaskStatus = TaskStatus;
   TaskItemViewMode = TaskItemViewMode;
 
+  deadline: any;
+  isCountdown: boolean = false;
   isVisible = false;
   addTaskForm!: FormGroup;
   today: Date = new Date();
@@ -130,6 +132,7 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   updateTask(): void {
+    this.loadingService.setLoading(true);
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
     this.getCurrentFormattedDate();
     this.taskService
@@ -145,6 +148,7 @@ export class AddTaskModalComponent implements OnInit {
           this.msg.error('Cập nhật thất bại');
         }
         this.viewMode = TaskItemViewMode.View;
+        this.loadingService.setLoading(false);
       });
   }
 
@@ -225,15 +229,6 @@ export class AddTaskModalComponent implements OnInit {
       this.currentAddCheckListItem = '';
     }
   }
-
-  // onClickAddCheckListInViewMode(ev?: any) {
-  //   this.task.checkList.push({
-  //     checked: false,
-  //     content: this.currentAddCheckListItem,
-  //   });
-  //   this.updateCheckList(this.task.checkList);
-  //   this.currentAddCheckListItem = '';
-  // }
 
   onDeleteAddCheckListItem(index: number) {
     this.newCheckList.splice(index, 1);
@@ -333,5 +328,10 @@ export class AddTaskModalComponent implements OnInit {
   onDeleteCheckListItemViewMode() {
     this.task.checkList.splice(this.editingCheckListIndex!, 1);
     this.updateCheckList(this.task.checkList);
+  }
+  onClickCountDown() {
+    // this.deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+    this.deadline = Date.now() + this.task.duration * 1000 * 60;
+    this.isCountdown = true;
   }
 }

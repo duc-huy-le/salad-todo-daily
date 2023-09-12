@@ -11,6 +11,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { LoadingService } from 'src/app/services/common/loading/loading.service';
+import { OrderIndexService } from 'src/app/services/order-index/order-index.service';
 
 @Component({
   selector: 'app-task-group',
@@ -33,18 +34,22 @@ export class TaskGroupComponent implements OnInit {
     private taskService: TaskService,
     private msg: NzMessageService,
     private notificationService: NotificationService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private orderIndexServcie: OrderIndexService
   ) {}
 
   async ngOnInit(): Promise<void> {
     await this.getAllTask();
+    await this.getTaskIndex();
     // this.sendMessageToTelegram();
   }
 
   // ngOnChanges() {
   //   this.getAllTask();
   // }
+  async getTaskIndex() {
 
+  }
   async getAllTask() {
     this.loadingService.setLoading(true);
     const queryParam = {
