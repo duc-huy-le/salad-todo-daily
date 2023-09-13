@@ -1,8 +1,9 @@
 const db = require("../common/connect");
 const OrderIndex = function (orderIndex) {
-  this.id = taskDaily.id;
-  this.type = taskDaily.type;
-  this.order = taskDaily.order;
+  this.id = orderIndex.id;
+  this.type = orderIndex.type;
+  this.orderList = orderIndex.orderList;
+  this.createdBy = orderIndex.createdBy;
 };
 
 const tableName = "order_index";
@@ -77,7 +78,16 @@ OrderIndex.updateLittle = function (recordId, payload, result) {
     if (err) {
       result(err);
     } else {
-      result(data);
+      db.query(
+        `select * from ${tableName} where id = ${recordId}`,
+        function (err, updatedData) {
+          if (err) {
+            result(err);
+          } else {
+            result(updatedData);
+          }
+        }
+      );
     }
   });
 };

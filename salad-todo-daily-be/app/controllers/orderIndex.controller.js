@@ -60,11 +60,11 @@ exports.getList = async function (req, res) {
 
 exports.updateLittle = function (req, res) {
   var data = req.body;
-  if (data && data.order) {
-    data.order = JSON.stringify(data.order);
+  if (data && data.orderList) {
+    data.orderList = JSON.stringify(data.orderList);
   }
   OrderIndex.updateLittle(req.params.id, data, function (response) {
-    if (response) response[0].order = JSON.parse(response[0].order);
+    if (response) response[0].orderList = JSON.parse(response[0].orderList);
     res.send({ result: response });
   });
 };
