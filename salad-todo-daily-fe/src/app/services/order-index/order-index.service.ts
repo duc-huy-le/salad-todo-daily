@@ -41,9 +41,12 @@ export class OrderIndexService {
   //   );
   // }
 
-  // updatePropTask(id: any, data: any) {
-  //   return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
-  // }
+  updateProp(id: any, data: any) {
+    return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
+  }
+  updatePropByType(type: string, data: any) {
+    return this.http.patch(`${this.baseUrl}/by-type/${type}`, data, getRequestOption());
+  }
 
   // deleteTask(id: any) {
   //   return this.http.delete(`${this.baseUrl}/${id}`);

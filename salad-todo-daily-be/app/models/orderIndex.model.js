@@ -92,6 +92,36 @@ OrderIndex.updateLittle = function (recordId, payload, result) {
   });
 };
 
+OrderIndex.updateLittleByType = function (userId, orderIndexType, payload, result) {
+  let query = `update ${tableName} set`;
+  const fields = Object.keys(payload);
+  const fieldValues = [];
+  for (let i = 0; i < fields.length; i++) {
+    if (fields[i] !== "id") {
+      query += ` ${fields[i]} = ?,`;
+      fieldValues.push(payload[fields[i]]);
+    }
+  }
+  query = query.slice(0, -1);
+  query += ` where type = "${orderIndexType}" and createdBy = ${userId}`;
+  db.query(query, fieldValues, function (err, data) {
+    if (err) {
+      result(err);
+    } else {
+      db.query(
+        `select * from ${tableName} where type = "${orderIndexType}" and createdBy = ${userId}`,
+        function (err, updatedData) {
+          if (err) {
+            result(err);
+          } else {
+            result(updatedData);
+          }
+        }
+      );
+    }
+  });
+};
+
 OrderIndex.remove = function (id, result) {
   db.query(`delete from ${tableName} where id = ${id}`, function (err, data) {
     if (err) {

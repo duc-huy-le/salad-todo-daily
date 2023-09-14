@@ -8,7 +8,7 @@ exports.getList = async function (req, res) {
   OrderIndex.getAll(tokenInfo.data.id, req.query, function (data) {
     if (data) {
       data.forEach((element) => {
-        element.order = JSON.parse(element.order);
+        element.orderList = JSON.parse(element.orderList);
       });
     }
     res.send({ result: data });
@@ -64,6 +64,19 @@ exports.updateLittle = function (req, res) {
     data.orderList = JSON.stringify(data.orderList);
   }
   OrderIndex.updateLittle(req.params.id, data, function (response) {
+    if (response) response[0].orderList = JSON.parse(response[0].orderList);
+    res.send({ result: response });
+  });
+};
+
+exports.updateLittleByType = async function (req, res) {
+  const token = req.headers.authorization;
+  const tokenInfo = await JWT.check(token);
+  var data = req.body;
+  if (data && data.orderList) {
+    data.orderList = JSON.stringify(data.orderList);
+  }
+  OrderIndex.updateLittleByType(tokenInfo.data.id, req.params.type, data, function (response) {
     if (response) response[0].orderList = JSON.parse(response[0].orderList);
     res.send({ result: response });
   });

@@ -10,6 +10,8 @@ module.exports = function (router) {
     // router.put("/order-index/:id", taskController.update);
 
     router.patch("/order-index/:id", orderIndexController.updateLittle);
+
+    router.patch("/order-index/by-type/:type", orderIndexController.updateLittleByType);
   
     // router.delete("/order-index/:id", taskController.remove);
   };

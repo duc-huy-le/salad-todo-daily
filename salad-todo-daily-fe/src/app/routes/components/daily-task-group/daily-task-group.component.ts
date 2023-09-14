@@ -35,11 +35,14 @@ export class DailyTaskGroupComponent implements OnInit {
     this.orderIndexService.getAll().subscribe((res) => {
       this.dailyTaskOrder = res.find((item) => item.type === 'daily-task');
 
-      this.listDailyTask = this.listDailyTask?.sort((a, b) => {
-        const indexA = this.dailyTaskOrder.order.indexOf(a.id);
-        const indexB = this.dailyTaskOrder.order.indexOf(b.id);
-        return indexA - indexB;
-      });
+      this.sortDailyTask(this.dailyTaskOrder?.orderList);
+    });
+  }
+  sortDailyTask(dailyTaskOrderList: any[]): void {
+    this.listDailyTask = this.listDailyTask?.sort((a, b) => {
+      const indexA = dailyTaskOrderList.indexOf(a.id);
+      const indexB = dailyTaskOrderList.indexOf(b.id);
+      return indexA - indexB;
     });
   }
   async getAllTaskDaily() {
@@ -67,22 +70,7 @@ export class DailyTaskGroupComponent implements OnInit {
       event.currentIndex
     );
     this.newOrderIndex = this.listDailyTask.map(item => item.id);
-    debugger;
-    // this.updateOrderIndex(
-    //   this.listDailyTask[event.currentIndex].id,
-    //   event.currentIndex
-    // );
-
-  }
-
-  updateOrderIndex(dailyTaskId: any, newIndex: number) {
-    this.dailyTaskService
-      .updatePropTaskDaily(dailyTaskId, {
-        orderIndex: newIndex,
-      })
-      .toPromise()
-      .then((res) => {
-        this.getAllTaskDaily();
-      });
+    this.orderIndexService.updatePropByType("daily-task", {orderList: this.newOrderIndex}).toPromise().then((res) => {
+    });
   }
 }
