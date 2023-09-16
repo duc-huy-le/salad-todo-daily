@@ -7,7 +7,6 @@ const TaskDaily = function (taskDaily) {
   this.startDate = taskDaily.startDate;
   this.finishDate = taskDaily.finishDate;
   this.priority = taskDaily.priority;
-  this.orderIndex = taskDaily.orderIndex;
   this.isDeleted = taskDaily.isDeleted;
   this.createdAt = taskDaily.createdAt;
   this.lastUpdatedAt = taskDaily.lastUpdatedAt;
