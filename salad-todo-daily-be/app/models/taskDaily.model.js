@@ -36,7 +36,7 @@ TaskDaily.getAllToday = function (userId, result) {
     query,
     function (err, data) {
       if (err) {
-        result(null);
+        result(err);
       } else {
         result(data);
       }
