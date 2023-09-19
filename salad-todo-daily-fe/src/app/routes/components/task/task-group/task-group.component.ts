@@ -35,20 +35,24 @@ export class TaskGroupComponent implements OnInit {
     private msg: NzMessageService,
     private notificationService: NotificationService,
     private loadingService: LoadingService,
-    private orderIndexServcie: OrderIndexService
+    private orderIndexService: OrderIndexService
   ) {}
 
   async ngOnInit(): Promise<void> {
     await this.getAllTask();
-    await this.getTaskIndex();
+    await this.getTaskOrder();
     // this.sendMessageToTelegram();
   }
 
   // ngOnChanges() {
   //   this.getAllTask();
   // }
-  async getTaskIndex() {
-
+  async getTaskOrder() {
+    this.orderIndexService.getAll().subscribe((res) => {
+      let openTaskOrder = res.find((item) => item.type === 'open-task');
+      let inProgressTaskOrder = res.find((item) => item.type === 'in-progress-task');
+      let doneTaskOrder = res.find((item) => item.type === 'done-task');
+    });
   }
   async getAllTask() {
     this.loadingService.setLoading(true);
