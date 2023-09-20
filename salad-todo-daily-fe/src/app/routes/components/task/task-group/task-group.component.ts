@@ -44,9 +44,9 @@ export class TaskGroupComponent implements OnInit {
     // this.sendMessageToTelegram();
   }
 
-  // ngOnChanges() {
-  //   this.getAllTask();
-  // }
+  ngOnChanges() {
+    this.getAllTask();
+  }
   async getTaskOrder() {
     this.orderIndexService.getAll().subscribe((res) => {
       let openTaskOrder = res.find((item) => item.type === 'open-task');
