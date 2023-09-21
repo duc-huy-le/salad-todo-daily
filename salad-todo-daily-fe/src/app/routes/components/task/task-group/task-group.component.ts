@@ -39,7 +39,7 @@ export class TaskGroupComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.getAllTask();
+    // await this.getAllTask();
     await this.getTaskOrder();
     // this.sendMessageToTelegram();
   }

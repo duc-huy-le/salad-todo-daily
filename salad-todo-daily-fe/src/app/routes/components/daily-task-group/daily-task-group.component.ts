@@ -27,7 +27,7 @@ export class DailyTaskGroupComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // await this.getAllTaskDaily();
+    await this.getAllTaskDaily();
     await this.getDailyTaskOrder();
   }
 
