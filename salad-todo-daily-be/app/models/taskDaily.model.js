@@ -32,7 +32,6 @@ TaskDaily.getAllToday = function (userId, result) {
   LEFT JOIN task_daily_history tdh ON td.id = tdh.taskDailyId AND DATE(tdh.completionDate) = CURDATE()
   WHERE td.createdBy = ${userId} AND td.isDeleted = 0;`;
   db.query(
-    // `select * from ${tableName} where createdBy = ${userId} and isDeleted = 0`,
     query,
     function (err, data) {
       if (err) {
