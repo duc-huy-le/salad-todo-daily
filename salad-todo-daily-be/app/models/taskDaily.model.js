@@ -28,7 +28,7 @@ TaskDaily.getAll = function (userId, result) {
   );
 };
 TaskDaily.getAllToday = function (userId, result) {
-  const query = `select td.*, tdh.taskDailyId IS NOT NULL AS checked FROM ${tableName} td
+  const query = `SELECT td.*, tdh.taskDailyId IS NOT NULL AS checked FROM ${tableName} td
   LEFT JOIN task_daily_history tdh ON td.id = tdh.taskDailyId AND DATE(tdh.completionDate) = CURDATE()
   WHERE td.createdBy = ${userId} AND td.isDeleted = 0;`;
   db.query(
