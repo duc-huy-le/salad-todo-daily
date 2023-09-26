@@ -47,13 +47,17 @@ export class DailyTaskGroupComponent implements OnInit {
   }
   async getAllTaskDaily() {
     this.dailyTaskService.getAllTaskDailyToday().subscribe((dailyTask) => {
-      this.listDailyTask = dailyTask;
+      let today = new Date();
+      this.listDailyTask = dailyTask.filter((item) =>
+        item.schedule?.includes(today.getDay())
+      );
       this.setDailyTaskAmount();
     });
   }
 
   openAddTaskDailyModal() {
     this.addDailyTaskModal.isVisible = true;
+    this.addDailyTaskModal.setDefaultValue();
   }
 
   setDailyTaskAmount() {
@@ -69,8 +73,10 @@ export class DailyTaskGroupComponent implements OnInit {
       event.previousIndex,
       event.currentIndex
     );
-    this.newOrderIndex = this.listDailyTask.map(item => item.id);
-    this.orderIndexService.updatePropByType("daily-task", {orderList: this.newOrderIndex}).toPromise().then((res) => {
-    });
+    this.newOrderIndex = this.listDailyTask.map((item) => item.id);
+    this.orderIndexService
+      .updatePropByType('daily-task', { orderList: this.newOrderIndex })
+      .toPromise()
+      .then((res) => {});
   }
 }

@@ -9,7 +9,7 @@ exports.getList = async function (req, res) {
   TaskDaily.getAll(tokenInfo.data.id, function (data) {
     if (data) {
       data.forEach((element) => {
-        element.tagId = JSON.parse(element.tagId);
+        parseJsonProp(element);
       });
     }
     res.send({ result: data });
@@ -22,7 +22,7 @@ exports.getListToday = async function (req, res) {
   TaskDaily.getAllToday(tokenInfo.data.id, function (data) {
     if (data) {
       data.forEach((element) => {
-        element.tagId = JSON.parse(element.tagId);
+        parseJsonProp(element);
         if (element.checked === 1) element.checked = true;
         else element.checked = false;
       });
@@ -37,7 +37,7 @@ exports.getById = async function (req, res) {
   TaskDaily.getById(tokenInfo.data.id, req.params.id, function (data) {
     if (data) {
       data.forEach((element) => {
-        element.tagId = JSON.parse(element.tagId);
+        parseJsonProp(element);
       });
     }
     res.send({ result: data });
@@ -49,7 +49,7 @@ exports.add = async function (req, res) {
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);
   data.createdBy = tokenInfo.data.id;
-  data.tagId = JSON.stringify(data.tagId);
+  stringifyJsonProp(data);
   if (data.startDate)
     data.startDate = getFormattedMySqlDateTime(data.startDate);
   TaskDaily.create(data, function (response) {
@@ -59,19 +59,21 @@ exports.add = async function (req, res) {
 
 exports.update = function (req, res) {
   var data = req.body;
-  data.tagId = JSON.stringify(data.tagId);
+  stringifyJsonProp(data);
   if (data.startDate)
     data.startDate = getFormattedMySqlDateTime(data.startDate);
   TaskDaily.update(req.params.id, data, function (response) {
-    if (response) response[0].tagId = JSON.parse(response[0].tagId);
+    if (response) {
+      parseJsonProp(response[0]);
+    }
     res.send({ result: response });
   });
 };
 
 exports.updateLittle = function (req, res) {
   var data = req.body;
-  if (data ) {
-    data=  {...data, lastUpdatedAt: getFormattedMySqlDateTime(new Date())}
+  if (data) {
+    data = { ...data, lastUpdatedAt: getFormattedMySqlDateTime(new Date()) };
   }
   TaskDaily.updateLittle(req.params.id, data, function (response) {
     res.send({ result: response });
@@ -84,3 +86,12 @@ exports.remove = function (req, res) {
     res.send({ result: response });
   });
 };
+
+function parseJsonProp(element) {
+  element.tagId = JSON.parse(element.tagId);
+  element.schedule = JSON.parse(element.schedule);
+}
+function stringifyJsonProp(element) {
+  element.tagId = JSON.stringify(element.tagId);
+  element.schedule = JSON.stringify(element.schedule);
+}

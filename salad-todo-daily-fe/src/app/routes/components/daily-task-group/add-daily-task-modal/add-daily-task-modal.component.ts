@@ -25,7 +25,17 @@ export class AddDailyTaskModalComponent implements OnInit {
   formDefaultValue: any = {
     startDate: this.today,
     isDeleted: 0,
-  }
+    schedule: [1, 2, 3, 4, 5, 6, 0],
+  };
+  dayList: any[] = [
+    { label: 'Thứ hai', value: 1 },
+    { label: 'Thứ ba', value: 2 },
+    { label: 'Thứ tư', value: 3 },
+    { label: 'Thứ năm', value: 4 },
+    { label: 'Thứ sáu', value: 5 },
+    { label: 'Thứ bảy', value: 6 },
+    { label: 'Chủ nhật', value: 0 },
+  ];
 
   DailyTaskModalViewMode = DailyTaskModalViewMode;
 
@@ -49,6 +59,7 @@ export class AddDailyTaskModalComponent implements OnInit {
       name: [null, [Validators.required]],
       tagId: [[]],
       startDate: [this.today, [Validators.required]],
+      schedule: [[]],
       description: [null],
       isDeleted: [0],
     });
@@ -92,5 +103,4 @@ export class AddDailyTaskModalComponent implements OnInit {
     this.addDailyTaskForm.reset();
     this.addDailyTaskForm.patchValue(this.formDefaultValue);
   }
-
 }

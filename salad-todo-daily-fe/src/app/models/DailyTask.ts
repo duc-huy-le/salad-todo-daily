@@ -6,7 +6,7 @@ export class DailyTask {
   startDate: Date;
   finishDate: Date;
   priority: number;
-  orderIndex: number;
+  schedule: number[];
   createdAt: Date;
   isDeleted: boolean;
   checked: boolean;
@@ -20,7 +20,7 @@ export class DailyTask {
     startDate: Date,
     finishDate: Date,
     priority: number,
-    orderIndex: number,
+    schedule: number[],
     createdAt: Date,
     isDeleted: boolean,
     checked: boolean,
@@ -34,7 +34,7 @@ export class DailyTask {
     this.startDate = startDate;
     this.finishDate = finishDate;
     this.priority = priority;
-    this.orderIndex = orderIndex;
+    this.schedule = schedule;
     this.createdAt = createdAt;
     this.isDeleted = isDeleted;
     this.checked = checked;

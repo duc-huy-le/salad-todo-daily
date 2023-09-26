@@ -3,7 +3,9 @@
   nzTitle="Thêm thói quen mới"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="onClickModalOk()"
-  [nzOkText]="viewMode === DailyTaskModalViewMode.Create? 'Tạo thói quen': 'Lưu'"
+  [nzOkText]="
+    viewMode === DailyTaskModalViewMode.Create ? 'Tạo thói quen' : 'Lưu'
+  "
   [nzCancelText]="'Hủy'"
 >
   <ng-container *nzModalContent>
@@ -23,7 +25,9 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tagId">Chủ đề</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tagId"
+          >Chủ đề</nz-form-label
+        >
         <nz-form-control>
           <nz-select
             nzMode="multiple"
@@ -52,6 +56,25 @@
             id="startDate"
             formControlName="startDate"
           ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="startDate"
+          >Ngày thực hiện</nz-form-label
+        >
+        <nz-form-control nzErrorTip="Ngày thực hiện không được để trống!">
+          <nz-select
+            nzMode="tags"
+            nzPlaceHolder="Chọn ngày thực hiện"
+            formControlName="schedule"
+          >
+            <nz-option
+              *ngFor="let day of dayList"
+              [nzLabel]="day.label"
+              [nzValue]="day.value"
+            ></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
 
