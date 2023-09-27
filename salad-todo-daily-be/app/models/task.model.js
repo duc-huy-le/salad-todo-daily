@@ -20,11 +20,10 @@ const tableName = "task";
 Task.getAll = function (userId, query, result) {
   let querySQL = `select * from ${tableName} where createdBy = ${userId}`;
   if (query.projectId) {
-    if (query.projectId.includes("0")) {
-      querySQL += ` and (projectId in (${query.projectId}) or projectId is null)`;
-    } else {
-      querySQL += ` and projectId in (${query.projectId})`;
-    }
+    const idList = query.projectId.split(",").map(Number);
+    querySQL += ` and (projectId in (${idList})${
+      idList.includes(0) ? " or projectId is null)" : ")"
+    }`;
   }
   querySQL += ` and isDeleted = 0`;
 
