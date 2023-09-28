@@ -15,6 +15,20 @@ exports.getList = async function (req, res) {
   });
 };
 
+exports.getListUncompleted = async function (req, res) {
+  debugger;
+  const token = req.headers.authorization;
+  const tokenInfo = await JWT.check(token);
+  Task.getAllUncompleted(tokenInfo.data.id, req.query, function (data) {
+    if (data) {
+      data.forEach((element) => {
+        element.checkList = JSON.parse(element.checkList);
+      });
+    }
+    res.send({ result: data });
+  })
+}
+
 exports.getById = async function (req, res) {
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);

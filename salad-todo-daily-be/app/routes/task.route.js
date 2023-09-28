@@ -2,6 +2,8 @@ module.exports = function (router) {
     var taskController = require("../controllers/task.controller");
   
     router.get("/task", taskController.getList);
+
+    router.get("/task/uncompleted", taskController.getListUncompleted);
   
     router.get("/task/:id", taskController.getById);
   
