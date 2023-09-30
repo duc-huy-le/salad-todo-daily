@@ -25,6 +25,10 @@ export class TaskService {
     // return this.http.get<any>(this.baseUrl, {...getRequestOption()});
   }
 
+  getUncompletedTask() {
+      return this.http.get<any>(`${this.baseUrl}/uncompleted`, getRequestOption());
+  }
+
   addNewTask(data: any) {
     return this.http.post<Task>(this.baseUrl, data, getRequestOption());
   }

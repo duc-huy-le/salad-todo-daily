@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from 'src/app/models/Project';
 import { ProjectService } from 'src/app/services/project/project.service';
+import { TaskService } from 'src/app/services/task/task.service';
+import { UncompletedTaskModalComponent } from '../../task/uncompleted-task-modal/uncompleted-task-modal.component';
 
 // interface ViewItem {
 //   index: number;
@@ -23,6 +25,8 @@ enum ViewType {
   styleUrls: ['./dashboard-content.component.css'],
 })
 export class DashboardContentComponent implements OnInit {
+  @ViewChild('uncompletedTaskModal')
+  uncompletedTaskModal!: UncompletedTaskModalComponent;
   currentViewType: ViewType = ViewType.Kanban;
   ViewType = ViewType;
   filterForm!: FormGroup;
@@ -33,10 +37,13 @@ export class DashboardContentComponent implements OnInit {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
+    this.getUncompletedTaskList();
+
     this.initFilterForm();
 
     this.projectService.getProjectList().subscribe((projects) => {
@@ -83,5 +90,20 @@ export class DashboardContentComponent implements OnInit {
       result = result.slice(0, 50) + '...';
     }
     this.listFilteringProject = result;
+  }
+
+  // Lấy danh sách các công việc chưa hoàn thành
+  getUncompletedTaskList() {
+    this.taskService
+      .getUncompletedTask()
+      .toPromise()
+      .then((res: any) => {
+        if (res && res.result && res.result.length > 0) {
+          {
+            this.uncompletedTaskModal.openModal();
+            this.uncompletedTaskModal.setUncompletedTaskList(res.result);
+          }
+        }
+      });
   }
 }

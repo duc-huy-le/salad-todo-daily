@@ -38,6 +38,7 @@ import { DailyTaskItemDetailComponent } from './routes/components/daily-task-ite
 import { SHeatmapComponent } from './routes/components/s-heatmap/s-heatmap.component';
 import { WebVersionComponent } from './routes/components/web-version/web-version.component';
 import { BaseScreenComponent } from './base/base-screen/base-screen.component';
+import { UncompletedTaskModalComponent } from './routes/components/task/uncompleted-task-modal/uncompleted-task-modal.component';
 
 registerLocaleData(en);
 
@@ -68,7 +69,8 @@ registerLocaleData(en);
     DailyTaskItemDetailComponent,
     SHeatmapComponent,
     WebVersionComponent,
-    BaseScreenComponent
+    BaseScreenComponent,
+    UncompletedTaskModalComponent
   ],
   imports: [
     BrowserModule,

@@ -19,7 +19,15 @@
       </button>
     </div>
     <div class="filter-group">
-      <nz-tag *ngIf="filterForm.value.projectId && filterForm.value.projectId.length > 0" nzColor="blue" nz-tooltip [nzTooltipTitle]="filteringProjectTooltip">Dự án: {{listFilteringProject}}</nz-tag>
+      <nz-tag
+        *ngIf="
+          filterForm.value.projectId && filterForm.value.projectId.length > 0
+        "
+        nzColor="blue"
+        nz-tooltip
+        [nzTooltipTitle]="filteringProjectTooltip"
+        >Dự án: {{ listFilteringProject }}</nz-tag
+      >
       <button
         nz-button
         nzType="dashed"
@@ -34,7 +42,10 @@
     </div>
   </div>
   <div class="task-group">
-    <app-task-group #taskGroup [filterFormValue]="filterForm.value"></app-task-group>
+    <app-task-group
+      #taskGroup
+      [filterFormValue]="filterForm.value"
+    ></app-task-group>
   </div>
 </div>
 
@@ -66,3 +77,5 @@
     </form>
   </div>
 </nz-dropdown-menu>
+
+<app-uncompleted-task-modal #uncompletedTaskModal></app-uncompleted-task-modal>
