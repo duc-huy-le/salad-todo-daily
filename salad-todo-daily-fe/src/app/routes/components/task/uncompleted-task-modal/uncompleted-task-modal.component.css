@@ -1,0 +1,13 @@
+.uncomplete-task-container {
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+
+.uncomplete-task-container:hover {
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.uncomplete-task-container p {
+  margin-bottom: 0;
+}

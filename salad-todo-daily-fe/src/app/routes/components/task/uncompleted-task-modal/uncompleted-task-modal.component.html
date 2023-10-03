@@ -1,1 +1,19 @@
-<p>uncompleted-task-modal works!</p>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Công việc bị quá hạn"
+  nzCancelText="Bỏ qua"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-container *nzModalContent>
+    <ng-container *ngFor="let task of uncompletedTaskList">
+      <div class="uncomplete-task-container p-12 my-3">
+        <b>{{ task.name }}</b>
+        <p>Ngày đến hạn: {{task.finishDate | date: "dd/MM/yyyy"}}
+          <nz-tag [nzColor]="'red'">Quá hạn {{task.finishDate | dateDifferent}} ngày</nz-tag>
+        </p>
+      </div>
+    </ng-container>
+
+  </ng-container>
+</nz-modal>

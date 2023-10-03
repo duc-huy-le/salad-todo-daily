@@ -39,6 +39,7 @@ import { SHeatmapComponent } from './routes/components/s-heatmap/s-heatmap.compo
 import { WebVersionComponent } from './routes/components/web-version/web-version.component';
 import { BaseScreenComponent } from './base/base-screen/base-screen.component';
 import { UncompletedTaskModalComponent } from './routes/components/task/uncompleted-task-modal/uncompleted-task-modal.component';
+import { DateDifferentPipe } from './helpers/pipes/date-different.pipe';
 
 registerLocaleData(en);
 
@@ -70,7 +71,8 @@ registerLocaleData(en);
     SHeatmapComponent,
     WebVersionComponent,
     BaseScreenComponent,
-    UncompletedTaskModalComponent
+    UncompletedTaskModalComponent,
+    DateDifferentPipe
   ],
   imports: [
     BrowserModule,
