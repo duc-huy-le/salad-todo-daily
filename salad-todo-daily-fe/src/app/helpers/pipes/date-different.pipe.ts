@@ -14,7 +14,7 @@ export class DateDifferentPipe implements PipeTransform {
     const differenceMs = currentDate.getTime() - givenDate.getTime();
 
     // Convert milliseconds to days
-    const differenceDays = Math.floor(differenceMs / (1000 * 60 * 60 * 24));
+    const differenceDays = Math.floor(differenceMs / (1000 * 60 * 60 * 24)) + 1;
 
     return differenceDays;
   }

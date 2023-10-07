@@ -1,6 +1,6 @@
 var Task = require("../models/task.model");
 var JWT = require("../common/_JWT");
-const { getFormattedMySqlDateTime } = require("../helpers/helper");
+const { getFormattedMySqlDateTime, formatTimeValue } = require("../helpers/helper");
 
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;
@@ -16,7 +16,6 @@ exports.getList = async function (req, res) {
 };
 
 exports.getListUncompleted = async function (req, res) {
-  debugger;
   const token = req.headers.authorization;
   const tokenInfo = await JWT.check(token);
   Task.getAllUncompleted(tokenInfo.data.id, req.query, function (data) {
@@ -77,6 +76,7 @@ exports.updateLittle = function (req, res) {
   if (data && data.checkList) {
     data.checkList = JSON.stringify(data.checkList);
   }
+  formatTimeValue(data, "startDate", "finishDate");
   Task.updateLittle(req.params.id, data, function (response) {
     if (response) response[0].checkList = JSON.parse(response[0].checkList);
     res.send({ result: response });

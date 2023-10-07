@@ -4,8 +4,8 @@
 }
 
 .uncomplete-task-container:hover {
-  background-color: #ccc;
-  cursor: pointer;
+  background-color: #eee;
+  /* cursor: pointer; */
 }
 
 .uncomplete-task-container p {

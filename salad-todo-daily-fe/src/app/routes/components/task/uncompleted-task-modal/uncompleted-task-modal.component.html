@@ -1,19 +1,110 @@
 <nz-modal
   [(nzVisible)]="isVisible"
   nzTitle="Công việc bị quá hạn"
-  nzCancelText="Bỏ qua"
   (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
 >
   <ng-container *nzModalContent>
+    <div>
+      <label class="px-12 mb-6" nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">Chọn tất cả</label>
+    </div>
     <ng-container *ngFor="let task of uncompletedTaskList">
       <div class="uncomplete-task-container p-12 my-3">
-        <b>{{ task.name }}</b>
-        <p>Ngày đến hạn: {{task.finishDate | date: "dd/MM/yyyy"}}
-          <nz-tag [nzColor]="'red'">Quá hạn {{task.finishDate | dateDifferent}} ngày</nz-tag>
-        </p>
+        <div nz-row>
+          <div nz-col nzSpan="16" class="d-flex">
+            <label class="d-flex align-items-center mr-12" nz-checkbox [(ngModel)]="task.checked" (ngModelChange)="updateSingleChecked()"></label>
+            <div>
+              <b>{{ task.name }}</b>
+              <p>
+                Ngày đến hạn: {{ task.finishDate | date : "dd/MM/yyyy" }}
+                <nz-tag [nzColor]="'red'"
+                  >Quá hạn {{ task.finishDate | dateDifferent }} ngày</nz-tag
+                >
+              </p>
+            </div>
+          </div>
+          <div
+            nz-col
+            nzSpan="8"
+            class="d-flex align-items-center justify-content-end"
+          >
+            <button
+              nz-tooltip
+              nzTooltipTitle="Xóa công việc"
+              nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc chắn muốn xóa công việc này?"
+              nzPopconfirmPlacement="top"
+              nzCancelText="Hủy"
+              (nzOnConfirm)="onConfirmDelete(task.id)"
+              nz-button
+              class="mx-3"
+              nzType="default"
+              nzDanger
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+            <button
+              nz-tooltip
+              nzTooltipTitle="Gia hạn công việc"
+              nz-popover
+              nzPopoverTitle="Chọn thời gian hoàn thành công việc"
+              [nzPopoverContent]="reselectFinishDateTemplate"
+              nzPopoverTrigger="click"
+              (nzPopoverVisibleChange)="
+                onChangeVisibleReselectFinishDate($event, task)
+              "
+              nz-button
+              class="mx-3"
+              nzType="default"
+            >
+              <i class="fas fa-history"></i>
+            </button>
+            <button
+              nz-tooltip
+              nzTooltipTitle="Đánh dấu hoàn thành"
+              nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc chắn muốn chuyển trạng thái công việc thành đã hoàn thành?"
+              nzPopconfirmPlacement="top"
+              nzCancelText="Hủy"
+              (nzOnConfirm)="onConfirmFinished(task.id)"
+              nz-button
+              class="mx-3"
+              nzType="primary"
+            >
+              <i class="fas fa-check"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </ng-container>
-
   </ng-container>
+  <div *nzModalFooter>
+    <button *ngIf="indeterminate || allChecked" nz-button nzDanger nzType="default" (click)="handleCancel()"><i class="fas fa-trash mr-6"></i>Xóa</button>
+    <button *ngIf="indeterminate || allChecked" nz-button nzType="default" (click)="handleCancel()"><i class="fas fa-history mr-6"></i>Gia hạn</button>
+    <button *ngIf="indeterminate || allChecked" nz-button nzType="primary" (click)="handleCancel()"><i class="fas fa-check mr-6"></i>Đánh dấu hoàn thành</button>
+    <button nz-button nzType="default" (click)="handleCancel()">Bỏ qua</button>
+  </div>
 </nz-modal>
+
+<ng-template #reselectFinishDateTemplate>
+  <div>
+    <nz-date-picker
+      nzInline
+      [nzDisabledDate]="disabledDate"
+      [(ngModel)]="reselectDate"
+      (ngModelChange)="onChangeReselectDate($event)"
+    ></nz-date-picker>
+  </div>
+  <div class="d-flex mt-12 justify-content-space-between">
+    <button nz-button (click)="onRemoveFinishDate()">
+      <i class="fas fa-times"></i>
+    </button>
+    <button
+      *ngIf="reselectFinishDateBtnText !== ''"
+      nz-button
+      nzType="primary"
+      (click)="updateFinishDate()"
+    >
+      {{ reselectFinishDateBtnText }}
+    </button>
+  </div>
+</ng-template>

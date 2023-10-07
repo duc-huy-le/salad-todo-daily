@@ -6,6 +6,9 @@ export enum DateType {
 }
 
 export function getFormattedStartDate(originalDate: any, dateType: DateType) {
+  if(!originalDate) {
+    return null;
+  }
   let formattedDate = new Date(originalDate);
   if(dateType === DateType.StartDate) {
     formattedDate.setHours(0);

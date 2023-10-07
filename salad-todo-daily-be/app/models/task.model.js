@@ -38,11 +38,8 @@ Task.getAll = function (userId, query, result) {
 
 Task.getAllUncompleted = function (userId, query, result) {
   let querySQL = `SELECT * FROM ${tableName} WHERE createdBy = ${userId} AND status != 2 AND finishDate < CURDATE()`;
-  debugger;
   querySQL += ` and isDeleted = 0`;
-
   db.query(querySQL, function (err, data) {
-    debugger;
     if (err) {
       result(err);
     } else {

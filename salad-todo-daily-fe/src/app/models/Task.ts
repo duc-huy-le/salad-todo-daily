@@ -4,7 +4,7 @@ export class Task {
   projectId: any;
   description: string;
   startDate: Date;
-  finishDate: Date;
+  finishDate: Date | null;
   priority: number;
   status: number;
   duration: number;
