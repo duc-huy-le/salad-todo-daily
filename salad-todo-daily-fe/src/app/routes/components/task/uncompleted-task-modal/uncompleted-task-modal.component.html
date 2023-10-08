@@ -5,13 +5,25 @@
 >
   <ng-container *nzModalContent>
     <div>
-      <label class="px-12 mb-6" nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">Chọn tất cả</label>
+      <label
+        class="px-12 mb-6"
+        nz-checkbox
+        [(ngModel)]="allChecked"
+        (ngModelChange)="updateAllChecked()"
+        [nzIndeterminate]="indeterminate"
+        >Chọn tất cả</label
+      >
     </div>
     <ng-container *ngFor="let task of uncompletedTaskList">
       <div class="uncomplete-task-container p-12 my-3">
         <div nz-row>
           <div nz-col nzSpan="16" class="d-flex">
-            <label class="d-flex align-items-center mr-12" nz-checkbox [(ngModel)]="task.checked" (ngModelChange)="updateSingleChecked()"></label>
+            <label
+              class="d-flex align-items-center mr-12"
+              nz-checkbox
+              [(ngModel)]="task.checked"
+              (ngModelChange)="updateSingleChecked()"
+            ></label>
             <div>
               <b>{{ task.name }}</b>
               <p>
@@ -78,9 +90,35 @@
     </ng-container>
   </ng-container>
   <div *nzModalFooter>
-    <button *ngIf="indeterminate || allChecked" nz-button nzDanger nzType="default" (click)="handleCancel()"><i class="fas fa-trash mr-6"></i>Xóa</button>
-    <button *ngIf="indeterminate || allChecked" nz-button nzType="default" (click)="handleCancel()"><i class="fas fa-history mr-6"></i>Gia hạn</button>
-    <button *ngIf="indeterminate || allChecked" nz-button nzType="primary" (click)="handleCancel()"><i class="fas fa-check mr-6"></i>Đánh dấu hoàn thành</button>
+    <button
+      *ngIf="indeterminate || allChecked"
+      nz-button
+      nzDanger
+      nzType="default"
+      nz-popconfirm
+      nzPopconfirmTitle="Xóa những công việc đã chọn?"
+      nzPopconfirmPlacement="top"
+      nzCancelText="Hủy"
+      (nzOnConfirm)="onConfirmDeleteChecked()"
+    >
+      <i class="fas fa-trash mr-6"></i>Xóa
+    </button>
+    <button
+      *ngIf="indeterminate || allChecked"
+      nz-button
+      nzType="default"
+      (click)="handleCancel()"
+    >
+      <i class="fas fa-history mr-6"></i>Gia hạn
+    </button>
+    <button
+      *ngIf="indeterminate || allChecked"
+      nz-button
+      nzType="primary"
+      (click)="handleCancel()"
+    >
+      <i class="fas fa-check mr-6"></i>Đánh dấu hoàn thành
+    </button>
     <button nz-button nzType="default" (click)="handleCancel()">Bỏ qua</button>
   </div>
 </nz-modal>

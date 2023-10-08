@@ -83,6 +83,20 @@ exports.updateLittle = function (req, res) {
   });
 };
 
+exports.updateLittleMany = function (req, res) {
+  var data = req.body;
+  if (data && data.checkList) {
+    data.checkList = JSON.stringify(data.checkList);
+  }
+  formatTimeValue(data, "startDate", "finishDate");
+  const listIds = data.listIds;
+  delete data.listIds;
+  Task.updateLittleMany(listIds, data, function (response) {
+    // if (response) response[0].checkList = JSON.parse(response[0].checkList);
+    res.send({ result: response });
+  });
+};
+
 exports.remove = function (req, res) {
   var id = req.params.id;
   Task.remove(id, function (response) {

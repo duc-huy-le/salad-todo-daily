@@ -65,7 +65,7 @@ export class UncompletedTaskModalComponent implements OnInit {
       .then((res: any) => {
         this.msg.success('Xóa công việc thành công!');
 
-        this.removeHandledTask(uncompletedTaskId);
+        this.removeHandledTasks([uncompletedTaskId]);
       })
       .catch((err) => {
         this.msg.error('Có lỗi xảy ra. Xóa công việc thất bại');
@@ -109,7 +109,7 @@ export class UncompletedTaskModalComponent implements OnInit {
       .toPromise()
       .then((res: any) => {
         this.msg.success('Gia hạn công việc thành công');
-        this.removeHandledTask(this.handlingTask!.id);
+        this.removeHandledTasks([this.handlingTask!.id]);
         this.handlingTask = null;
       })
       .catch((err) => {
@@ -120,54 +120,86 @@ export class UncompletedTaskModalComponent implements OnInit {
       });
   }
 
-  removeHandledTask(taskId: any): void {
-    let deleteIndex = this.uncompletedTaskList.findIndex(
-      (item) => item.id === taskId
-    );
-    this.uncompletedTaskList.splice(deleteIndex, 1);
-    if(this.uncompletedTaskList.length === 0) {
+  removeHandledTasks(taskIds: any[]): void {
+    taskIds.forEach((taskId: any) => {
+      let deleteIndex = this.uncompletedTaskList.findIndex(
+        (item) => item.id === taskId
+      );
+      this.uncompletedTaskList.splice(deleteIndex, 1);
+    });
+    if (this.uncompletedTaskList.length === 0) {
       this.isVisible = false;
     }
   }
 
   onConfirmFinished(uncompletedTaskId: any) {
     this.loadingService.setLoading(true);
-    this.taskService.updatePropTask(uncompletedTaskId, {
-      status: TaskStatus.Done,
-    }).toPromise().then((res: any) => {
-      this.msg.success('Đã đánh dấu hoàn thành công việc');
-      this.removeHandledTask(uncompletedTaskId);
-    }).catch((err) => {
-      this.msg.error('Có lỗi xảy ra.');
-    }).finally(() => {
-      this.loadingService.setLoading(false);
-    })
+    this.taskService
+      .updatePropTask(uncompletedTaskId, {
+        status: TaskStatus.Done,
+      })
+      .toPromise()
+      .then((res: any) => {
+        this.msg.success('Đã đánh dấu hoàn thành công việc');
+        this.removeHandledTasks([uncompletedTaskId]);
+      })
+      .catch((err) => {
+        this.msg.error('Có lỗi xảy ra.');
+      })
+      .finally(() => {
+        this.loadingService.setLoading(false);
+      });
   }
 
   updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allChecked) {
-      this.uncompletedTaskList = this.uncompletedTaskList.map(item => ({
+      this.uncompletedTaskList = this.uncompletedTaskList.map((item) => ({
         ...item,
-        checked: true
+        checked: true,
       }));
     } else {
-      this.uncompletedTaskList = this.uncompletedTaskList.map(item => ({
+      this.uncompletedTaskList = this.uncompletedTaskList.map((item) => ({
         ...item,
-        checked: false
+        checked: false,
       }));
     }
   }
 
   updateSingleChecked(): void {
-    if (this.uncompletedTaskList.every(item => !item.checked)) {
+    if (this.uncompletedTaskList.every((item) => !item.checked)) {
       this.allChecked = false;
       this.indeterminate = false;
-    } else if (this.uncompletedTaskList.every(item => item.checked)) {
+    } else if (this.uncompletedTaskList.every((item) => item.checked)) {
       this.allChecked = true;
       this.indeterminate = false;
     } else {
       this.indeterminate = true;
+    }
+  }
+
+  onConfirmDeleteChecked() {
+    this.loadingService.setLoading(true);
+    let listDeleteIds = this.uncompletedTaskList
+      .filter((item) => item.checked)
+      .map((item) => item.id);
+    if (listDeleteIds.length > 0) {
+      this.taskService
+        .updatePropManyTask(listDeleteIds, {
+          isDeleted: true,
+        })
+        .toPromise()
+        .then((res: any) => {
+          this.msg.success(`Xóa ${listDeleteIds.length} công việc thành công`);
+          this.removeHandledTasks(listDeleteIds);
+          this.updateSingleChecked();
+        })
+        .catch((err) => {
+          this.msg.error('Có lỗi xảy ra');
+        })
+        .finally(() => {
+          this.loadingService.setLoading(false);
+        });
     }
   }
 }

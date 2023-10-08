@@ -45,6 +45,10 @@ export class TaskService {
     return this.http.patch(`${this.baseUrl}/${id}`, data, getRequestOption());
   }
 
+  updatePropManyTask(listIds: any, data: any) {
+    return this.http.patch(`${this.baseUrl}/update/many`, {...data, listIds}, getRequestOption());
+  }
+
   deleteTask(id: any) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }

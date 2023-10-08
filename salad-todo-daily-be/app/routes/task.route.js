@@ -12,6 +12,8 @@ module.exports = function (router) {
     router.put("/task/:id", taskController.update);
 
     router.patch("/task/:id", taskController.updateLittle);
+
+    router.patch("/task/update/many", taskController.updateLittleMany);
   
     router.delete("/task/:id", taskController.remove);
   };
