@@ -119,7 +119,11 @@
       *ngIf="indeterminate || allChecked"
       nz-button
       nzType="primary"
-      (click)="handleCancel()"
+      nz-popconfirm
+      nzPopconfirmTitle="Đánh dấu hoàn thành những công việc đã chọn?"
+      nzPopconfirmPlacement="top"
+      nzCancelText="Hủy"
+      (nzOnConfirm)="onUpdateManyCheckedTasks(ActionWithUncompletedTask.FINISH)"
     >
       <i class="fas fa-check mr-6"></i>Đánh dấu hoàn thành
     </button>
@@ -137,7 +141,7 @@
     ></nz-date-picker>
   </div>
   <div class="d-flex mt-12 justify-content-space-between">
-    <button nz-button (click)="onRemoveFinishDate()">
+    <button nz-button nzType="dashed" (click)="onRemoveFinishDate()">
       <i class="fas fa-times"></i>
     </button>
     <button

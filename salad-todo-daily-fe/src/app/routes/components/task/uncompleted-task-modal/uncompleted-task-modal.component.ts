@@ -104,8 +104,7 @@ export class UncompletedTaskModalComponent implements OnInit {
   }
 
   updateFinishDate() {
-    debugger;
-    if(!this.handlingTask && (this.allChecked || this.indeterminate)) {
+    if (!this.handlingTask && (this.allChecked || this.indeterminate)) {
       this.onUpdateManyCheckedTasks(ActionWithUncompletedTask.UPDATE);
       return;
     }
