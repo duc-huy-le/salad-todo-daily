@@ -7,12 +7,19 @@ import { differenceInCalendarDays } from 'date-fns';
 import { DatePipe } from '@angular/common';
 import { DateType, getFormattedStartDate } from 'src/app/helpers/helper';
 import { TaskStatus } from '../task-item/task-item.component';
+
+export enum ActionWithUncompletedTask {
+  DELETE,
+  UPDATE,
+  FINISH,
+}
 @Component({
   selector: 'app-uncompleted-task-modal',
   templateUrl: './uncompleted-task-modal.component.html',
   styleUrls: ['./uncompleted-task-modal.component.css'],
 })
 export class UncompletedTaskModalComponent implements OnInit {
+  readonly ActionWithUncompletedTask = ActionWithUncompletedTask;
   isVisible: boolean = false;
   uncompletedTaskList: any[] = [];
   handlingTask: Task | null = null;
@@ -74,8 +81,8 @@ export class UncompletedTaskModalComponent implements OnInit {
         this.loadingService.setLoading(false);
       });
   }
-  onChangeVisibleReselectFinishDate(e: boolean, handlingTask: Task) {
-    if (e) {
+  onChangeVisibleReselectFinishDate(e: boolean, handlingTask?: Task) {
+    if (e && handlingTask) {
       this.handlingTask = handlingTask;
       this.reselectDate = handlingTask.finishDate;
     } else {
@@ -97,6 +104,11 @@ export class UncompletedTaskModalComponent implements OnInit {
   }
 
   updateFinishDate() {
+    debugger;
+    if(!this.handlingTask && (this.allChecked || this.indeterminate)) {
+      this.onUpdateManyCheckedTasks(ActionWithUncompletedTask.UPDATE);
+      return;
+    }
     this.loadingService.setLoading(true);
     const finishDate = getFormattedStartDate(
       this.reselectDate,
@@ -178,20 +190,46 @@ export class UncompletedTaskModalComponent implements OnInit {
     }
   }
 
-  onConfirmDeleteChecked() {
+  onUpdateManyCheckedTasks(action: ActionWithUncompletedTask) {
     this.loadingService.setLoading(true);
-    let listDeleteIds = this.uncompletedTaskList
+    let payload;
+    let listCheckedIds = this.uncompletedTaskList
       .filter((item) => item.checked)
       .map((item) => item.id);
-    if (listDeleteIds.length > 0) {
-      this.taskService
-        .updatePropManyTask(listDeleteIds, {
+    let successResponseMsg = ` ${listCheckedIds.length} công việc thành công`;
+    switch (action) {
+      case ActionWithUncompletedTask.DELETE:
+        payload = {
           isDeleted: true,
-        })
+        };
+        successResponseMsg = `Xóa ${successResponseMsg}`;
+        break;
+      case ActionWithUncompletedTask.UPDATE:
+        const finishDate = getFormattedStartDate(
+          this.reselectDate,
+          DateType.FinishDate
+        );
+        payload = {
+          finishDate,
+        };
+        successResponseMsg = `Gia hạn ${successResponseMsg}`;
+        break;
+      case ActionWithUncompletedTask.FINISH:
+        payload = {
+          status: TaskStatus.Done,
+        };
+        successResponseMsg = `Cập nhật ${successResponseMsg}`;
+        break;
+      default:
+        break;
+    }
+    if (listCheckedIds.length > 0) {
+      this.taskService
+        .updatePropManyTask(listCheckedIds, payload)
         .toPromise()
         .then((res: any) => {
-          this.msg.success(`Xóa ${listDeleteIds.length} công việc thành công`);
-          this.removeHandledTasks(listDeleteIds);
+          this.msg.success(successResponseMsg);
+          this.removeHandledTasks(listCheckedIds);
           this.updateSingleChecked();
         })
         .catch((err) => {

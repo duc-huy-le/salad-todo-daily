@@ -99,7 +99,7 @@
       nzPopconfirmTitle="Xóa những công việc đã chọn?"
       nzPopconfirmPlacement="top"
       nzCancelText="Hủy"
-      (nzOnConfirm)="onConfirmDeleteChecked()"
+      (nzOnConfirm)="onUpdateManyCheckedTasks(ActionWithUncompletedTask.DELETE)"
     >
       <i class="fas fa-trash mr-6"></i>Xóa
     </button>
@@ -107,7 +107,11 @@
       *ngIf="indeterminate || allChecked"
       nz-button
       nzType="default"
-      (click)="handleCancel()"
+      nz-popover
+      nzPopoverTitle="Chọn thời gian hoàn thành công việc"
+      [nzPopoverContent]="reselectFinishDateTemplate"
+      nzPopoverTrigger="click"
+      (nzPopoverVisibleChange)="onChangeVisibleReselectFinishDate($event)"
     >
       <i class="fas fa-history mr-6"></i>Gia hạn
     </button>
