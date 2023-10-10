@@ -28,22 +28,6 @@ export class DailyTaskGroupComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getAllTaskDaily();
-    await this.getDailyTaskOrder();
-  }
-
-  async getDailyTaskOrder() {
-    this.orderIndexService.getAll().subscribe((res) => {
-      this.dailyTaskOrder = res.find((item) => item.type === 'daily-task');
-
-      this.sortDailyTask(this.dailyTaskOrder?.orderList);
-    });
-  }
-  sortDailyTask(dailyTaskOrderList: any[]): void {
-    this.listDailyTask = this.listDailyTask?.sort((a, b) => {
-      const indexA = dailyTaskOrderList.indexOf(a.id);
-      const indexB = dailyTaskOrderList.indexOf(b.id);
-      return indexA - indexB;
-    });
   }
   async getAllTaskDaily() {
     this.dailyTaskService.getAllTaskDailyToday().subscribe((dailyTask) => {

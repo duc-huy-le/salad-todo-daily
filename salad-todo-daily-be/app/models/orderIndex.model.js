@@ -21,6 +21,17 @@ OrderIndex.getAll = function (userId, query, result) {
   );
 };
 
+OrderIndex.getByType = function (userId, orderIndexType, result) {
+  const sqlString = `SELECT * FROM ${tableName} WHERE createdBy = ${userId} AND type = '${orderIndexType}'`;
+  db.query(sqlString, function (err, data) {
+    if (err) {
+      result(err);
+    } else {
+      result(data);
+    }
+  });
+}
+
 OrderIndex.create = function (payload, result) {
   db.query(`insert into ${tableName} set ?`, payload, function (err, data) {
     if (err) {

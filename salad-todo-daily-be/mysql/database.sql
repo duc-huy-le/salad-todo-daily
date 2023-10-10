@@ -431,21 +431,21 @@ DELIMITER $$
 --
 -- Create trigger `delete_task_tg_update_totalTask`
 --
-CREATE
-DEFINER = 'root'@'localhost'
-TRIGGER delete_task_tg_update_totalTask
-AFTER UPDATE
-ON task
-FOR EACH ROW
-BEGIN
-  IF OLD.isDeleted = 0
-    AND NEW.isDeleted = 1 THEN
-    UPDATE project
-    SET totalTask = totalTask - 1
-    WHERE id = NEW.projectId;
-  END IF;
-END
-$$
+-- CREATE
+-- DEFINER = 'root'@'localhost'
+-- TRIGGER delete_task_tg_update_totalTask
+-- AFTER UPDATE
+-- ON task
+-- FOR EACH ROW
+-- BEGIN
+--   IF OLD.isDeleted = 0
+--     AND NEW.isDeleted = 1 THEN
+--     UPDATE project
+--     SET totalTask = totalTask - 1
+--     WHERE id = NEW.projectId;
+--   END IF;
+-- END
+-- $$
 
 --
 -- Create trigger `update_task_tg_update_completedTask`
