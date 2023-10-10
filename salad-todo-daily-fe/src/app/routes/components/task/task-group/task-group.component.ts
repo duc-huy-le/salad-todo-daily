@@ -175,6 +175,60 @@ export class TaskGroupComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      let droppedTask;
+      let newStatus;
+      let newOrderIndex;
+      let newTaskType = '';
+      let previousOrderIndex;
+      let previousTaskType = '';
+      switch (event.container.id) {
+        case 'cdk-drop-list-1':
+          droppedTask = this.listOpenTask[event.currentIndex];
+          newStatus = TaskStatus.Open;
+          newOrderIndex = this.listOpenTask.map((item) => item.id);
+          newTaskType = 'open-task';
+          break;
+        case 'cdk-drop-list-2':
+          droppedTask = this.listInProgressTask[event.currentIndex];
+          newStatus = TaskStatus.InProgress;
+          newOrderIndex = this.listInProgressTask.map((item) => item.id);
+          newTaskType = 'in-progress-task';
+          break;
+        case 'cdk-drop-list-3':
+          droppedTask = this.listDoneTask[event.currentIndex];
+          newStatus = TaskStatus.Done;
+          newOrderIndex = this.listDoneTask.map((item) => item.id);
+          newTaskType = 'done-task';
+          break;
+        default:
+          break;
+      }
+      switch (event.previousContainer.id) {
+        case 'cdk-drop-list-1':
+          previousOrderIndex = this.listOpenTask.map((item) => item.id);
+          previousTaskType = 'open-task';
+          break;
+        case 'cdk-drop-list-2':
+          previousOrderIndex = this.listInProgressTask.map((item) => item.id);
+          previousTaskType = 'in-progress-task';
+          break;
+        case 'cdk-drop-list-3':
+          previousOrderIndex = this.listDoneTask.map((item) => item.id);
+          previousTaskType = 'done-task';
+          break;
+        default:
+          break;
+      }
+      this.taskService
+        .updatePropTask(droppedTask?.id, { status: newStatus })
+        .toPromise()
+        .then((res) => {});
+      this.orderIndexService
+        .updatePropByType(newTaskType, { orderList: newOrderIndex })
+        .toPromise();
+      this.orderIndexService
+        .updatePropByType(previousTaskType, { orderList: previousOrderIndex })
+        .toPromise();
     }
   }
 }
