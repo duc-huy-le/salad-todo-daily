@@ -1,6 +1,10 @@
 var Task = require("../models/task.model");
 var JWT = require("../common/_JWT");
-const { getFormattedMySqlDateTime, formatTimeValue } = require("../helpers/helper");
+const {
+  getFormattedMySqlDateTime,
+  formatTimeValue,
+} = require("../helpers/helper");
+const OrderIndex = require("../models/orderIndex.model");
 
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;
@@ -10,8 +14,31 @@ exports.getList = async function (req, res) {
       data.forEach((element) => {
         element.checkList = JSON.parse(element.checkList);
       });
+      OrderIndex.getAll(tokenInfo.data.id, function (orderData) {
+        if (orderData) {
+          openTaskOrder = JSON.parse(
+            orderData.find((x) => x.type === "open-task").orderList
+          );
+          inProgressTaskOrder = JSON.parse(
+            orderData.find((x) => x.type === "in-progress-task").orderList
+          );
+          doneTaskOrder = JSON.parse(
+            orderData.find((x) => x.type === "done-task").orderList
+          );
+          allTaskOrder = [
+            ...openTaskOrder,
+            ...inProgressTaskOrder,
+            ...doneTaskOrder,
+          ];
+          data = data.sort((a, b) => {
+            const indexA = allTaskOrder.indexOf(a.id);
+            const indexB = allTaskOrder.indexOf(b.id);
+            return indexA - indexB;
+          });
+        }
+        res.send({ result: data });
+      });
     }
-    res.send({ result: data });
   });
 };
 
@@ -25,8 +52,8 @@ exports.getListUncompleted = async function (req, res) {
       });
     }
     res.send({ result: data });
-  })
-}
+  });
+};
 
 exports.getById = async function (req, res) {
   const token = req.headers.authorization;

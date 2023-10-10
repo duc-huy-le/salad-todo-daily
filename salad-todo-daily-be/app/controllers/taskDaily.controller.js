@@ -27,13 +27,12 @@ exports.getListToday = async function (req, res) {
         if (element.checked === 1) element.checked = true;
         else element.checked = false;
       });
-      let orderIndex;
       OrderIndex.getByType(
         tokenInfo.data.id,
         "daily-task",
         function (orderData) {
           if (orderData) {
-            orderIndex = JSON.parse(orderData[0].orderList);
+            let orderIndex = JSON.parse(orderData[0].orderList);
             data = data.sort((a, b) => {
               const indexA = orderIndex.indexOf(a.id);
               const indexB = orderIndex.indexOf(b.id);

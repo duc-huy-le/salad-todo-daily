@@ -8,7 +8,7 @@ const OrderIndex = function (orderIndex) {
 
 const tableName = "order_index";
 
-OrderIndex.getAll = function (userId, query, result) {
+OrderIndex.getAll = function (userId, result) {
   db.query(
     `SELECT * FROM ${tableName} WHERE createdBy = ${userId}`,
     function (err, data) {

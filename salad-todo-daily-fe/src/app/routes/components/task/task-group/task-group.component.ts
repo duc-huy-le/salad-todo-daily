@@ -50,7 +50,9 @@ export class TaskGroupComponent implements OnInit {
   async getTaskOrder() {
     this.orderIndexService.getAll().subscribe((res) => {
       let openTaskOrder = res.find((item) => item.type === 'open-task');
-      let inProgressTaskOrder = res.find((item) => item.type === 'in-progress-task');
+      let inProgressTaskOrder = res.find(
+        (item) => item.type === 'in-progress-task'
+      );
       let doneTaskOrder = res.find((item) => item.type === 'done-task');
     });
   }
@@ -74,7 +76,7 @@ export class TaskGroupComponent implements OnInit {
               new Date(item.startDate) <= new Date() &&
               (!item.finishDate || new Date(item.finishDate) >= new Date())
           );
-          this.listTask = this.listTask.sort((a, b) => b.priority - a.priority);
+          // this.listTask = this.listTask.sort((a, b) => b.priority - a.priority);
           this.listOpenTask = this.listTask.filter(
             (item) => item.status === TaskStatus.Open
           );
@@ -144,6 +146,28 @@ export class TaskGroupComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      let newOrderIndex;
+      let taskType = '';
+      switch (event.container.id) {
+        case 'cdk-drop-list-1':
+          taskType = 'open-task';
+          newOrderIndex = this.listOpenTask.map((item) => item.id);
+          break;
+        case 'cdk-drop-list-2':
+          taskType = 'in-progress-task';
+          newOrderIndex = this.listInProgressTask.map((item) => item.id);
+          break;
+        case 'cdk-drop-list-3':
+          taskType = 'done-task';
+          newOrderIndex = this.listDoneTask.map((item) => item.id);
+          break;
+        default:
+          break;
+      }
+      this.orderIndexService
+        .updatePropByType(taskType, { orderList: newOrderIndex })
+        .toPromise()
+        .then((res) => {});
     } else {
       transferArrayItem(
         event.previousContainer.data,
