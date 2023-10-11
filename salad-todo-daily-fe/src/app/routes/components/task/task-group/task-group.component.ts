@@ -40,21 +40,11 @@ export class TaskGroupComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     // await this.getAllTask();
-    await this.getTaskOrder();
     // this.sendMessageToTelegram();
   }
 
   ngOnChanges() {
     this.getAllTask();
-  }
-  async getTaskOrder() {
-    this.orderIndexService.getAll().subscribe((res) => {
-      let openTaskOrder = res.find((item) => item.type === 'open-task');
-      let inProgressTaskOrder = res.find(
-        (item) => item.type === 'in-progress-task'
-      );
-      let doneTaskOrder = res.find((item) => item.type === 'done-task');
-    });
   }
   async getAllTask() {
     this.loadingService.setLoading(true);
