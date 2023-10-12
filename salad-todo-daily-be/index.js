@@ -1,5 +1,17 @@
 var express = require("express");
-const cors = require('cors');
+const cors = require("cors");
+const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
+const environment = process.env.NODE_ENV;
+if (environment === "production") {
+  const envConfig = dotenv.parse(fs.readFileSync(".env.prod"));
+  for (const key in envConfig) {
+    process.env[key] = envConfig[key];
+  }
+}
+const PORT = process.env.PORT || 8080;
+
 var app = express();
 app.use(cors());
 const _AuthMiddleWare = require("./app/common/_AuthMiddleWare");
@@ -30,7 +42,6 @@ require("./app/routes/note.route")(app);
 require("./app/routes/taskDailyHistory.route")(app);
 require("./app/routes/orderIndex.route")(app);
 
-
-app.listen(3000, function () {
-  console.log("Listening on port http://localhost:3000");
+app.listen(PORT, "0.0.0.0", function () {
+  console.log(`Listening on port ${PORT}`);
 });

@@ -32,6 +32,7 @@ export class LoginScreenComponent implements OnInit {
   }
 
   login() {
+    this.loadingService.setLoading(true);
     this.authService
       .login(this.loginForm.value)
       .toPromise()
@@ -41,6 +42,8 @@ export class LoginScreenComponent implements OnInit {
         } else {
           this.msg.success('Đăng nhập thành công');
         }
+      }).finally(() => {
+        this.loadingService.setLoading(false);
       });
   }
 }

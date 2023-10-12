@@ -80,10 +80,12 @@ export class TaskGroupComponent implements OnInit {
           this.listDoneTask = this.listTask.filter(
             (item) => item.status === TaskStatus.Done
           );
-          this.loadingService.setLoading(false);
         } else {
           this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách công việc.');
         }
+      })
+      .finally(() => {
+        this.loadingService.setLoading(false);
       });
   }
 

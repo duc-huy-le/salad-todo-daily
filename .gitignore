@@ -2,3 +2,7 @@ salad-todo-daily-be/.env
 salad-todo-daily-be/.firebase
 salad-todo-daily-fe/.firebase/hosting.ZGlzdFxzYWxhZC10b2RvLWRhaWx5LWZl.cache
 *.cache
+salad-todo-daily-be/.env.prod
+salad-todo-daily-fe/src/environments/environment.ts
+salad-todo-daily-fe/src/environments/environment.default.ts
+salad-todo-daily-fe/src/environments/environment.prod.ts

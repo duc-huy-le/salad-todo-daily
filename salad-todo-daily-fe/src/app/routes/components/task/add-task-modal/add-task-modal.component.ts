@@ -127,6 +127,8 @@ export class AddTaskModalComponent implements OnInit {
         } else {
           this.msg.error('Tạo công việc thất bại');
         }
+      })
+      .finally(() => {
         this.loadingService.setLoading(false);
       });
   }
@@ -148,6 +150,8 @@ export class AddTaskModalComponent implements OnInit {
           this.msg.error('Cập nhật thất bại');
         }
         this.viewMode = TaskItemViewMode.View;
+      })
+      .finally(() => {
         this.loadingService.setLoading(false);
       });
   }
