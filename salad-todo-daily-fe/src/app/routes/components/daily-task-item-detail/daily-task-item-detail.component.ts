@@ -4,6 +4,7 @@ import { Internationalization } from '@syncfusion/ej2-base';
 import { DailyTask } from 'src/app/models/DailyTask';
 import { TaskTag } from 'src/app/models/TaskTag';
 import { DailyTaskStatisticService } from 'src/app/services/daily-task/daily-task-statistic.service';
+import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 
 @Component({
   selector: 'app-daily-task-item-detail',
@@ -54,14 +55,20 @@ export class DailyTaskItemDetailComponent implements OnInit {
     emptyPointColor: 'white',
   };
 
-  constructor(private dailyTaskStatisticService: DailyTaskStatisticService) {}
+  constructor(
+    private dailyTaskStatisticService: DailyTaskStatisticService,
+    private taskTagService: TaskTagService
+  ) {}
 
   ngOnInit(): void {
     this.getListHeatmapData();
   }
 
   ngOnChanges(): void {
-    this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    // this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    this.taskTagService.getAllTaskTag().subscribe((taskTags) => {
+      this.listTaskTag = taskTags;
+    });
     this.transformDailyTaskData();
   }
 

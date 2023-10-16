@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="!isMobile; else mobileTpl" class="container">
   <div class="d-flex justify-content-space-between">
     <div class="view-type">
       <button
@@ -79,3 +79,9 @@
 </nz-dropdown-menu>
 
 <app-uncompleted-task-modal #uncompletedTaskModal></app-uncompleted-task-modal>
+
+<ng-template #mobileTpl>
+  <div class="mobile-container">
+
+  </div>
+</ng-template>

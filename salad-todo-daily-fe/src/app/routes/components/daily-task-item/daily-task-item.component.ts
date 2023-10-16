@@ -42,7 +42,10 @@ export class DailyTaskItemComponent extends BaseScreenComponent implements OnIni
     // this.taskTagService.getAllTaskTag().toPromise().then((response) => {
     //   this.listTaskTag = response;
     // })
-    this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    // this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    this.taskTagService.getAllTaskTag().subscribe((taskTags) => {
+      this.listTaskTag = taskTags;
+    })
   }
 
   getTaskTagName(tagId: any): string {

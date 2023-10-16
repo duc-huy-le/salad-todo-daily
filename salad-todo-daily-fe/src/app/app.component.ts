@@ -4,6 +4,7 @@ import { TaskTag } from './models/TaskTag';
 import { NotificationService } from './services/notification/notification.service';
 import { AuthService } from './shared/auth.service';
 import { LoadingService } from './services/common/loading/loading.service';
+import { DeviceService } from './services/device/device.service';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +18,10 @@ export class AppComponent {
   listTaskTag?: TaskTag[];
 
   constructor(
-    private taskTagService: TaskTagService,
     private notificationService: NotificationService,
-    private authService: AuthService,
-    private loadingService: LoadingService
+    // private authService: AuthService,
+    private loadingService: LoadingService,
+    private deviceService: DeviceService
   ) {
     // this.authService.checkSession();
     // this.authService.getUserInfo().toPromise().then((res) => {
@@ -30,21 +31,9 @@ export class AppComponent {
     })
   }
   ngOnInit(): void {
-    this.getAllTaskTag();
     // setTimeout(() => {
     //   this.sendMessageToTelegram();
     // }, 10000);
-  }
-  getAllTaskTag() {
-    this.taskTagService
-      .getAllTaskTag()
-      .toPromise()
-      .then((res: any) => {
-        if (res && res.result) {
-          this.listTaskTag = res.result;
-          localStorage.setItem('listTaskTag', JSON.stringify(res.result));
-        }
-      });
   }
 
   sendMessageToTelegram() {

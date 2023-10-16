@@ -5,6 +5,7 @@ import { Project } from 'src/app/models/Project';
 import { ProjectService } from 'src/app/services/project/project.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UncompletedTaskModalComponent } from '../../task/uncompleted-task-modal/uncompleted-task-modal.component';
+import { DeviceService } from 'src/app/services/device/device.service';
 
 // interface ViewItem {
 //   index: number;
@@ -27,6 +28,7 @@ enum ViewType {
 export class DashboardContentComponent implements OnInit {
   @ViewChild('uncompletedTaskModal')
   uncompletedTaskModal!: UncompletedTaskModalComponent;
+  isMobile: boolean = false;
   currentViewType: ViewType = ViewType.Kanban;
   ViewType = ViewType;
   filterForm!: FormGroup;
@@ -38,8 +40,11 @@ export class DashboardContentComponent implements OnInit {
     private projectService: ProjectService,
     private router: Router,
     private route: ActivatedRoute,
-    private taskService: TaskService
-  ) {}
+    private taskService: TaskService,
+    private deviceService: DeviceService
+  ) {
+    this.isMobile = deviceService.isMobile;
+  }
 
   ngOnInit(): void {
     this.getUncompletedTaskList();

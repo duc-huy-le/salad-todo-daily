@@ -4,6 +4,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { DailyTask } from 'src/app/models/DailyTask';
 import { TaskTag } from 'src/app/models/TaskTag';
 import { DailyTaskService } from 'src/app/services/daily-task/daily-task.service';
+import { TaskTagService } from 'src/app/services/task-tag/task-tag.service';
 
 export enum DailyTaskModalViewMode {
   Create = 0,
@@ -42,7 +43,8 @@ export class AddDailyTaskModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskDailyService: DailyTaskService,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private taskTagService: TaskTagService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +53,10 @@ export class AddDailyTaskModalComponent implements OnInit {
   }
 
   getAllTaskTag() {
-    this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    // this.listTaskTag = JSON.parse(localStorage.getItem('listTaskTag')!);
+    this.taskTagService.getAllTaskTag().subscribe((taskTags) => {
+      this.listTaskTag = taskTags;
+    })
   }
 
   initAddDailyTaskForm() {

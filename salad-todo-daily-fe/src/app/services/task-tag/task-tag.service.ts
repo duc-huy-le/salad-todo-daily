@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { JWT_TOKEN } from 'src/app/constants/constants';
 import { getRequestOption } from 'src/app/helpers/helper';
 import { TaskTag } from 'src/app/models/TaskTag';
@@ -10,11 +11,20 @@ import { environment } from 'src/environments/environment';
 })
 export class TaskTagService {
   baseUrl = `${environment.apiBaseUrl}/tag`;
+  private taskTagList$: BehaviorSubject<TaskTag[]> = new BehaviorSubject<TaskTag[]>([]);
   constructor(private http: HttpClient) {
+    this.fetchTaskTagList();
+  }
+
+  private fetchTaskTagList() {
+    this.http.get<any>(this.baseUrl, getRequestOption()).subscribe(
+      (res) => this.taskTagList$.next(res.result),
+      (err) => console.error(err)
+    );
   }
 
   getAllTaskTag() {
-    return this.http.get<any>(this.baseUrl, getRequestOption());
+    return this.taskTagList$.asObservable();
   }
 
   addNewTag(data: any) {

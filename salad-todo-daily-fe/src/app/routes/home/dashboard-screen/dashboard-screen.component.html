@@ -1,4 +1,4 @@
-<div class="container d-flex">
+<div *ngIf="!isMobile; else mobileTpl" class="container d-flex">
   <div class="left-sidebar flex-20">
     <app-left-sidebar></app-left-sidebar>
   </div>
@@ -10,3 +10,8 @@
     <app-right-sidebar></app-right-sidebar>
   </div>
 </div>
+<ng-template #mobileTpl>
+  <div class="mobile-container">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>
