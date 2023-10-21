@@ -26,9 +26,27 @@ function formatTimeValue(data, ...dateTimeFields) {
   });
 }
 
+function parseJsonProperty(data, jsonPropNameList) {
+  data.forEach((record) => {
+    jsonPropNameList.forEach((jsonPropName) => {
+      if (record[jsonPropName])
+        record[jsonPropName] = JSON.parse(record[jsonPropName]);
+    });
+  });
+}
+
+function stringifyJsonProperty(record, jsonPropNameList) {
+  jsonPropNameList.forEach((jsonPropName) => {
+    if (record[jsonPropName])
+      record[jsonPropName] = JSON.stringify(record[jsonPropName]);
+  });
+}
+
 // exports.getFormattedMySqlDateTime = getFormattedMySqlDateTime;
 module.exports = {
-  getFormattedMySqlDateTime: getFormattedMySqlDateTime,
-  getFormattedTaskTime: getFormattedTaskTime,
-  formatTimeValue: formatTimeValue,
+  getFormattedMySqlDateTime,
+  getFormattedTaskTime,
+  formatTimeValue,
+  parseJsonProperty,
+  stringifyJsonProperty,
 };
