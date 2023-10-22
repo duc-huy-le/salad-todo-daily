@@ -1,23 +1,16 @@
-module.exports = function (router) {
-  var projectController = require("../controllers/project.controller");
+const projectController = require("../controllers/project.controller");
 
-  router.get("/project", projectController.getList);
+const routes = [
+  { method: "get", path: "/project", handler: projectController.getList },
+  { method: "get", path: "/project/:id", handler: projectController.getById },
+  { method: "post", path: "/project", handler: projectController.add },
+  { method: "put", path: "/project/:id", handler: projectController.update },
+  { method: "patch", path: "/project/:id", handler: projectController.updateLittle },
+  { method: "delete", path: "/project/:id", handler: projectController.remove }
+];
 
-  router.get("/project/:id", projectController.getById);
-
-  router.post("/project", projectController.add);
-
-  router.put("/project/:id", projectController.update);
-
-  router.patch("/project/:id", projectController.updateLittle);
-
-  router.delete("/project/:id", projectController.remove);
+module.exports = function(router) {
+  for (const route of routes) {
+    router[route.method](route.path, route.handler);
+  }
 };
-
-// const express = require('express');
-// const router = express.Router();
-// const projectController = require("../controllers/project.controller");
-
-// router.get("/", projectController.getList);
-
-// module.exports = router;

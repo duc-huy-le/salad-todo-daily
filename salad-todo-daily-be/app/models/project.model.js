@@ -1,9 +1,10 @@
-const db = require("../common/connect");
+const BaseModel = require("./base.model");
 
 const tableName = "project";
 
-class Project {
+class Project extends BaseModel {
   constructor(project) {
+    // super(Project.tableName);
     this.id = project.id;
     this.name = project.name;
     this.description = project.description;
@@ -14,91 +15,8 @@ class Project {
     this.startDate = project.startDate;
     this.createdAt = project.createdAt;
   }
-
-  static getAll(userId) {
-    return new Promise((resolve, reject) => {
-      const querySQL = `SELECT * FROM ${tableName} WHERE createdBy = ${userId} AND isDeleted = 0`;
-      db.query(querySQL, function (err, data) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
-
-  static getById(userId, projectId) {
-    return new Promise((resolve, reject) => {
-      const querySQL = `SELECT * FROM ${tableName} WHERE createdBy = ${userId} AND id = ${projectId}`;
-      db.query(querySQL, function (err, data) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
-
-  static create(payload) {
-    return new Promise((resolve, reject) => {
-      db.query(`INSERT INTO ${tableName} SET ?`, payload, function (err, data) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ id: data.insertId, ...payload });
-        }
-      });
-    });
-  }
-
-  static update(recordId, payload) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        `UPDATE ${tableName} SET ? WHERE id = ${recordId}`,
-        payload,
-        function (err, data) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        }
-      );
-    });
-  }
-
-  static updateLittle(recordId, payload) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        `UPDATE ${tableName} SET ? WHERE id = ${recordId}`,
-        payload,
-        function (err, data) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        }
-      );
-    });
-  }
-  static remove(recordId) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        `DELETE FROM ${tableName} WHERE id = ${recordId}`,
-        function (err, data) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        }
-      );
-    });
-  }
 }
+Project.setTableName(tableName);
 
 module.exports = Project;
 

@@ -1,26 +1,7 @@
 var Project = require("../models/project.model");
 var JWT = require("../common/_JWT");
-const { getFormattedMySqlDateTime } = require("../helpers/helper");
+const { getFormattedMySqlDateTime, handleRequest } = require("../helpers/helper");
 
-const handleRequest = async (req, res, callback) => {
-  try {
-    const token = req.headers.authorization;
-    const tokenInfo = await JWT.check(token);
-    await callback(tokenInfo.data.id, req, res);
-  } catch (err) {
-    res.status(500).send({ error: err.message });
-  }
-};
-// exports.getList = async function (req, res) {
-//   try {
-//     const token = req.headers.authorization;
-//     const tokenInfo = await JWT.check(token);
-//     const projects = await Project.getAll(tokenInfo.data.id);
-//     res.send({ result: projects });
-//   } catch (err) {
-//     res.status(500).send({ error: err.message });
-//   }
-// };
 exports.getList = async function (req, res) {
   handleRequest(req, res, async (userId) => {
     const projects = await Project.getAll(userId);
@@ -55,10 +36,13 @@ exports.update = async function (req, res) {
       data.startDate = getFormattedMySqlDateTime(data.startDate);
     if (data.finishDate)
       data.finishDate = getFormattedMySqlDateTime(data.finishDate);
+    delete data.id;
     const updateResult = await Project.update(req.params.id, data);
     if (updateResult.affectedRows > 0) {
       const project = await Project.getById(userId, req.params.id);
       res.send({ result: project });
+    } else {
+      res.status(404).send({ error: "Project not found" });
     }
   });
 };
