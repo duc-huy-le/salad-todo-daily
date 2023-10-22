@@ -1,20 +1,33 @@
+var taskController = require("../controllers/task.controller");
+const routes = [
+  {
+    method: "get",
+    path: "/task",
+    handler: taskController.getList,
+  },
+  {
+    method: "get",
+    path: "/task/uncompleted",
+    handler: taskController.getListUncompleted,
+  },
+  {
+    method: "get",
+    path: "/task/:id",
+    handler: taskController.getById,
+  },
+  { method: "post", path: "/task", handler: taskController.add },
+  { method: "put", path: "/task/:id", handler: taskController.update },
+  { method: "patch", path: "/task/:id", handler: taskController.updateLittle },
+  {
+    method: "patch",
+    path: "/task/update/many",
+    handler: taskController.updateLittleMany,
+  },
+  { method: "delete", path: "/task/:id", handler: taskController.remove },
+];
+
 module.exports = function (router) {
-    var taskController = require("../controllers/task.controller");
-  
-    router.get("/task", taskController.getList);
-
-    router.get("/task/uncompleted", taskController.getListUncompleted);
-  
-    router.get("/task/:id", taskController.getById);
-  
-    router.post("/task", taskController.add);
-  
-    router.put("/task/:id", taskController.update);
-
-    router.patch("/task/:id", taskController.updateLittle);
-
-    router.patch("/task/update/many", taskController.updateLittleMany);
-  
-    router.delete("/task/:id", taskController.remove);
-  };
-  
+  for (const route of routes) {
+    router[route.method](route.path, route.handler);
+  }
+};

@@ -1,49 +1,16 @@
 var OrderIndex = require("../models/orderIndex.model");
 var JWT = require("../common/_JWT");
-const { getFormattedMySqlDateTime } = require("../helpers/helper");
+const {
+  getFormattedMySqlDateTime,
+  handleRequest,
+} = require("../helpers/helper");
 
 exports.getList = async function (req, res) {
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  OrderIndex.getAll(tokenInfo.data.id, function (data) {
-    if (data) {
-      data.forEach((element) => {
-        element.orderList = JSON.parse(element.orderList);
-      });
-    }
-    res.send({ result: data });
+  handleRequest(req, res, async (userId) => {
+    const orderIndexes = await OrderIndex.getAll(userId);
+    res.send({ result: orderIndexes });
   });
 };
-
-// exports.getById = async function (req, res) {
-//   const token = req.headers.authorization;
-//   const tokenInfo = await JWT.check(token);
-//   Task.getById(tokenInfo.data.id, req.params.id, function (data) {
-//     if (data) {
-//       data.forEach((element) => {
-//         element.checkList = JSON.parse(element.checkList);
-//       });
-//     }
-//     res.send({ result: data });
-//   });
-// };
-
-// exports.add = async function (req, res) {
-//   var data = req.body;
-//   const token = req.headers.authorization;
-//   const tokenInfo = await JWT.check(token);
-//   data.createdBy = tokenInfo.data.id;
-//   data.checkList = JSON.stringify(data.checkList);
-//   if (data.startDate)
-//     data.startDate = getFormattedMySqlDateTime(data.startDate);
-
-//   if (data.finishDate)
-//     data.finishDate = getFormattedMySqlDateTime(data.finishDate);
-//   Task.create(data, function (response) {
-//     if (response.checkList) response.checkList = JSON.parse(response.checkList);
-//     res.send({ result: response });
-//   });
-// };
 
 // exports.update = function (req, res) {
 //   var data = req.body;
@@ -59,32 +26,31 @@ exports.getList = async function (req, res) {
 // };
 
 exports.updateLittle = function (req, res) {
-  var data = req.body;
-  if (data && data.orderList) {
-    data.orderList = JSON.stringify(data.orderList);
-  }
-  OrderIndex.updateLittle(req.params.id, data, function (response) {
-    if (response) response[0].orderList = JSON.parse(response[0].orderList);
-    res.send({ result: response });
+  handleRequest(req, res, async (userId) => {
+    var data = req.body;
+    if (data && data.orderList) {
+      data.orderList = JSON.stringify(data.orderList);
+    }
+    const updateResult = await OrderIndex.updateLittle(req.params.id, data);
+    if (updateResult)
+      updateResult[0].orderList = JSON.parse(updateResult[0].orderList);
+    res.send({ result: updateResult });
   });
 };
 
 exports.updateLittleByType = async function (req, res) {
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  var data = req.body;
-  if (data && data.orderList) {
-    data.orderList = JSON.stringify(data.orderList);
-  }
-  OrderIndex.updateLittleByType(tokenInfo.data.id, req.params.type, data, function (response) {
-    if (response) response[0].orderList = JSON.parse(response[0].orderList);
-    res.send({ result: response });
+  handleRequest(req, res, async (userId) => {
+    var data = req.body;
+    if (data && data.orderList) {
+      data.orderList = JSON.stringify(data.orderList);
+    }
+    const updateResult = await OrderIndex.updateLittleByType(
+      userId,
+      req.params.type,
+      data
+    );
+    if (updateResult)
+      updateResult[0].orderList = JSON.parse(updateResult[0].orderList);
+    res.send({ result: updateResult });
   });
 };
-
-// exports.remove = function (req, res) {
-//   var id = req.params.id;
-//   Task.remove(id, function (response) {
-//     res.send({ result: response });
-//   });
-// };

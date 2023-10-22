@@ -1,3 +1,5 @@
+var JWT = require("../common/_JWT");
+
 function getFormattedMySqlDateTime(dateTime) {
   let date = new Date(dateTime);
   date.setHours(date.getHours() + 7);
@@ -42,6 +44,16 @@ function stringifyJsonProperty(record, jsonPropNameList) {
   });
 }
 
+const handleRequest = async (req, res, callback) => {
+  try {
+    const token = req.headers.authorization;
+    const tokenInfo = await JWT.check(token);
+    await callback(tokenInfo.data.id, req, res);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+};
+
 // exports.getFormattedMySqlDateTime = getFormattedMySqlDateTime;
 module.exports = {
   getFormattedMySqlDateTime,
@@ -49,4 +61,5 @@ module.exports = {
   formatTimeValue,
   parseJsonProperty,
   stringifyJsonProperty,
+  handleRequest,
 };

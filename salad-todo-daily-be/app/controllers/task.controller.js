@@ -5,127 +5,145 @@ const OrderIndex = require("../models/orderIndex.model");
 const jsonPropNameList = ["checkList"];
 
 exports.getList = async function (req, res) {
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  Task.getAll(tokenInfo.data.id, req.query, async function (data) {
-    if (data) {
-      Helper.parseJsonProperty(data, jsonPropNameList);
-      OrderIndex.getAll(tokenInfo.data.id, function (orderData) {
-        if (orderData) {
+  Helper.handleRequest(req, res, async (userId) => {
+    let tasks = await Task.getAll(userId, req.query);
+    if (tasks) {
+      Helper.parseJsonProperty(tasks, jsonPropNameList);
+      Helper.handleRequest(req, res, async (userId) => {
+        const orderIndexes = await OrderIndex.getAll(userId);
+        if (orderIndexes) {
           openTaskOrder = JSON.parse(
-            orderData.find((x) => x.type === "open-task").orderList
+            orderIndexes.find((x) => x.type === "open-task").orderList
           );
           inProgressTaskOrder = JSON.parse(
-            orderData.find((x) => x.type === "in-progress-task").orderList
+            orderIndexes.find((x) => x.type === "in-progress-task").orderList
           );
           doneTaskOrder = JSON.parse(
-            orderData.find((x) => x.type === "done-task").orderList
+            orderIndexes.find((x) => x.type === "done-task").orderList
           );
           allTaskOrder = [
             ...openTaskOrder,
             ...inProgressTaskOrder,
             ...doneTaskOrder,
           ];
-          data = data.sort((a, b) => {
+          tasks = tasks.sort((a, b) => {
             const indexA = allTaskOrder.indexOf(a.id);
             const indexB = allTaskOrder.indexOf(b.id);
             return indexA - indexB;
           });
         }
-        res.send({ result: data });
+        res.send({ result: tasks });
       });
+    } else {
+      res.status(404).send({ error: "Task not found" });
     }
   });
 };
 
 exports.getListUncompleted = async function (req, res) {
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  Task.getAllUncompleted(tokenInfo.data.id, req.query, function (data) {
-    if (data) {
-      Helper.parseJsonProperty(data, jsonPropNameList);
+  Helper.handleRequest(req, res, async (userId) => {
+    let tasks = await Task.getAllUncompleted(userId, req.query);
+    if (tasks) {
+      Helper.parseJsonProperty(tasks, jsonPropNameList);
     }
-    res.send({ result: data });
+    res.send({ result: tasks });
   });
 };
 
 exports.getById = async function (req, res) {
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  Task.getById(tokenInfo.data.id, req.params.id, function (data) {
-    if (data) {
-      Helper.parseJsonProperty(data, jsonPropNameList);
+  Helper.handleRequest(req, res, async (userId) => {
+    const task = await Task.getById(userId, req.params.id);
+    if (task) {
+      Helper.parseJsonProperty(task, jsonPropNameList);
     }
-    res.send({ result: data });
+    res.send({ result: task });
   });
 };
 
 exports.add = async function (req, res) {
-  var data = req.body;
-  const token = req.headers.authorization;
-  const tokenInfo = await JWT.check(token);
-  data.createdBy = tokenInfo.data.id;
-  Helper.stringifyJsonProperty(data, jsonPropNameList);
-  if (data.startDate)
-    data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
-
-  if (data.finishDate)
-    data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
-  Task.create(data, function (response) {
-    if (response.checkList) response.checkList = JSON.parse(response.checkList);
-    res.send({ result: response });
-  });
-};
-
-exports.update = function (req, res) {
-  var data = req.body;
-  Helper.stringifyJsonProperty(data, jsonPropNameList);
-  if (data.startDate)
-    data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
-  if (data.finishDate)
-    data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
-  taskBeforeUpdateInterceptor(data);
-  Task.update(req.params.id, data, function (response) {
-    if (response) Helper.parseJsonProperty(response, jsonPropNameList);
-    res.send({ result: response });
-  });
-};
-
-exports.updateLittle = function (req, res) {
-  var data = req.body;
-  if (data) {
+  Helper.handleRequest(req, res, async (userId) => {
+    let data = req.body;
+    data.createdBy = userId;
     Helper.stringifyJsonProperty(data, jsonPropNameList);
-  }
-  Helper.formatTimeValue(data, "startDate", "finishDate");
-  taskBeforeUpdateInterceptor(data);
-  Task.updateLittle(req.params.id, data, function (response) {
-    if (response) Helper.parseJsonProperty(response, jsonPropNameList);
-    res.send({ result: response });
+    if (data.startDate)
+      data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
+
+    if (data.finishDate)
+      data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
+    const task = await Task.create(data);
+    if (task.checkList) task.checkList = JSON.parse(task.checkList);
+    res.send({ result: task });
   });
 };
 
-exports.updateLittleMany = function (req, res) {
-  var data = req.body;
-  if (data) {
+exports.update = async function (req, res) {
+  Helper.handleRequest(req, res, async (userId) => {
+    let data = req.body;
     Helper.stringifyJsonProperty(data, jsonPropNameList);
-  }
-  Helper.formatTimeValue(data, "startDate", "finishDate");
-  const listIds = data.listIds;
-  delete data.listIds;
-  Task.updateLittleMany(listIds, data, function (response) {
-    res.send({ result: response });
+    if (data.startDate)
+      data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
+    if (data.finishDate)
+      data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
+    taskBeforeUpdateInterceptor(data);
+    const updateResult = await Task.update(req.params.id, data);
+    if (updateResult.affectedRows > 0) {
+      const task = await Task.getById(userId, req.params.id);
+      // if (task.checkList) task.checkList = JSON.parse(task.checkList);
+      if (task) Helper.parseJsonProperty(task, jsonPropNameList);
+      res.send({ result: task });
+    } else {
+      res.status(404).send({ error: "Task not found" });
+    }
+  });
+};
+
+exports.updateLittle = async function (req, res) {
+  Helper.handleRequest(req, res, async (userId) => {
+    var data = req.body;
+    if (data) {
+      Helper.stringifyJsonProperty(data, jsonPropNameList);
+    }
+    Helper.formatTimeValue(data, "startDate", "finishDate");
+    taskBeforeUpdateInterceptor(data);
+    const updateResult = await Task.update(req.params.id, data);
+    if (updateResult.affectedRows > 0) {
+      const task = await Task.getById(userId, req.params.id);
+      // if (task.checkList) task.checkList = JSON.parse(task.checkList);
+      if (task) Helper.parseJsonProperty(task, jsonPropNameList);
+      res.send({ result: task });
+    } else {
+      res.status(404).send({ error: "Task not found" });
+    }
+  });
+};
+
+exports.updateLittleMany = async function (req, res) {
+  Helper.handleRequest(req, res, async (userId) => {
+    var data = req.body;
+    if (data) {
+      Helper.stringifyJsonProperty(data, jsonPropNameList);
+    }
+    Helper.formatTimeValue(data, "startDate", "finishDate");
+    const listIds = data.listIds;
+    delete data.listIds;
+    const updateResult = await Task.updateLittleMany(listIds, data);
+    res.send({ result: updateResult });
   });
 };
 
 exports.remove = function (req, res) {
-  var id = req.params.id;
-  Task.remove(id, function (response) {
-    res.send({ result: response });
+  Helper.handleRequest(req, res, async (userId) => {
+    const task = await Task.getById(userId, req.params.id);
+    const removeResult = await Task.remove(req.params.id);
+    if (removeResult.affectedRows > 0) {
+      if (task.checkList) task.checkList = JSON.parse(task.checkList);
+      res.send({ result: task });
+    }
   });
 };
 
 function taskBeforeUpdateInterceptor(data) {
-  if(data.status == 2) {
+  if (data.status == 2) {
     let endOfToday = new Date();
     endOfToday.setHours(23, 59, 59);
     data.finishDate = Helper.getFormattedMySqlDateTime(endOfToday);
@@ -133,7 +151,10 @@ function taskBeforeUpdateInterceptor(data) {
 }
 
 function taskAfterUpdateInterceptor(oldData, newData, userId) {
-  if(oldData.projectId != newData.projectId) {
-    let oldProjectTaskCount = Task.getTaskCountByProjectId(userId, oldData.projectId);
+  if (oldData.projectId != newData.projectId) {
+    let oldProjectTaskCount = Task.getTaskCountByProjectId(
+      userId,
+      oldData.projectId
+    );
   }
 }

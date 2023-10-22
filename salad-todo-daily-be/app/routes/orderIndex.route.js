@@ -1,18 +1,25 @@
-module.exports = function (router) {
-    var orderIndexController = require("../controllers/orderIndex.controller");
-  
-    router.get("/order-index", orderIndexController.getList);
-  
-    // router.get("/order-index/:id", taskController.getById);
-  
-    // router.post("/order-index", taskController.add);
-  
-    // router.put("/order-index/:id", taskController.update);
+var orderIndexController = require("../controllers/orderIndex.controller");
 
-    router.patch("/order-index/:id", orderIndexController.updateLittle);
+const routes = [
+  {
+    method: "get",
+    path: "/order-index",
+    handler: orderIndexController.getList,
+  },
+  {
+    method: "patch",
+    path: "/order-index/:id",
+    handler: orderIndexController.updateLittle,
+  },
+  {
+    method: "patch",
+    path: "/order-index/by-type/:type",
+    handler: orderIndexController.updateLittleByType,
+  },
+]
 
-    router.patch("/order-index/by-type/:type", orderIndexController.updateLittleByType);
-  
-    // router.delete("/order-index/:id", taskController.remove);
-  };
-  
+module.exports = function(router) {
+  for (const route of routes) {
+    router[route.method](route.path, route.handler);
+  }
+};

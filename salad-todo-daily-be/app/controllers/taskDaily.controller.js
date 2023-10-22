@@ -2,7 +2,10 @@ var TaskDailyHistory = require("../models/taskDailyHistory.model");
 var TaskDaily = require("../models/taskDaily.model");
 var OrderIndex = require("../models/orderIndex.model");
 var JWT = require("../common/_JWT");
-const { getFormattedMySqlDateTime } = require("../helpers/helper");
+const {
+  getFormattedMySqlDateTime,
+  handleRequest,
+} = require("../helpers/helper");
 
 exports.getList = async function (req, res) {
   const token = req.headers.authorization;
@@ -27,21 +30,18 @@ exports.getListToday = async function (req, res) {
         if (element.checked === 1) element.checked = true;
         else element.checked = false;
       });
-      OrderIndex.getByType(
-        tokenInfo.data.id,
-        "daily-task",
-        function (orderData) {
-          if (orderData) {
-            let orderIndex = JSON.parse(orderData[0].orderList);
-            data = data.sort((a, b) => {
-              const indexA = orderIndex.indexOf(a.id);
-              const indexB = orderIndex.indexOf(b.id);
-              return indexA - indexB;
-            });
-          }
-          res.send({ result: data });
+      handleRequest(req, res, async (userId) => {
+        const orderIndexes = await OrderIndex.getByType(userId, "daily-task");
+        if (orderIndexes) {
+          let orderIndex = JSON.parse(orderIndexes[0].orderList);
+          data = data.sort((a, b) => {
+            const indexA = orderIndex.indexOf(a.id);
+            const indexB = orderIndex.indexOf(b.id);
+            return indexA - indexB;
+          });
         }
-      );
+        res.send({ result: data });
+      });
     }
   });
 };

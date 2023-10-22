@@ -18,7 +18,7 @@ exports.getById = async function (req, res) {
 
 exports.add = async function (req, res) {
   handleRequest(req, res, async (userId) => {
-    const data = req.body;
+    let data = req.body;
     data.createdBy = userId;
     if (data.startDate)
       data.startDate = getFormattedMySqlDateTime(data.startDate);
