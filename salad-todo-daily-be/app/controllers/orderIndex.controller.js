@@ -49,8 +49,8 @@ exports.updateLittleByType = async function (req, res) {
       req.params.type,
       data
     );
-    if (updateResult)
-      updateResult[0].orderList = JSON.parse(updateResult[0].orderList);
+    // if (updateResult)
+    //   updateResult[0].orderList = JSON.parse(updateResult[0].orderList);
     res.send({ result: updateResult });
   });
 };

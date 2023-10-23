@@ -77,14 +77,16 @@ exports.add = async function (req, res) {
 };
 
 exports.update = async function (req, res) {
+  const recordId = req.params.id;
   Helper.handleRequest(req, res, async (userId) => {
     let data = req.body;
     Helper.stringifyJsonProperty(data, jsonPropNameList);
-    if (data.startDate)
-      data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
-    if (data.finishDate)
-      data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
-    taskBeforeUpdateInterceptor(data);
+    // if (data.startDate)
+    //   data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
+    // if (data.finishDate)
+    //   data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
+    Helper.formatTimeValue(data, "startDate", "finishDate");
+    await taskBeforeUpdateInterceptor(data, userId, recordId);
     const updateResult = await Task.update(req.params.id, data);
     if (updateResult.affectedRows > 0) {
       const task = await Task.getById(userId, req.params.id);
@@ -98,17 +100,17 @@ exports.update = async function (req, res) {
 };
 
 exports.updateLittle = async function (req, res) {
+  const recordId = req.params.id;
   Helper.handleRequest(req, res, async (userId) => {
     var data = req.body;
     if (data) {
       Helper.stringifyJsonProperty(data, jsonPropNameList);
     }
     Helper.formatTimeValue(data, "startDate", "finishDate");
-    taskBeforeUpdateInterceptor(data);
+    await taskBeforeUpdateInterceptor(data, userId, recordId);
     const updateResult = await Task.update(req.params.id, data);
     if (updateResult.affectedRows > 0) {
       const task = await Task.getById(userId, req.params.id);
-      // if (task.checkList) task.checkList = JSON.parse(task.checkList);
       if (task) Helper.parseJsonProperty(task, jsonPropNameList);
       res.send({ result: task });
     } else {
@@ -142,8 +144,10 @@ exports.remove = function (req, res) {
   });
 };
 
-function taskBeforeUpdateInterceptor(data) {
-  if (data.status == 2) {
+async function taskBeforeUpdateInterceptor(data, userId, recordId) {
+  const response = await Task.getById(userId, recordId);
+  const oldData = response[0];
+  if (oldData.status != 2 && data.status == 2 && !oldData.finishDate) {
     let endOfToday = new Date();
     endOfToday.setHours(23, 59, 59);
     data.finishDate = Helper.getFormattedMySqlDateTime(endOfToday);
