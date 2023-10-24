@@ -32,16 +32,9 @@ export class TagManagementComponent implements OnInit {
   }
 
   getListTags(): void {
-    this.tagService
-      .getAllTaskTag()
-      .toPromise()
-      .then((res: any) => {
-        if (res && res.result) {
-          this.listTags = res.result;
-        } else {
-          this.msg.error('Có lỗi xảy ra. Không thể lấy danh sách nhãn chủ đề.');
-        }
-      });
+    this.tagService.getAllTaskTag().subscribe((taskTags) => {
+      this.listTags = taskTags;
+    });
   }
 
   initTagForm() {
