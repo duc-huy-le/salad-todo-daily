@@ -2,7 +2,7 @@ var mysql = require("mysql");
 const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
-const environment = process.env.NODE_ENV;
+const environment = process.env.NODE_ENV ?? "development";
 if (environment === "production") {
   const envConfig = dotenv.parse(fs.readFileSync(".env.prod"));
   for (const key in envConfig) {
