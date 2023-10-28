@@ -10,7 +10,7 @@ if (environment === "production") {
     process.env[key] = envConfig[key];
   }
 }
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 var app = express();
 app.use(cors());
