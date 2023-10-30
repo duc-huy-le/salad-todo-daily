@@ -20,6 +20,11 @@ enum ViewType {
   Calendar = 2,
 }
 
+enum TaskNav {
+  Task,
+  DailyTask,
+}
+
 @Component({
   selector: 'app-dashboard-content',
   templateUrl: './dashboard-content.component.html',
@@ -35,6 +40,11 @@ export class DashboardContentComponent implements OnInit {
   projectList: Project[] = [];
   listFilteringProject: string = '';
   filteringProjectTooltip: string = '';
+
+  // Mobile variables
+  selectingTaskNav = TaskNav.Task;
+  readonly TaskNav = TaskNav;
+
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
@@ -110,5 +120,10 @@ export class DashboardContentComponent implements OnInit {
           }
         }
       });
+  }
+
+  // Mobile
+  onChangeTaskNav(taskNav: TaskNav) {
+    this.selectingTaskNav = taskNav;
   }
 }

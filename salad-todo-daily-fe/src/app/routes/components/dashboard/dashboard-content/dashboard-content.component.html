@@ -82,6 +82,31 @@
 
 <ng-template #mobileTpl>
   <div class="mobile-container">
+    <div
+      class="task-nav d-flex justify-content-space-around align-items-center"
+    >
+      <div
+        class="task-nav-item"
+        [ngClass]="{ 'selected-nav': selectingTaskNav === TaskNav.Task }"
+        (click)="onChangeTaskNav(TaskNav.Task)"
+      >
+        <i class="fas fa-briefcase"></i>
+      </div>
+      <div
+        class="task-nav-item"
+        [ngClass]="{ 'selected-nav': selectingTaskNav === TaskNav.DailyTask }"
+        (click)="onChangeTaskNav(TaskNav.DailyTask)"
+      >
+        <i class="fas fa-tasks"></i>
+      </div>
+    </div>
 
+    <ng-container *ngIf="selectingTaskNav === TaskNav.Task; else dailyTaskTpl">
+      <app-task-group
+        #taskGroup
+        [filterFormValue]="filterForm.value"
+      ></app-task-group>
+    </ng-container>
+    <ng-template #dailyTaskTpl>  </ng-template>
   </div>
 </ng-template>
