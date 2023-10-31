@@ -1,5 +1,7 @@
 var JWT = require("../common/_JWT");
+const moment = require("moment-timezone");
 
+const currentTimeZone = "Asia/Saigon";
 function getFormattedMySqlDateTime(dateTime) {
   let date = new Date(dateTime);
   date.setHours(date.getHours() + 7);
@@ -44,6 +46,43 @@ function stringifyJsonProperty(record, jsonPropNameList) {
   });
 }
 
+function changeRecordsDateTimePropertyToUTC(records, ...dateTimeFields) {
+  records.forEach((record) => {
+    changeRecordDateTimePropertyToUTC(record, ...dateTimeFields);
+  });
+}
+
+function changeRecordDateTimePropertyToUTC(record, ...dateTimeFields) {
+  dateTimeFields.forEach((field) => {
+    if (record[field]) {
+      const year = record[field].getFullYear();
+      const month = String(record[field].getMonth() + 1).padStart(2, "0");
+      const day = String(record[field].getDate()).padStart(2, "0");
+      const hours = String(record[field].getHours()).padStart(2, "0");
+      const minutes = String(record[field].getMinutes()).padStart(2, "0");
+      const seconds = String(record[field].getSeconds()).padStart(2, "0");
+
+      const dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      let currentDateTimeValue = moment.tz(dateString, currentTimeZone);
+
+      record[field] = currentDateTimeValue.clone().tz("UTC");
+    }
+  });
+}
+
+function parseRecordJsonProperty(record, ...jsonPropNameList) {
+  jsonPropNameList.forEach((jsonPropName) => {
+    if (record[jsonPropName])
+      record[jsonPropName] = JSON.parse(record[jsonPropName]);
+  });
+}
+
+function parseRecordsJsonProperty(data, ...jsonPropNameList) {
+  data.forEach((record) => {
+    parseRecordJsonProperty(record, ...jsonPropNameList);
+  });
+}
+
 const handleRequest = async (req, res, callback) => {
   try {
     const token = req.headers.authorization;
@@ -61,5 +100,9 @@ module.exports = {
   formatTimeValue,
   parseJsonProperty,
   stringifyJsonProperty,
+  changeRecordDateTimePropertyToUTC,
+  changeRecordsDateTimePropertyToUTC,
+  parseRecordJsonProperty,
+  parseRecordsJsonProperty,
   handleRequest,
 };
