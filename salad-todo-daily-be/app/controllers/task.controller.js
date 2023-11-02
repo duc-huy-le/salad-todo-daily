@@ -1,6 +1,7 @@
 var Task = require("../models/task.model");
 var JWT = require("../common/_JWT");
 const Helper = require("../helpers/helper");
+const moment = require("moment-timezone");
 const OrderIndex = require("../models/orderIndex.model");
 const jsonPropNameList = ["checkList"];
 
@@ -8,7 +9,6 @@ exports.getList = async function (req, res) {
   Helper.handleRequest(req, res, async (userId) => {
     let tasks = await Task.getAll(userId, req.query);
     if (tasks) {
-      Helper.parseJsonProperty(tasks, jsonPropNameList);
       Helper.handleRequest(req, res, async (userId) => {
         const orderIndexes = await OrderIndex.getAll(userId);
         if (orderIndexes) {
@@ -32,6 +32,7 @@ exports.getList = async function (req, res) {
             return indexA - indexB;
           });
         }
+        formatRecordsBeforeSend(tasks);
         res.send({ result: tasks });
       });
     } else {
@@ -44,7 +45,7 @@ exports.getListUncompleted = async function (req, res) {
   Helper.handleRequest(req, res, async (userId) => {
     let tasks = await Task.getAllUncompleted(userId, req.query);
     if (tasks) {
-      Helper.parseJsonProperty(tasks, jsonPropNameList);
+      formatRecordsBeforeSend(tasks);
     }
     res.send({ result: tasks });
   });
@@ -55,6 +56,12 @@ exports.getById = async function (req, res) {
     const task = await Task.getById(userId, req.params.id);
     if (task) {
       Helper.parseJsonProperty(task, jsonPropNameList);
+      Helper.changeRecordsDateTimePropertyToUTC(
+        task,
+        "startDate",
+        "finishDate",
+        "createdAt"
+      );
     }
     res.send({ result: task });
   });
@@ -71,6 +78,12 @@ exports.add = async function (req, res) {
     if (data.finishDate)
       data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
     const task = await Task.create(data);
+    Helper.changeRecordDateTimePropertyToUTC(
+      task,
+      "startDate",
+      "finishDate",
+      "createdAt"
+    );
     if (task.checkList) task.checkList = JSON.parse(task.checkList);
     res.send({ result: task });
   });
@@ -81,17 +94,18 @@ exports.update = async function (req, res) {
   Helper.handleRequest(req, res, async (userId) => {
     let data = req.body;
     Helper.stringifyJsonProperty(data, jsonPropNameList);
-    // if (data.startDate)
-    //   data.startDate = Helper.getFormattedMySqlDateTime(data.startDate);
-    // if (data.finishDate)
-    //   data.finishDate = Helper.getFormattedMySqlDateTime(data.finishDate);
     Helper.formatTimeValue(data, "startDate", "finishDate");
     await taskBeforeUpdateInterceptor(data, userId, recordId);
     const updateResult = await Task.update(req.params.id, data);
     if (updateResult.affectedRows > 0) {
       const task = await Task.getById(userId, req.params.id);
-      // if (task.checkList) task.checkList = JSON.parse(task.checkList);
       if (task) Helper.parseJsonProperty(task, jsonPropNameList);
+      Helper.changeRecordDateTimePropertyToUTC(
+        task,
+        "startDate",
+        "finishDate",
+        "createdAt"
+      );
       res.send({ result: task });
     } else {
       res.status(404).send({ error: "Task not found" });
@@ -108,6 +122,7 @@ exports.updateLittle = async function (req, res) {
     }
     Helper.formatTimeValue(data, "startDate", "finishDate");
     await taskBeforeUpdateInterceptor(data, userId, recordId);
+    console.log(data.finishDate);
     const updateResult = await Task.update(req.params.id, data);
     if (updateResult.affectedRows > 0) {
       const task = await Task.getById(userId, req.params.id);
@@ -151,6 +166,7 @@ async function taskBeforeUpdateInterceptor(data, userId, recordId) {
     let endOfToday = new Date();
     endOfToday.setHours(23, 59, 59);
     data.finishDate = Helper.getFormattedMySqlDateTime(endOfToday);
+    console.log(data.finishDate);
   }
 }
 
@@ -161,4 +177,14 @@ function taskAfterUpdateInterceptor(oldData, newData, userId) {
       oldData.projectId
     );
   }
+}
+
+function formatRecordsBeforeSend(records) {
+  Helper.parseRecordsJsonProperty(records, "checkList");
+  Helper.changeRecordsDateTimePropertyToUTC(
+    records,
+    "startDate",
+    "finishDate",
+    "createdAt"
+  );
 }
