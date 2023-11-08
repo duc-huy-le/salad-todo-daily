@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "nvm use 16.14.0 && ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
