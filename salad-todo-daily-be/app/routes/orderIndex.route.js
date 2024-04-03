@@ -8,13 +8,13 @@ const routes = [
   },
   {
     method: "patch",
-    path: "/order-index/:id",
-    handler: orderIndexController.updateLittle,
+    path: "/order-index/by-type/:type",
+    handler: orderIndexController.updateLittleByType,
   },
   {
     method: "patch",
-    path: "/order-index/by-type/:type",
-    handler: orderIndexController.updateLittleByType,
+    path: "/order-index/:id",
+    handler: orderIndexController.updateLittle,
   },
 ]
 

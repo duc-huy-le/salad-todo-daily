@@ -1,7 +1,7 @@
-<div class="container m-24">
+<div class="project_container m-24">
   <nz-tabset nzType="card" [nzSelectedIndex]="initialTabIndex" (nzSelectedIndexChange)="onChangeTab($event)">
     <nz-tab nzTitle="Dự án">
-      <nz-table #basicTable [nzData]="listProjects">
+      <nz-table #basicTable [nzData]="listProjects" [nzScroll]="{y: '455px'}">
         <thead>
           <tr>
             <th nzWidth="5%" nzAlign="center">STT</th>

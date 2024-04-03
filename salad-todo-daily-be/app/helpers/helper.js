@@ -55,12 +55,13 @@ function changeRecordsDateTimePropertyToUTC(records, ...dateTimeFields) {
 function changeRecordDateTimePropertyToUTC(record, ...dateTimeFields) {
   dateTimeFields.forEach((field) => {
     if (record[field]) {
-      const year = record[field].getFullYear();
-      const month = String(record[field].getMonth() + 1).padStart(2, "0");
-      const day = String(record[field].getDate()).padStart(2, "0");
-      const hours = String(record[field].getHours()).padStart(2, "0");
-      const minutes = String(record[field].getMinutes()).padStart(2, "0");
-      const seconds = String(record[field].getSeconds()).padStart(2, "0");
+      const dateTimeValue = new Date(record[field]);
+      const year = dateTimeValue.getFullYear();
+      const month = String(dateTimeValue.getMonth() + 1).padStart(2, "0");
+      const day = String(dateTimeValue.getDate()).padStart(2, "0");
+      const hours = String(dateTimeValue.getHours()).padStart(2, "0");
+      const minutes = String(dateTimeValue.getMinutes()).padStart(2, "0");
+      const seconds = String(dateTimeValue.getSeconds()).padStart(2, "0");
 
       const dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       let currentDateTimeValue = moment.tz(dateString, currentTimeZone);
