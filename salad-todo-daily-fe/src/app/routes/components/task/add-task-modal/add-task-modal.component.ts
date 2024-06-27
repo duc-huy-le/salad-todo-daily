@@ -14,6 +14,8 @@ import {
   NzDropdownMenuComponent,
 } from 'ng-zorro-antd/dropdown';
 import { LoadingService } from 'src/app/services/common/loading/loading.service';
+declare var createGoogleEvent: any;
+declare var scheduleEvent: any;
 
 export enum TaskItemViewMode {
   Create = 0,
@@ -112,6 +114,18 @@ export class AddTaskModalComponent implements OnInit {
     this.loadingService.setLoading(true);
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
     this.getCurrentFormattedDate();
+    const ggCalendarPayload = {
+      ...this.addTaskForm.value,
+      email: 'leduchyu10@gmail.com',
+      startTime: getFormattedStartDate(
+        this.addTaskForm.value.startDate,
+        DateType.StartDate
+      ),
+      endTime: getFormattedStartDate(
+        this.addTaskForm.value.startDate,
+        DateType.FinishDate
+      ),
+    };
     this.taskService
       .addNewTask(this.addTaskForm.value)
       .toPromise()
@@ -124,6 +138,8 @@ export class AddTaskModalComponent implements OnInit {
           this.isVisible = false;
           this.newCheckList = [];
           this.isAddingCheckList = false;
+
+          this.scheduleTask(ggCalendarPayload);
         } else {
           this.msg.error('Tạo công việc thất bại');
         }
@@ -337,5 +353,10 @@ export class AddTaskModalComponent implements OnInit {
     // this.deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
     this.deadline = Date.now() + this.task.duration * 1000 * 60;
     this.isCountdown = true;
+  }
+
+  scheduleTask(ggCalendarPayload: any) {
+    createGoogleEvent(ggCalendarPayload);
+    // scheduleEvent(ggCalendarPayload);
   }
 }
