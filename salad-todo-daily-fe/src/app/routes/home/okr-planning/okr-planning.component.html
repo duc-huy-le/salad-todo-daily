@@ -1,0 +1,377 @@
+<div class="okr_planner_container">
+  <form nz-form [formGroup]="plannerForm" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="totalTime"
+        >Tổng số thời gian bạn làm việc trong một ngày (giờ)
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+        <nz-input-number
+          nzPlaceHolder="Nhập tổng số thời gian bạn làm việc trong ngày (Hãy trừ hết những việc ăn uống, vệ sinh cá nhân đi)"
+          id="totalTime"
+          [nzStep]="1"
+          [nzMin]="0"
+          [nzMax]="24"
+          style="width: 100%"
+          formControlName="totalTime"
+          (nzBlur)="calculateFreeTime()"
+        ></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="plannerForm?.getRawValue().totalTime > 0">
+      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="fixedTime"
+        >Tổng số lịch hẹn cố định (giờ)
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+        <nz-input-number
+          nzPlaceHolder="Nhập tổng số thời gian mà bạn đã có lịch hẹn với người khác và không thể thực hiện công việc cá nhân"
+          id="fixedTime"
+          [nzStep]="1"
+          [nzMin]="0"
+          [nzMax]="24"
+          style="width: 100%"
+          formControlName="fixedTime"
+          (nzBlur)="calculateFreeTime()"
+        ></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="plannerForm?.getRawValue().fixedTime != null">
+      Số thời gian rảnh còn lại là
+      {{ freeTime }}
+      giờ (~{{ freePomodoro }}
+      pomodoro)
+    </div>
+    <nz-form-item *ngIf="freeTime > 0">
+      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="highlightTask"
+        >Công việc tiêu điểm bạn muốn giải quyết ngày hôm nay
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+        <input
+          nz-input
+          nzPlaceHolder="Nhập công việc tiêu điểm hôm nay"
+          id="highlightTask"
+          formControlName="highlightTask"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="plannerForm?.getRawValue().highlightTask" nz-row nzGutter="16">
+      <div nz-col nzSpan="8" class="key_result_block">
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="firstHighlightKr"
+            >Kết quả then chốt 1
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="firstHighlightKr"
+                rows="4"
+                formControlName="firstHighlightKr"
+                nz-input
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="firstHighlightKr"
+            >Số pomodoro cho kết quả then chốt 1
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-input-number
+              nzPlaceHolder="Số pomodoro cần thiết để thực hiện"
+              id="firstHighlightKrPomodoro"
+              [nzStep]="1"
+              [nzMin]="1"
+              style="width: 100%"
+              formControlName="firstHighlightKrPomodoro"
+              (nzBlur)="calculateFreeTime()"
+            ></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="firstHighlightKr1"
+            >Bước 1
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="firstHighlightKr1"
+                rows="2"
+                formControlName="firstHighlightKr1"
+                nz-input
+                placeholder="Nhập bước 1 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="firstHighlightKr2"
+            >Bước 2
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="firstHighlightKr2"
+                rows="2"
+                formControlName="firstHighlightKr2"
+                nz-input
+                placeholder="Nhập bước 2 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="firstHighlightKr3"
+            >Bước 3
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="firstHighlightKr3"
+                rows="2"
+                formControlName="firstHighlightKr3"
+                nz-input
+                placeholder="Nhập bước 3 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="8" class="key_result_block">
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="secondHighlightKr"
+            >Kết quả then chốt 2
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="secondHighlightKr"
+                rows="4"
+                formControlName="secondHighlightKr"
+                nz-input
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="secondHighlightKr"
+            >Số pomodoro cho kết quả then chốt 2
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-input-number
+              nzPlaceHolder="Số pomodoro cần thiết để thực hiện"
+              id="secondHighlightKrPomodoro"
+              [nzStep]="1"
+              [nzMin]="1"
+              style="width: 100%"
+              formControlName="secondHighlightKrPomodoro"
+              (nzBlur)="calculateFreeTime()"
+            ></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="secondHighlightKr1"
+            >Bước 1
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="secondHighlightKr1"
+                rows="2"
+                formControlName="secondHighlightKr1"
+                nz-input
+                placeholder="Nhập bước 1 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="secondHighlightKr2"
+            >Bước 2
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="secondHighlightKr2"
+                rows="2"
+                formControlName="secondHighlightKr2"
+                nz-input
+                placeholder="Nhập bước 2 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="secondHighlightKr3"
+            >Bước 3
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="secondHighlightKr3"
+                rows="2"
+                formControlName="secondHighlightKr3"
+                nz-input
+                placeholder="Nhập bước 3 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="8" class="key_result_block">
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="thirdHighlightKr"
+            >Kết quả then chốt 3
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="thirdHighlightKr"
+                rows="4"
+                formControlName="thirdHighlightKr"
+                nz-input
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="thirdHighlightKr"
+            >Số pomodoro cho kết quả then chốt 3
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-input-number
+              nzPlaceHolder="Số pomodoro cần thiết để thực hiện"
+              id="thirdHighlightKrPomodoro"
+              [nzStep]="1"
+              [nzMin]="1"
+              style="width: 100%"
+              formControlName="thirdHighlightKrPomodoro"
+              (nzBlur)="calculateFreeTime()"
+            ></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="thirdHighlightKr1"
+            >Bước 1
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="thirdHighlightKr1"
+                rows="2"
+                formControlName="thirdHighlightKr1"
+                nz-input
+                placeholder="Nhập bước 1 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="thirdHighlightKr2"
+            >Bước 2
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="thirdHighlightKr2"
+                rows="2"
+                formControlName="thirdHighlightKr2"
+                nz-input
+                placeholder="Nhập bước 2 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="freeTime > 0">
+          <nz-form-label
+            [nzSm]="24"
+            [nzXs]="24"
+            nzRequired
+            nzFor="thirdHighlightKr3"
+            >Bước 3
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Tên công việc không được để trống!">
+            <nz-textarea-count [nzMaxCharacterCount]="100">
+              <textarea
+                id="thirdHighlightKr3"
+                rows="2"
+                formControlName="thirdHighlightKr3"
+                nz-input
+                placeholder="Nhập bước 3 để hoàn thành công việc"
+              ></textarea>
+            </nz-textarea-count>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div *ngIf="freeTime > 0">
+      <button nz-button nzType="primary" (click)="onClickAddTasks()">Tạo công việc</button>
+    </div>
+  </form>
+</div>

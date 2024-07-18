@@ -13,6 +13,7 @@ class Task extends BaseModel {
     this.priority = task.priority;
     this.status = task.status;
     this.duration = task.duration;
+    this.completedDuration = task.completedDuration;
     this.checkList = task.checkList;
     this.isDeleted = task.isDeleted;
     this.createdAt = task.createdAt;

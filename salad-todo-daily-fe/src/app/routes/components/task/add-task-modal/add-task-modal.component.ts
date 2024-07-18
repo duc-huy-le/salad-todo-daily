@@ -87,7 +87,7 @@ export class AddTaskModalComponent implements OnInit {
       checkList: [[]],
       priority: [TaskPriority.Medium],
       status: [TaskStatus.Open, [Validators.required]],
-      duration: [null],
+      duration: [1],
       isDeleted: [0],
     });
   }

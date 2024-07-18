@@ -40,6 +40,8 @@ import { WebVersionComponent } from './routes/components/web-version/web-version
 import { BaseScreenComponent } from './base/base-screen/base-screen.component';
 import { UncompletedTaskModalComponent } from './routes/components/task/uncompleted-task-modal/uncompleted-task-modal.component';
 import { DateDifferentPipe } from './helpers/pipes/date-different.pipe';
+import { FocusModeComponent } from './routes/home/focus-mode/focus-mode.component';
+import { OkrPlanningComponent } from './routes/home/okr-planning/okr-planning.component';
 
 registerLocaleData(en);
 
@@ -72,7 +74,9 @@ registerLocaleData(en);
     WebVersionComponent,
     BaseScreenComponent,
     UncompletedTaskModalComponent,
-    DateDifferentPipe
+    DateDifferentPipe,
+    FocusModeComponent,
+    OkrPlanningComponent
   ],
   imports: [
     BrowserModule,

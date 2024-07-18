@@ -1,6 +1,11 @@
 <ng-template #indicatorLoadingTemplate>
-  <img src="assets/loadingGif2.gif" alt="GIF Image">
+  <img src="assets/loadingGif2.gif" alt="GIF Image" />
 </ng-template>
-<nz-spin [nzSize]="'large'" [nzTip]="loadingMessage" [nzSpinning]="isLoading">
+<!-- <nz-spin [nzSize]="'large'" [nzTip]="loadingMessage" [nzSpinning]="isLoading">
   <router-outlet></router-outlet>
-</nz-spin>
+</nz-spin> -->
+<router-outlet></router-outlet>
+<div class="loading_icon">
+  <nz-spin [nzSize]="'large'" [nzSpinning]="isLoading">
+  </nz-spin>
+</div>

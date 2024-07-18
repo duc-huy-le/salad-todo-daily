@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "nvm use 16.14.0 && ng serve",
     "build": "ng build",
+    "build-prod": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

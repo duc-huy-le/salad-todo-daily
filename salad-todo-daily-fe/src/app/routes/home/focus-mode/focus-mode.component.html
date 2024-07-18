@@ -1,0 +1,274 @@
+<div class="focus_mode_container">
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="6" class="todo_task_section">
+      <div
+        class="list-header d-flex align-items-center justify-content-space-between"
+      >
+        <div class="header__title">
+          Đang thực hiện
+          <span
+            *ngIf="inProgressDuration != ''"
+            nz-tooltip
+            nzTooltipTitle="Thời gian thực hiện còn lại"
+            >({{ inProgressDuration }})</span
+          >
+        </div>
+        <div class="header__action">
+          <button
+            nz-button
+            nzShape="circle"
+            (click)="openAddTaskModal(TaskStatus.InProgress)"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+
+          <button nz-button nzType="text">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+      <nz-divider></nz-divider>
+      <div class="list-task-scroll">
+        <div
+          cdkDropList
+          #inProgressList="cdkDropList"
+          [cdkDropListData]="listInProgressTask"
+          [cdkDropListConnectedTo]="[doneList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <app-task-item
+            cdkDrag
+            class="d-flex"
+            *ngFor="let task of listInProgressTask"
+            [task]="task"
+            (onTaskChange)="getAllTask()"
+          ></app-task-item>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzSpan="12" class="clock_section">
+      <div>Tập trung vào công việc</div>
+      <div class="clock_block">
+        <div>
+          <button
+            nz-button
+            [nzType]="
+              currentFocusingMode == FocusingMode.Pomodoro ? 'primary' : 'text'
+            "
+            (click)="onChangeFocusMode(FocusingMode.Pomodoro)"
+          >
+            Tập trung
+          </button>
+          <button
+            nz-button
+            [nzType]="
+              currentFocusingMode == FocusingMode.ShortBreak
+                ? 'primary'
+                : 'text'
+            "
+            (click)="onChangeFocusMode(FocusingMode.ShortBreak)"
+          >
+            Nghỉ ngắn
+          </button>
+          <button
+            nz-button
+            [nzType]="
+              currentFocusingMode == FocusingMode.LongBreak ? 'primary' : 'text'
+            "
+            (click)="onChangeFocusMode(FocusingMode.LongBreak)"
+          >
+            Nghỉ dài
+          </button>
+        </div>
+        <div
+          class="count_down_clock"
+          [ngClass]="
+            currentFocusingMode == FocusingMode.Pomodoro
+              ? 'pomodoro_background'
+              : currentFocusingMode == FocusingMode.ShortBreak
+              ? 'short_break_background'
+              : 'long_break_background'
+          "
+        >
+          <nz-countdown
+            *ngIf="isFocusing"
+            [nzValue]="currentDateline"
+            [nzFormat]="'mm:ss'"
+            (nzCountdownFinish)="onStopFocusing()"
+          ></nz-countdown>
+          <div *ngIf="!isFocusing" class="ant-statistic-content">
+            {{ datelinePlaceholder }}
+          </div>
+        </div>
+        <div>
+          <button nz-button (click)="onStartFocusing()">Bắt đầu</button>
+        </div>
+      </div>
+      <div *ngIf="focusingTask" class="focusing_task">
+        {{ focusingTask?.completedDuration + "/" + focusingTask?.duration + " pomodoro đã hoàn thành"}}
+        <nz-progress [nzPercent]="focusPercent"></nz-progress>
+        <ng-container *ngIf="focusingTask.projectId">
+          <!-- <nz-tag [nzColor]="projectInfo?.color" class="project-tag mb-6">
+            <div class="project-name">{{ projectInfo?.name }}</div>
+          </nz-tag> -->
+        </ng-container>
+        <b>{{ focusingTask?.name }}</b>
+        <div *ngIf="focusingTask?.description"> {{focusingTask?.description}}</div>
+        <div cdkDropList (cdkDropListDropped)="dropInViewMode($event)">
+          <div cdkDrag *ngFor="let step of focusingTask?.checkList; let i = index">
+            <div
+              *ngIf="
+                editingCheckListIndex != i || !isEditingCheckList;
+                else editCheckListItem
+              "
+              class="list-step p-6"
+            >
+              <label
+                nz-checkbox
+                (contextmenu)="
+                  openCheckListItemMenu($event, checkListItemMenu, i)
+                "
+                [(ngModel)]="step.checked"
+                (ngModelChange)="onCheckStep($event, i)"
+              >
+                <div
+                  [ngClass]="
+                    step.checked ? 'text-decoration-line-through' : ''
+                  "
+                  class="step-label"
+                >
+                  {{ step.content }}
+                </div></label
+              >
+            </div>
+            <ng-template #editCheckListItem>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <textarea
+                    nz-input
+                    [(ngModel)]="step.content"
+                    [ngModelOptions]="{ standalone: true }"
+                    (keyup.enter)="saveChangeCheckListItem(step.content, i)"
+                    (keydown.enter)="onEnterKeyInAddCheckList($event)"
+                  ></textarea>
+                </div>
+              </div>
+              <div nz-row class="mt-6">
+                <div nz-col nzSpan="24">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    (click)="saveChangeCheckListItem(step.content, i)"
+                  >
+                    Lưu
+                  </button>
+                  <button
+                    nz-button
+                    nzType="text"
+                    (click)="cancelEditCheckListItem()"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="mt-12">
+          <div *ngIf="isAddingCheckList; else addCheckList" class="new-step">
+            <textarea
+              nz-input
+              rows="2"
+              placeholder="Thêm một bước..."
+              id="checkList"
+              ng-trim="false"
+              [(ngModel)]="currentAddCheckListItem"
+              [ngModelOptions]="{ standalone: true }"
+              (keyup.enter)="onClickAddCheckList($event)"
+              (keydown.enter)="onEnterKeyInAddCheckList($event)"
+            ></textarea>
+            <div class="new-step__action mt-6">
+              <button
+                nz-button
+                nzType="primary"
+                class="mr-6"
+                (click)="onClickAddCheckList()"
+              >
+                Thêm
+              </button>
+              <button nz-button (click)="onClickCancelAddCheckList()">
+                Hủy
+              </button>
+            </div>
+          </div>
+          <ng-template #addCheckList>
+            <button
+              nz-button
+              nzType="dashed"
+              (click)="onClickAddNewCheckList()"
+            >
+              Thêm một bước
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzSpan="6" class="done_task_section">
+      <div
+        class="list-header d-flex align-items-center justify-content-space-between"
+      >
+        <div class="header__title">Hoàn thành</div>
+        <div class="header__action">
+          <button
+            nz-button
+            nzShape="circle"
+            (click)="openAddTaskModal(TaskStatus.Done)"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+
+          <button nz-button nzType="text">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+      <nz-divider></nz-divider>
+      <div class="list-task-scroll">
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="listDoneTask"
+          [cdkDropListConnectedTo]="[inProgressList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <app-task-item
+            cdkDrag
+            class="d-flex"
+            *ngFor="let task of listDoneTask"
+            [task]="task"
+          ></app-task-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nz-dropdown-menu #checkListItemMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="onEditCheckListItem()">
+      <i class="fas fa-pen mr-6"></i>Sửa
+    </li>
+    <li nz-menu-item (click)="onCopyCheckListItem()">
+      <i class="fas fa-copy mr-6"></i>Nhân bản
+    </li>
+    <li
+      nzDanger
+      nz-menu-item
+      (click)="onDeleteCheckListItemViewMode()"
+    >
+      <i class="fas fa-trash mr-6"></i>Xóa
+    </li>
+  </ul>
+</nz-dropdown-menu>

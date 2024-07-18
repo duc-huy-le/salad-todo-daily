@@ -8,6 +8,7 @@ export class Task {
   priority: number;
   status: number;
   duration: number;
+  completedDuration: number;
   checkList: Array<TaskCheckList>;
   createdAt: Date;
   isDeleted: boolean;
@@ -23,6 +24,7 @@ export class Task {
     priority: number,
     status: number,
     duration: number,
+    completedDuration: number,
     checkList: Array<TaskCheckList>,
     createdAt: Date,
     isDeleted: boolean,
@@ -38,6 +40,7 @@ export class Task {
     this.priority = priority;
     this.status = status;
     this.duration = duration;
+    this.completedDuration = completedDuration;
     this.checkList = checkList;
     this.createdAt = createdAt;
     this.isDeleted = isDeleted;

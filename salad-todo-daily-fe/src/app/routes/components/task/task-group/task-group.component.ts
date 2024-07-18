@@ -31,11 +31,11 @@ export class TaskGroupComponent implements OnInit {
   doneDuration: string = '';
 
   constructor(
-    private taskService: TaskService,
-    private msg: NzMessageService,
-    private notificationService: NotificationService,
-    private loadingService: LoadingService,
-    private orderIndexService: OrderIndexService
+    protected taskService: TaskService,
+    protected msg: NzMessageService,
+    protected notificationService: NotificationService,
+    protected loadingService: LoadingService,
+    protected orderIndexService: OrderIndexService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -51,7 +51,7 @@ export class TaskGroupComponent implements OnInit {
     const queryParam = {
       ...this.filterFormValue,
       projectId:
-        this.filterFormValue.projectId.length > 0
+        this.filterFormValue?.projectId?.length > 0
           ? this.filterFormValue.projectId
           : null,
     };

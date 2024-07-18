@@ -3,3 +3,9 @@
   height: 100vh;
   z-index: 1001;
 }
+
+.loading_icon {
+  position: fixed;
+  bottom: 2vw;
+  right: 2vw;
+}

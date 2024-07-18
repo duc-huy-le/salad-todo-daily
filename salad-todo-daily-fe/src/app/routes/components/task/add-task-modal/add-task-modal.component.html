@@ -43,8 +43,9 @@
           >
           <nz-form-control>
             <nz-select
-              nzPlaceHolder="Chọn dự án"
               id="projectId"
+              nzPlaceHolder="Chọn dự án"
+              [nzShowSearch]="true"
               formControlName="projectId"
             >
               <nz-option
@@ -71,8 +72,8 @@
               placeholder="Nhập thời gian"
               id="duration"
               formControlName="duration"
-              [nzStep]="15"
-              [nzMin]="0"
+              [nzStep]="1"
+              [nzMin]="1"
               style="width: 100%"
             ></nz-input-number>
           </nz-form-control>
@@ -296,13 +297,18 @@
     <ng-container *ngIf="viewMode === TaskItemViewMode.View">
       <div *ngIf="task.duration" nz-row class="mb-6">
         <div nz-col nzSpan="4" class="d-flex align-items-center">
-          <button nz-button nzType="primary" nzShape="circle" (click)="onClickCountDown()">
+          <button
+            nz-button
+            nzType="primary"
+            nzShape="circle"
+            (click)="onClickCountDown()"
+          >
             <span nz-icon nzType="play-circle"></span>
           </button>
         </div>
         <div nz-col nzSpan="20">
           <nz-countdown
-          *ngIf="isCountdown"
+            *ngIf="isCountdown"
             [nzValue]="deadline"
             [nzTitle]="'Thời gian còn lại'"
           ></nz-countdown>

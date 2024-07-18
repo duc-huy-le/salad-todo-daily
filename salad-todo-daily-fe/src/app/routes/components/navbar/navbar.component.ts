@@ -32,9 +32,11 @@ export class NavbarComponent implements OnInit {
 
   listNavItems: NavItem[] = [
     new NavItem('Trang chủ', 0, true, 'home/dashboard', 'fa-columns'),
-    new NavItem('Thống kê', 1, false, 'a', 'fa-list'),
-    new NavItem('Quản lý danh mục', 2, false, 'home/project', 'fa-project-diagram'),
-    new NavItem('Việc hàng ngày', 3, false, 'home/daily-task', 'fa-calendar'),
+    new NavItem('Lập kế hoạch OKR', 1, true, 'home/okr-planner', 'fa-calendar-check'),
+    new NavItem('Chế độ tập trung', 2, true, 'home/focus-mode', 'fas fa-business-time'),
+    new NavItem('Thống kê', 3, false, 'a', 'fa-list'),
+    new NavItem('Quản lý danh mục', 4, false, 'home/project', 'fa-project-diagram'),
+    new NavItem('Việc hàng ngày', 5, false, 'home/daily-task', 'fa-calendar'),
   ];
 
   constructor(private router: Router, private route: ActivatedRoute) {}

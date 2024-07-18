@@ -1,0 +1,56 @@
+.focus_mode_container {
+  padding: 12px;
+}
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.clock_block {
+  padding: 12px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.count_down_clock {
+  margin: 12px 0;
+  text-align: center;
+  /* padding: 120px; */
+  height: 200px;
+  /* width: 120px; */
+  background-color: #FAA0A0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pomodoro_background {
+  background-color: #FAA0A0;
+}
+.short_break_background {
+  background-color: #C1E1C1;
+
+}
+.long_break_background {
+  background-color: #A7C7E7;
+}
+
+::ng-deep .ant-statistic-content {
+  color: white;
+  font-size: 100px;
+  font-weight: bold;
+}
+
+.focusing_task {
+  text-align: left;
+  margin-top: 12px;
+  padding: 12px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.list-step {
+  text-align: left;
+}

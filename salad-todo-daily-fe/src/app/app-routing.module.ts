@@ -6,6 +6,8 @@ import { DashboardContentComponent } from './routes/components/dashboard/dashboa
 import { LoginScreenComponent } from './routes/auth/login-screen/login-screen.component';
 import { AuthGuard } from './shared/auth.guard';
 import { DailyTaskScreenComponent } from './routes/home/daily-task-screen/daily-task-screen.component';
+import { FocusModeComponent } from './routes/home/focus-mode/focus-mode.component';
+import { OkrPlanningComponent } from './routes/home/okr-planning/okr-planning.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/dashboard' },
@@ -18,6 +20,8 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardContentComponent },
       { path: 'project', component: ProjectScreenComponent },
       { path: 'daily-task', component: DailyTaskScreenComponent },
+      { path: 'focus-mode', component: FocusModeComponent },
+      { path: 'okr-planner', component: OkrPlanningComponent },
     ]
   },
 ];
