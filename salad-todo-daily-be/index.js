@@ -4,12 +4,12 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
 const environment = process.env.NODE_ENV;
-if (environment === "production") {
-  const envConfig = dotenv.parse(fs.readFileSync(".env.prod"));
-  for (const key in envConfig) {
-    process.env[key] = envConfig[key];
-  }
-}
+// if (environment === "production") {
+//   const envConfig = dotenv.parse(fs.readFileSync(".env.prod"));
+//   for (const key in envConfig) {
+//     process.env[key] = envConfig[key];
+//   }
+// }
 const PORT = process.env.PORT || 3000;
 
 var app = express();
