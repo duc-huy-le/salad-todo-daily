@@ -35,6 +35,7 @@ exports.updateUser = function (req, res) {
 };
 
 exports.login = function (req, res) {
+  console.log(`Request đến api login: ${JSON.stringify(req.body)}`);
   var data = req.body;
   User.checkLogin(data, async function (response) {
     if (response) {
