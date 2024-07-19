@@ -23,8 +23,8 @@ RUN --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,t
   && apk add --update curl git findutils python3 make gcc g++ musl-dev \
   jpeg-dev cairo-dev giflib-dev pango-dev
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-  --mount=type=bind,source=package-lock.json,target=package-lock.json \
+RUN  --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,source=package.json,target=package.json \
+  --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,source=package-lock.json,target=package-lock.json \
   --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,target=/root/.npm \
   npm ci --omit=dev
 # Run the application as a non-root user.
