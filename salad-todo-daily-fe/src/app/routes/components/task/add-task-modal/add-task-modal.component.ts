@@ -109,6 +109,7 @@ export class AddTaskModalComponent implements OnInit {
   }
 
   handleAddTask(): void {
+    //h
     this.loadingService.setLoading(true);
     this.addTaskForm.get('checkList')?.patchValue(this.newCheckList);
     this.getCurrentFormattedDate();
