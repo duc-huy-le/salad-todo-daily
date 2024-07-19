@@ -11,6 +11,7 @@ const environment = process.env.NODE_ENV;
 //   }
 // }
 const PORT = process.env.PORT || 3000;
+console.log(`In ${process.env.DB_USERNAME} username`);
 
 var app = express();
 app.use(cors());
