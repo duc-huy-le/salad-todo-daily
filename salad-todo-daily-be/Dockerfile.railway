@@ -18,10 +18,15 @@ WORKDIR /usr/src/app
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
 # into this layer.
+RUN --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,target=/var/cache/apk \
+  ln -vsf /var/cache/apk /etc/apk/cache \
+  && apk add --update curl git findutils python3 make gcc g++ musl-dev \
+  jpeg-dev cairo-dev giflib-dev pango-dev
+
 RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+  --mount=type=bind,source=package-lock.json,target=package-lock.json \
+  --mount=type=cache,target=/root/.npm \
+  npm ci --omit=dev
 
 # Run the application as a non-root user.
 USER node
