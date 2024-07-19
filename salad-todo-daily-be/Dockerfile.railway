@@ -27,9 +27,8 @@ RUN --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,t
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN --mount=type=cache,id=npm-cache,target=/root/.npm \
+RUN --mount=type=cache,id=s/afa5f3d5-cb96-4367-acee-7ccda0f10716/var/cache/apk,target=/root/.npm \
   npm ci --omit=dev
-  
 # Run the application as a non-root user.
 USER node
 
