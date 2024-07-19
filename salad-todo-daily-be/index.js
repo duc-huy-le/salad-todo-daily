@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 // });
 
 //   Các router
+console.log("Danh sách router:");
 require("./app/routes/account.route")(app);
 app.use(_AuthMiddleWare.isAuth);
 require("./app/routes/user.route")(app);
