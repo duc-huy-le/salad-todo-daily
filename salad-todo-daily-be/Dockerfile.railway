@@ -35,6 +35,9 @@ USER node
 # Copy the rest of the source files into the image.
 COPY . .
 
+# Ensure the .env.prod file is copied into the image.
+COPY .env.prod ./
+
 # Expose the port that the application listens on.
 EXPOSE 8080
 
