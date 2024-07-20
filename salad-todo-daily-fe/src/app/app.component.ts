@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TaskTagService } from './services/task-tag/task-tag.service';
 import { TaskTag } from './models/TaskTag';
 import { NotificationService } from './services/notification/notification.service';
@@ -21,19 +21,18 @@ export class AppComponent {
     private notificationService: NotificationService,
     // private authService: AuthService,
     private loadingService: LoadingService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private cdr: ChangeDetectorRef
   ) {
     // this.authService.checkSession();
     // this.authService.getUserInfo().toPromise().then((res) => {
     // });
-    this.loadingService.loading$.subscribe(data => {
-      this.isLoading = data;
-    })
   }
   ngOnInit(): void {
-    // setTimeout(() => {
-    //   this.sendMessageToTelegram();
-    // }, 10000);
+    this.loadingService.loading$.subscribe((data) => {
+      this.isLoading = data;
+      this.cdr.detectChanges();
+    });
   }
 
   sendMessageToTelegram() {
