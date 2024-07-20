@@ -11,4 +11,5 @@ export const environment = {
   // apiBaseUrl: 'https://salad-todo-daily.onrender.com',
   // apiBaseUrl: 'https://blushing-blue-long-underwear.cyclic.cloud',
   // apiBaseUrl: 'https://salad-task-api.fly.dev',
+  apiBaseUrl: 'https://salad-todo-daily-production.up.railway.app',
 };
